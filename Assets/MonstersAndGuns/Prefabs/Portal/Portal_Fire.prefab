@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4459991890511856}
   m_Layer: 0
-  m_Name: Fire
+  m_Name: Portal_Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
