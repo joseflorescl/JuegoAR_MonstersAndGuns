@@ -4,7 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/MonstersAndGuns/Scenes/Welcome.unity
+    guid: d4d07e854d8eebe43b7a7d508aeb03ea
+  - enabled: 0
+    path: Assets/Sandbox/Sandbox Scenes/Sandbox Plane Detection.unity
+    guid: d2f4776800feb804e8540c6fdde3d22b
   m_configObjects:
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: 744b813df90924c169af73489b8325de,
       type: 2}
