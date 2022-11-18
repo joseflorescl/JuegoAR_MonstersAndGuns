@@ -5,7 +5,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public enum GameState { Start, Menu, PortalCreation, Spawning, Battle, BossBattle, GameOver, Win }
+    public enum GameState { Initialization, Menu, PortalCreation, Spawning, Battle, BossBattle, GameOver, Win }
+
+    // TODO: crear evento OnInitialization que se use para que todos los submanagers (UIManager, AudioManager, etc)
+    //  seteen las acciones necesarios al arrancar el juego
+    // TODO: validar que en este nuevo esquema de comunicación entre GameManagers con los submanagers, usando eventos, 
+    //  deberíamos asegurarnos que los submanagers son los que hacen uso del GameManager, pero no al revés, es decir
+    //  que el GameManager NO hace uso (no sabe de la existencia) de los submanagers.
 
     public event Action OnPortalCreation;
 
@@ -34,8 +40,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        gameState = GameState.Start;
-        StartCoroutine(StartRoutine());
+        gameState = GameState.Initialization;
+        StartCoroutine(InitializationRoutine());
     }
 
 
@@ -56,8 +62,9 @@ public class GameManager : MonoBehaviour
     }
 
 
-    IEnumerator StartRoutine()
+    IEnumerator InitializationRoutine()
     {
+        // TODO: leer la doc de SceneManager.LoadScene y validar si se debe move el yield más abajo
         yield return null;
         sceneController.LoadARSession();
         sceneController.LoadMenu();

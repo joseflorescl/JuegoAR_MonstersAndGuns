@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject mainPanel;
     [SerializeField] private GameObject portalCreationPanel;
     
+    // TODO: crear método que haga el init del menú, y que se subscriba a evento de GameManager
 
     private void Start()
     {

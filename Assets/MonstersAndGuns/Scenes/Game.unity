@@ -344,8 +344,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7824a6b33476e8c4badcdca2e7b65f7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BGMAudioSource: {fileID: 0}
-  SFXAudioSource: {fileID: 0}
+  BGMAudioSource: {fileID: 2098209742}
+  SFXAudioSource: {fileID: 219414189}
   menuMusic: []
   pressStartGame: []
 --- !u!1 &982369420
