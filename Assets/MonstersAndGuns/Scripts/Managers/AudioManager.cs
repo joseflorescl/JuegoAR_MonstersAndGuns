@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
 
     // TODO: esta data se puede pasar a Scriptable Object
     [Header("BGM Sounds")]
-    public AudioClip[] menuMusic;
+    public AudioClip[] mainMenuMusic;
 
     [Space(10)]
     [Header("SFX Sounds")]
@@ -19,16 +19,58 @@ public class AudioManager : MonoBehaviour
 
 
     HashSet<AudioClip> clipsPlayedThisFrame;
+    Coroutine audioRoutine;
 
-    private void Awake()
+    private void Awake() => clipsPlayedThisFrame = new HashSet<AudioClip>();
+
+    private void LateUpdate() => clipsPlayedThisFrame.Clear();
+
+    private void OnEnable()
     {
-        clipsPlayedThisFrame = new HashSet<AudioClip>();
+        GameManager.Instance.OnMainMenu += OnMainMenuHandler;
+        GameManager.Instance.OnPortalCreation += OnPortalCreationHandler;
     }
 
-    private void LateUpdate()
+    
+
+    private void OnDisable()
     {
-        clipsPlayedThisFrame.Clear();
+        GameManager.Instance.OnMainMenu -= OnMainMenuHandler;
+        GameManager.Instance.OnPortalCreation -= OnPortalCreationHandler;
     }
+
+    private void OnMainMenuHandler()
+    {
+        PlayMainMenuMusic();
+    }
+
+
+    private void OnPortalCreationHandler()
+    {
+        BGMAudioSource.Stop();
+        SFXAudioSource.Stop();
+        float duration = PlayRandomSound(pressStartGame);
+
+        StopAudioRoutine();
+        audioRoutine = StartCoroutine(PlayMainMenuMusicAfterDurationRoutine(duration));
+
+    }
+
+    private IEnumerator PlayMainMenuMusicAfterDurationRoutine(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        PlayMainMenuMusic();
+    }
+
+    private void PlayMainMenuMusic()
+    {
+        var clip = GetRandomClip(mainMenuMusic);
+        PlayBGMMusic(clip, true);
+    }
+
+
+
+
 
     private AudioClip GetRandomClip(AudioClip[] audioClips)
     {
@@ -45,11 +87,12 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private void PlayRandomSound(AudioClip[] clips)
+    private float PlayRandomSound(AudioClip[] clips)
     {
-        if (clips == null || clips.Length == 0) return; // Programación defensiva nunca está de más
+        if (clips == null || clips.Length == 0) return 0f; // Programación defensiva nunca está de más
         var clip = GetRandomClip(clips);
         SFXPlayOneShot(clip);
+        return clip.length;
     }
 
     private void PlayBGMMusic(AudioClip clip, bool loop)
@@ -61,7 +104,11 @@ public class AudioManager : MonoBehaviour
     }
 
 
-
+    private void StopAudioRoutine()
+    {
+        if (audioRoutine != null)
+            StopCoroutine(audioRoutine);
+    }
 
 
 }

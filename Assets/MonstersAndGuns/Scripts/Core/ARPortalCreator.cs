@@ -8,6 +8,10 @@ public class ARPortalCreator : MonoBehaviour
 {
     [SerializeField] private GameObject portalPrefab;
     [SerializeField] private GameObject monsterMenu;
+    [SerializeField] private GameObject pointAtFloorMessage;
+    [SerializeField] private GameObject tapToPlacePortalMessage;
+    [SerializeField] private GameObject canvasPortalCreation;
+    
 
     ARRaycastManager arRaycastManager;
     ARPlaneManager arPlaneManager;
@@ -23,6 +27,7 @@ public class ARPortalCreator : MonoBehaviour
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
         arPlaneManager = FindObjectOfType<ARPlaneManager>();
         arCamera = Camera.main;
+        canvasPortalCreation.SetActive(false);
     }
 
     private void Start()
@@ -47,6 +52,9 @@ public class ARPortalCreator : MonoBehaviour
     private void PortalCreationHandler()
     {
         monsterMenu.SetActive(false);
+        canvasPortalCreation.SetActive(true);
+        pointAtFloorMessage.SetActive(true);
+        tapToPlacePortalMessage.SetActive(false);
         StartCoroutine(PortalCreationRoutine());
     }
 
@@ -54,8 +62,6 @@ public class ARPortalCreator : MonoBehaviour
 
     IEnumerator PortalCreationRoutine()
     {
-        print("Ini PortalCreationRoutine");
-
         isCreatingPortal = true;
         arPlaneManager.enabled = true;
 
@@ -67,20 +73,34 @@ public class ARPortalCreator : MonoBehaviour
             {
                 var pose = hits[0].pose;
                 portal.transform.SetPositionAndRotation(pose.position, pose.rotation);
-                portal.SetActive(true);
+
+                SetStatusPortal(true);
 
                 if (Input.touchCount > 0)
                     isCreatingPortal = false;
             }
             else
             {
-                portal.SetActive(false);
+                SetStatusPortal(false);
             }
 
             yield return null;
         }
 
         arPlaneManager.enabled = false;
+        canvasPortalCreation.SetActive(false);
 
+        // TODO: comunicarle al Game Manager que ya se colocó el portal, vía llamada directa: mejor no usar eventos: para mantenerlo simple
+        //  solo el GM lanzará eventos.
+        GameManager.Instance.StartSpawning();
     }
+    
+
+    private void SetStatusPortal(bool status)
+    {
+        portal.SetActive(status);
+        pointAtFloorMessage.SetActive(!status);
+        tapToPlacePortalMessage.SetActive(status);
+    }
+
 }

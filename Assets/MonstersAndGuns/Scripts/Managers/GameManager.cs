@@ -5,14 +5,15 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public enum GameState { Initialization, Menu, PortalCreation, Spawning, Battle, BossBattle, GameOver, Win }
+    public enum GameState { Initialization, MainMenu, PortalCreation, Spawning, Battle, BossBattle, GameOver, Win, Exit }
 
-    // TODO: crear evento OnInitialization que se use para que todos los submanagers (UIManager, AudioManager, etc)
-    //  seteen las acciones necesarios al arrancar el juego
+    [SerializeField] private GameObject canvasLoading;
+
     // TODO: validar que en este nuevo esquema de comunicación entre GameManagers con los submanagers, usando eventos, 
     //  deberíamos asegurarnos que los submanagers son los que hacen uso del GameManager, pero no al revés, es decir
     //  que el GameManager NO hace uso (no sabe de la existencia) de los submanagers.
 
+    public event Action OnMainMenu;
     public event Action OnPortalCreation;
 
 
@@ -53,7 +54,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        if (gameState != GameState.Menu) return;
+        if (gameState != GameState.MainMenu) return;
 
         print(GetType().Name + " StartGame");
 
@@ -61,14 +62,19 @@ public class GameManager : MonoBehaviour
         OnPortalCreation?.Invoke();
     }
 
+    public void StartSpawning()
+    {
+        print("StartSpawning");
+    }
+
 
     IEnumerator InitializationRoutine()
     {
-        // TODO: leer la doc de SceneManager.LoadScene y validar si se debe move el yield más abajo
-        yield return null;
-        sceneController.LoadARSession();
-        sceneController.LoadMenu();
-        gameState = GameState.Menu;
+        yield return sceneController.LoadARSessionRoutine();
+        yield return sceneController.LoadMenu();
+        gameState = GameState.MainMenu;
+        canvasLoading.SetActive(false);
+        OnMainMenu?.Invoke();
     }
 
     
