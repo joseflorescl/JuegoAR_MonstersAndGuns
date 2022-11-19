@@ -21,8 +21,6 @@ public class GameManager : MonoBehaviour
     // Será singleton
     private static GameManager instance = null;
 
-   
-
     public static GameManager Instance  => instance;
 
     SceneController sceneController;
@@ -66,7 +64,7 @@ public class GameManager : MonoBehaviour
         OnPortalCreation?.Invoke();
     }
 
-    public void StartSpawning(Transform portal)
+    public void PortalCreated(Transform portal)
     {
         if (gameState != GameState.PortalCreation) return;
 

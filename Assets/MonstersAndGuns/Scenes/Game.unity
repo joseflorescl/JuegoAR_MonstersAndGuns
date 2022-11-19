@@ -746,10 +746,7 @@ MonoBehaviour:
   - initialEnemies:
     - enemyPrefab: {fileID: 3453756640205573976, guid: ef100fe30ca01d94c8c3291c43270037,
         type: 3}
-      count: 3
-    - enemyPrefab: {fileID: 328409505970683906, guid: 464cc7c4f7ea10b47a36d7848aa9ca9a,
-        type: 3}
-      count: 3
+      count: 10
     bossEnemyPrefab: {fileID: 1499589907430632, guid: 65091a4551e906249bdb2eacfcc14d0d,
       type: 3}
 --- !u!1 &1591751907

@@ -63,8 +63,8 @@ public class SpawnerManager : MonoBehaviour
 
         for (int i = 0; i < initialEnemies.Length; i++)
         {
-            var enemyPrefab = initialEnemies[0].enemyPrefab;
-            var count = initialEnemies[0].count;
+            var enemyPrefab = initialEnemies[i].enemyPrefab;
+            var count = initialEnemies[i].count;
 
             for (int j = 0; j < count; j++)
             {

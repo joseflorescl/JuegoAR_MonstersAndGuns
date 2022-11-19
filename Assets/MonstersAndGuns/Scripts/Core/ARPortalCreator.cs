@@ -98,7 +98,7 @@ public class ARPortalCreator : MonoBehaviour
         arPlaneManager.enabled = false;
         canvasPortalCreation.SetActive(false);
 
-        GameManager.Instance.StartSpawning(portal.transform);
+        GameManager.Instance.PortalCreated(portal.transform);
     }
     
 
