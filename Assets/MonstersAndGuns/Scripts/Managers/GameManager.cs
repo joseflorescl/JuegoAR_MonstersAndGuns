@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     public event Action OnMainMenu;
     public event Action OnPortalCreation;
+    public event Action<int, Vector3, Quaternion> OnSpawning; // Recibe el level actual del juego, y lo posición/rotación desde donde hacer el spawner
 
 
     // Será singleton
@@ -27,6 +28,8 @@ public class GameManager : MonoBehaviour
     SceneController sceneController;
 
     GameState gameState;
+    int currentLevel;
+    
 
     private void Awake()
     {
@@ -42,6 +45,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         gameState = GameState.Initialization;
+        currentLevel = 1;
         StartCoroutine(InitializationRoutine());
     }
 
@@ -62,9 +66,14 @@ public class GameManager : MonoBehaviour
         OnPortalCreation?.Invoke();
     }
 
-    public void StartSpawning()
+    public void StartSpawning(Transform portal)
     {
-        print("StartSpawning");
+        if (gameState != GameState.PortalCreation) return;
+
+        gameState = GameState.Spawning;
+        
+        OnSpawning?.Invoke(currentLevel, portal.position, portal.rotation);
+
     }
 
 

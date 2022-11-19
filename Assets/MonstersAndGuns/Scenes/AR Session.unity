@@ -765,7 +765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b355f4ec10d0f49449962536c9e83123, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portalPrefab: {fileID: 1796710394269618, guid: f5db2cfbdfe52304b8b37685eb7f7604,
+  portalPrefab: {fileID: 1554541131529452, guid: 3f85cafacb6779543b77bcf7c34d631d,
     type: 3}
   monsterMenu: {fileID: 224173659}
   pointAtFloorMessage: {fileID: 304063661}

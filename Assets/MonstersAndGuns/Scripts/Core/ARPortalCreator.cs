@@ -53,8 +53,9 @@ public class ARPortalCreator : MonoBehaviour
     {
         monsterMenu.SetActive(false);
         canvasPortalCreation.SetActive(true);
-        pointAtFloorMessage.SetActive(true);
-        tapToPlacePortalMessage.SetActive(false);
+
+        SetStatusPortal(false);
+
         StartCoroutine(PortalCreationRoutine());
     }
 
@@ -76,7 +77,7 @@ public class ARPortalCreator : MonoBehaviour
 
                 SetStatusPortal(true);
 
-                if (Input.touchCount > 0)
+                if (IsTapping())
                     isCreatingPortal = false;
             }
             else
@@ -84,15 +85,20 @@ public class ARPortalCreator : MonoBehaviour
                 SetStatusPortal(false);
             }
 
+#if UNITY_EDITOR
+            // Como no tengo el XR Simulator necesito probar en el editor cuando se haga click con el mouse
+            if (IsTapping())
+                isCreatingPortal = false;
+#endif
+
+
             yield return null;
         }
 
         arPlaneManager.enabled = false;
         canvasPortalCreation.SetActive(false);
 
-        // TODO: comunicarle al Game Manager que ya se colocó el portal, vía llamada directa: mejor no usar eventos: para mantenerlo simple
-        //  solo el GM lanzará eventos.
-        GameManager.Instance.StartSpawning();
+        GameManager.Instance.StartSpawning(portal.transform);
     }
     
 
@@ -102,5 +108,21 @@ public class ARPortalCreator : MonoBehaviour
         pointAtFloorMessage.SetActive(!status);
         tapToPlacePortalMessage.SetActive(status);
     }
+
+    private bool IsTapping()
+    {
+#if UNITY_EDITOR
+        if( Input.GetMouseButtonDown(0))
+        {
+            SetStatusPortal(true);
+            return true;
+        }
+        return false;
+#else
+        return Input.touchCount > 0;
+#endif
+    }
+
+
 
 }

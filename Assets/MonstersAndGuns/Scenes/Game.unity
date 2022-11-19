@@ -697,6 +697,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1533639234}
   m_CullTransparentMesh: 1
+--- !u!1 &1582239607
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1582239608}
+  - component: {fileID: 1582239609}
+  m_Layer: 0
+  m_Name: Spawner Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1582239608
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582239607}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1591751908}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1582239609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582239607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 305a5309c1245b34c8c8b8f0ee1057fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnTimeBetweenEnemies: 0.2
+  enemiesByLevels:
+  - initialEnemies:
+    - enemyPrefab: {fileID: 3453756640205573976, guid: ef100fe30ca01d94c8c3291c43270037,
+        type: 3}
+      count: 3
+    - enemyPrefab: {fileID: 328409505970683906, guid: 464cc7c4f7ea10b47a36d7848aa9ca9a,
+        type: 3}
+      count: 3
+    bossEnemyPrefab: {fileID: 1499589907430632, guid: 65091a4551e906249bdb2eacfcc14d0d,
+      type: 3}
 --- !u!1 &1591751907
 GameObject:
   m_ObjectHideFlags: 0
@@ -728,6 +783,7 @@ Transform:
   - {fileID: 14512076}
   - {fileID: 2002729157}
   - {fileID: 681911203}
+  - {fileID: 1582239608}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
