@@ -12,6 +12,7 @@ public class MonsterController : MonoBehaviour
 
     [SerializeField] private float minSecondsGoUp = 1f;
     [SerializeField] private float maxSecondsGoUp = 3f;
+    [SerializeField] private float maxAngleRotationPlayerForward = 45f;
 
 
 
@@ -19,11 +20,33 @@ public class MonsterController : MonoBehaviour
 
     // TODO: hace la var state una property de tal forma que al setear su valor se llame al StartCoroutine, que da más elegante 
     //  que se haga directamente un StartCoroutine dentro de otra corutina.
-    MonsterStates state;
+    MonsterStates currentState;
     Rigidbody rb;
     Vector3 kinematicVelocity;
 
+    MonsterStates CurrentState
+    {
+        get { return currentState; }
+        set
+        {
+            currentState = value;
 
+            switch (currentState)
+            {
+                case MonsterStates.GoUp:
+                    StartCoroutine(GoUpCoroutine());
+                    break;
+                case MonsterStates.Patrol:
+                    StartCoroutine(PatrolRoutine());
+                    break;
+                case MonsterStates.Attack:
+                    print("Attack Pendiente");
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
     public Vector3 goUpVector;
 
@@ -34,8 +57,7 @@ public class MonsterController : MonoBehaviour
 
     private void Start()
     {
-        state = MonsterStates.GoUp;
-        StartCoroutine(GoUpCoroutine());
+        CurrentState = MonsterStates.GoUp;
     }
 
 
@@ -68,15 +90,20 @@ public class MonsterController : MonoBehaviour
 
         yield return new WaitForSeconds(secondsGoUp);
 
-        StartCoroutine(PatrolRoutine());
-        
+        CurrentState = MonsterStates.Patrol;
     }
 
 
     IEnumerator PatrolRoutine()
     {
-        kinematicVelocity = Vector3.zero;
+        // Primero nos alejamos del player usando la dirección player.forward, pero rotada en un ángulo random
+        float angle = Random.Range(-maxAngleRotationPlayerForward, +maxAngleRotationPlayerForward);
+        var deltaRotation = Quaternion.Euler(0, angle, 0);
+        kinematicVelocity = deltaRotation * GameManager.Instance.PlayerForwardDirection() * speed;
         yield return null; 
+
+        // Ahora se espera unos segundos hasta que se comience en un loop de patrol alrededor del player
+        // TODO: ir rotando con el Slerp/RotateTowards el enemigo para que su vector forward se vaya alineando con su velocidad
     }
     
 

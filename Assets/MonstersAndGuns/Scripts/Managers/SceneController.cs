@@ -5,23 +5,26 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
-    public enum SceneName { Game = 0, ARSession, Menu }
+    //public enum SceneName { Game = 0, ARSession, Menu }
 
+    //public Coroutine LoadARSessionRoutine()
+    //{
+    //    return StartCoroutine( LoadSceneRoutine((int)SceneName.ARSession));
+    //}
 
+    //public Coroutine LoadMenu()
+    //{
+    //    return StartCoroutine(LoadSceneRoutine((int)SceneName.Menu));
+    //}
 
-    public Coroutine LoadARSessionRoutine()
+    public Coroutine LoadSceneAdditive(string sceneName)
     {
-        return StartCoroutine( LoadSceneRoutine((int)SceneName.ARSession));
+        return StartCoroutine(LoadSceneRoutine(sceneName));
     }
 
-    public Coroutine LoadMenu()
+    IEnumerator LoadSceneRoutine(string sceneName)
     {
-        return StartCoroutine(LoadSceneRoutine((int)SceneName.Menu));
-    }
-
-    private IEnumerator LoadSceneRoutine(int sceneBuildIndex)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneBuildIndex, LoadSceneMode.Additive);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         yield return new WaitUntil(() => asyncLoad.isDone);
     }
     

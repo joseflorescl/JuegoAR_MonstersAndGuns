@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public enum GameState { Initialization, MainMenu, PortalCreation, Spawning, Battle, BossBattle, GameOver, Win, Exit }
 
     [SerializeField] private GameObject canvasLoading;
+    [SerializeField] private string[] scenesToLoad;
 
     // TODO: validar que en este nuevo esquema de comunicación entre GameManagers con los submanagers, usando eventos, 
     //  deberíamos asegurarnos que los submanagers son los que hacen uso del GameManager, pero no al revés, es decir
@@ -27,6 +29,7 @@ public class GameManager : MonoBehaviour
 
     GameState gameState;
     int currentLevel;
+    GameObject player;
     
 
     private void Awake()
@@ -74,13 +77,39 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public Vector3 PlayerPosition()
+    {
+        if (player)
+        {
+            return player.transform.position;
+        }
+        else
+            return Vector3.zero;
+    }
+
+    public Vector3 PlayerForwardDirection()
+    {
+        if (player)
+        {
+            return player.transform.forward;
+        }
+        else
+            return Vector3.forward;
+    }
 
     IEnumerator InitializationRoutine()
     {
-        yield return sceneController.LoadARSessionRoutine();
-        yield return sceneController.LoadMenu();
+        for (int i = 0; i < scenesToLoad.Length; i++)
+        {
+            yield return sceneController.LoadSceneAdditive(scenesToLoad[i]);
+        }
+
+        player = GameObject.FindGameObjectWithTag("Player");
         gameState = GameState.MainMenu;
-        canvasLoading.SetActive(false);
+
+        if (canvasLoading)
+            canvasLoading.SetActive(false);
+
         OnMainMenu?.Invoke();
     }
 
