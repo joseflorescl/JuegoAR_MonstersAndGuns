@@ -68,6 +68,13 @@ public class SpawnerManager : MonoBehaviour
 
             for (int j = 0; j < count; j++)
             {
+                // TODO: después de instanciar al monster se debería setear la property TimeToAttack
+                // TODO: al instanciar se debería emitir un sonido: esto se podría hacer de esta forma
+                /*
+                 GameManager.Instance.MonsterCreated();
+                y el GM llama a evento OnMonsterCreated?.Invoke();
+                y el AudioManager se subscribe a ese evento con un método que emite el sonido de un Pop()
+                 */
                 Instantiate(enemyPrefab, position, rotation);
                 yield return waitBetweenEnemies;
             }

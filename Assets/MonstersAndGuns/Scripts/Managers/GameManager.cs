@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     //  deberíamos asegurarnos que los submanagers son los que hacen uso del GameManager, pero no al revés, es decir
     //  que el GameManager NO hace uso (no sabe de la existencia) de los submanagers.
 
+    // TODO: borrar los colliders de los objetos que no lo necesiten
+
     public event Action OnMainMenu;
     public event Action OnPortalCreation;
     public event Action<int, Vector3, Quaternion> OnSpawning; // Recibe el level actual del juego, y lo posición/rotación desde donde hacer el spawner
@@ -30,6 +32,7 @@ public class GameManager : MonoBehaviour
     GameState gameState;
     int currentLevel;
     GameObject player;
+    Transform portal;
     
 
     private void Awake()
@@ -72,6 +75,7 @@ public class GameManager : MonoBehaviour
         if (gameState != GameState.PortalCreation) return;
 
         gameState = GameState.Spawning;
+        this.portal = portal;
         
         OnSpawning?.Invoke(currentLevel, portal.position, portal.rotation);
 
@@ -87,11 +91,11 @@ public class GameManager : MonoBehaviour
             return Vector3.zero;
     }
 
-    public Vector3 PlayerForwardDirection()
+    public Vector3 PortalForwardDirection()
     {
-        if (player)
+        if (portal)
         {
-            return player.transform.forward;
+            return portal.transform.forward;
         }
         else
             return Vector3.forward;

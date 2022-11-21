@@ -49,7 +49,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: facbb541316ab4447971cded9d52f682, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -99,9 +99,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDeviationRandomVectorUp: 0.5
   speed: 5
+  turnSpeed: 720
   faceInitialDirection: 1
   minSecondsGoUp: 1
   maxSecondsGoUp: 3
+  maxAngleRotationForward: 45
+  minSecondsSameDirection: 3
+  maxSecondsSameDirection: 5
+  radiusSpherePatroling: 20
   goUpVector: {x: 0, y: 0, z: 0}
 --- !u!1 &5936868825163822977
 GameObject:
@@ -115,7 +120,7 @@ GameObject:
   - component: {fileID: 289073288834375152}
   - component: {fileID: 3830105594990557540}
   m_Layer: 0
-  m_Name: default
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128,7 +133,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5936868825163822977}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.05, y: 0, z: 0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
