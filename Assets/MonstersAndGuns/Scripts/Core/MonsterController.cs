@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Animator))]
 public class MonsterController : MonoBehaviour
 {
 
@@ -20,27 +21,27 @@ public class MonsterController : MonoBehaviour
     [SerializeField] private float radiusSpherePatroling = 20f;
 
     [SerializeField] private float minHeightPatroling = 0.5f;
+    [SerializeField] private float minDistanceToTarget = 0.1f;
 
-    public float TimeToAttack { get; set; }
 
-
-    enum MonsterStates { GoUp, Patrol, Attack}
+    public enum MonsterStates { GoUp, Patrol, Attack }
 
     // TODO: hace la var state una property de tal forma que al setear su valor se llame al StartCoroutine, que da más elegante 
     //  que se haga directamente un StartCoroutine dentro de otra corutina.
     MonsterStates currentState;
     Rigidbody rb;
+    Animator anim;
     Vector3 kinematicVelocity;
-    
 
-    MonsterStates CurrentState
+    public MonsterStates CurrentState
     {
         // TODO: implementar una property de este estilo para la clase GameManager
         get { return currentState; }
-        set
+        private set
         {
-            StopAllCoroutines();
             currentState = value;
+            StopAllCoroutines();
+
 
             switch (currentState)
             {
@@ -64,14 +65,12 @@ public class MonsterController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
     }
 
     private void Start()
     {
         CurrentState = MonsterStates.GoUp;
-
-        // TODO: test: esto lo debe setear el spawner al crear el monster:
-        TimeToAttack = Time.time + Random.Range(5f, 20f);
     }
 
 
@@ -115,47 +114,61 @@ public class MonsterController : MonoBehaviour
         float angle = Random.Range(-maxAngleRotationForward, +maxAngleRotationForward);
         var deltaRotation = Quaternion.Euler(0, angle, 0);
         kinematicVelocity = deltaRotation * GameManager.Instance.PortalForwardDirection() * speed;
-        
-        yield return null;
 
+        float secondsSameDirection = Random.Range(minSecondsSameDirection, maxSecondsSameDirection);
+        yield return new WaitForSeconds(secondsSameDirection);
 
-        while (true)
+        while (currentState == MonsterStates.Patrol)
         {
-            // Ahora se espera unos segundos
-            float secondsSameDirection = Random.Range(minSecondsSameDirection, maxSecondsSameDirection);
-
-            float maxTimeInSameDirection = Time.time + secondsSameDirection;
-            
-            yield return new WaitUntil(() => Time.time > maxTimeInSameDirection || transform.position.y < minHeightPatroling);
-
-            // Se elige un punto alrededor del player: en una esfera de radio r
+            // Se elige un punto al frente del player (casi, puede ser un poco por detrás también): en una esfera de radio r
             // Se elige un punto random dentro de la semiesfera con origen en el player.position de rado r
-            var pos = Random.insideUnitSphere * radiusSpherePatroling + GameManager.Instance.PlayerPosition();
-            pos.y = Mathf.Abs(pos.y);
-            var direction = pos - transform.position;
+            
+            var targetPosition = Random.insideUnitSphere * radiusSpherePatroling + GameManager.Instance.PlayerPosition();
+            targetPosition.y = Mathf.Abs(targetPosition.y);
+            targetPosition.z = Mathf.Abs(targetPosition.z);
+            // TODO: falta hacer que la targetPosition pueda estar también un poco por detrás del player: ahora siempre estará por delante
+            // TODO: también se puede setear una altura máxima, porque en el eje X puede estar bien la distancia, pero hacia arriba es mejor algo menos.
+            var direction = targetPosition - transform.position;
             kinematicVelocity = direction.normalized * speed;
 
-            // TODO: pasar a estado Attack después de un rato: tal vez lo mejor es que ese valor lo setee el que crea el monster
-            //  porque en el juego original el paso a ataque no es tan aleatorio, sino que van de a uno pasando al ataque.
-            // Al ser inicializado el monster, el spawner le va a setear la cantidad de segundos que va a estar antes de pasar al ataque.
-            // TODO: este if debería ir en el while
-            if (Time.time > TimeToAttack)
-            {
-                CurrentState = MonsterStates.Attack;
-            }
+            // Ahora se espera: hasta llegar a este punto o haya pasado un tiempo máximo
+            secondsSameDirection = Random.Range(minSecondsSameDirection, maxSecondsSameDirection);
+            float maxTimeInSameDirection = Time.time + secondsSameDirection;
+            yield return new WaitUntil(() => Time.time > maxTimeInSameDirection || Vector3.Distance(transform.position, targetPosition) < minDistanceToTarget);
+            // El paso a estado Attack es controlado por el BattleManager
         }
         
     }
 
-    IEnumerator AttackRoutine()
+    public void Attack()
     {
-        var direction = GameManager.Instance.PlayerPosition() - transform.position;
-        kinematicVelocity = direction.normalized * speed;
-
-        yield return new WaitForSeconds(5);
-        Destroy(gameObject);
+        CurrentState = MonsterStates.Attack;
     }
 
+    IEnumerator AttackRoutine()
+    {
+        anim.SetTrigger("Pursue");
+        var rend = GetComponentInChildren<Renderer>();
+        rend.material.color = Color.red;
+
+        Invoke(nameof(Dead), 3);
+
+        // Cada 1 seg se va ajustando la dirección hacia el player
+        while (true)
+        {
+            var direction = GameManager.Instance.PlayerPosition() - transform.position;
+            kinematicVelocity = direction.normalized * speed;
+            yield return new WaitForSeconds(1);
+        }
+    }
+
+
+    private void Dead()
+    {
+        StopAllCoroutines();
+        Destroy(gameObject); // TODO: test!
+        GameManager.Instance.EnemyDead(this);
+    }
 
     private void Update()
     {
@@ -177,11 +190,6 @@ public class MonsterController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawRay(transform.position, kinematicVelocity);
-
-        //var color = Color.red;
-        //color.a = 0.02f;
-        //Gizmos.color = color;
-        //Gizmos.DrawSphere(Vector3.zero, radiusSpherePatroling);
     }
 
 }

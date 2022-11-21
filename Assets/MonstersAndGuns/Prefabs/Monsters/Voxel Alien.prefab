@@ -107,6 +107,8 @@ MonoBehaviour:
   minSecondsSameDirection: 3
   maxSecondsSameDirection: 5
   radiusSpherePatroling: 20
+  minHeightPatroling: 0.5
+  minDistanceToTarget: 0.1
   goUpVector: {x: 0, y: 0, z: 0}
 --- !u!1 &5936868825163822977
 GameObject:

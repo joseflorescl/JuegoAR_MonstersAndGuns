@@ -12,7 +12,7 @@ public class SpawnerManager : MonoBehaviour
     [Serializable]
     struct EnemyToSpawn
     {
-        public GameObject enemyPrefab;
+        public MonsterController enemyPrefab;
         public int count;
     }
 
@@ -31,10 +31,12 @@ public class SpawnerManager : MonoBehaviour
 
 
     WaitForSeconds waitBetweenEnemies;
+    List<MonsterController> enemies;
 
     private void Start()
     {
         waitBetweenEnemies = new WaitForSeconds(spawnTimeBetweenEnemies);
+        enemies = new List<MonsterController>();
     }
 
     private void OnEnable()
@@ -75,11 +77,18 @@ public class SpawnerManager : MonoBehaviour
                 y el GM llama a evento OnMonsterCreated?.Invoke();
                 y el AudioManager se subscribe a ese evento con un método que emite el sonido de un Pop()
                  */
-                Instantiate(enemyPrefab, position, rotation);
+                
+                var enemy = Instantiate(enemyPrefab, position, rotation);
+                enemies.Add(enemy);
                 yield return waitBetweenEnemies;
             }
         }
+
+        print("EnemiesSpawningRoutine Fin");
+        GameManager.Instance.EnemiesSpawned(enemies);
+
         
+
     }
 
 

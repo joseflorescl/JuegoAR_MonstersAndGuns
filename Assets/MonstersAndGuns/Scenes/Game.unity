@@ -395,6 +395,50 @@ MonoBehaviour:
   pressStartGame:
   - {fileID: 8300000, guid: d6525f623a620a443b43071ae785ba1f, type: 3}
   - {fileID: 8300000, guid: 65788c6e93358e44fbf6229851a8c21d, type: 3}
+--- !u!1 &730817854
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 730817855}
+  - component: {fileID: 730817856}
+  m_Layer: 0
+  m_Name: Battle Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &730817855
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730817854}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1591751908}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &730817856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730817854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15b2514ca4c68a040aa4c45eda76c332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &982369420
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,8 +792,7 @@ MonoBehaviour:
   spawnTimeBetweenEnemies: 0.2
   enemiesByLevels:
   - initialEnemies:
-    - enemyPrefab: {fileID: 3453756640205573976, guid: ef100fe30ca01d94c8c3291c43270037,
-        type: 3}
+    - enemyPrefab: {fileID: 326801172, guid: ef100fe30ca01d94c8c3291c43270037, type: 3}
       count: 10
     bossEnemyPrefab: {fileID: 1499589907430632, guid: 65091a4551e906249bdb2eacfcc14d0d,
       type: 3}
@@ -785,6 +828,7 @@ Transform:
   - {fileID: 2002729157}
   - {fileID: 681911203}
   - {fileID: 1582239608}
+  - {fileID: 730817855}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
