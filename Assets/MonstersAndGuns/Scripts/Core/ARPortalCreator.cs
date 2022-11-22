@@ -7,11 +7,6 @@ using UnityEngine.XR.ARSubsystems;
 public class ARPortalCreator : MonoBehaviour
 {
     [SerializeField] private GameObject portalPrefab;
-    [SerializeField] private GameObject monsterMenu;
-    [SerializeField] private GameObject pointAtFloorMessage;
-    [SerializeField] private GameObject tapToPlacePortalMessage;
-    [SerializeField] private GameObject canvasPortalCreation;
-    
 
     ARRaycastManager arRaycastManager;
     ARPlaneManager arPlaneManager;
@@ -27,7 +22,6 @@ public class ARPortalCreator : MonoBehaviour
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
         arPlaneManager = FindObjectOfType<ARPlaneManager>();
         arCamera = Camera.main;
-        canvasPortalCreation.SetActive(false);
     }
 
     private void Start()
@@ -40,25 +34,21 @@ public class ARPortalCreator : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnPortalCreation += PortalCreationHandler;
+        GameManager.Instance.OnPortalCreating += PortalCreationHandler;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnPortalCreation -= PortalCreationHandler;
+        GameManager.Instance.OnPortalCreating -= PortalCreationHandler;
     }
 
 
     private void PortalCreationHandler()
     {
-        monsterMenu.SetActive(false);
-        canvasPortalCreation.SetActive(true);
-
+        //monsterMenu.SetActive(false);
         SetStatusPortal(false);
-
         StartCoroutine(PortalCreationRoutine());
     }
-
 
 
     IEnumerator PortalCreationRoutine()
@@ -96,7 +86,6 @@ public class ARPortalCreator : MonoBehaviour
         }
 
         arPlaneManager.enabled = false;
-        canvasPortalCreation.SetActive(false);
 
         GameManager.Instance.PortalCreated(portal.transform);
     }
@@ -105,8 +94,7 @@ public class ARPortalCreator : MonoBehaviour
     private void SetStatusPortal(bool status)
     {
         portal.SetActive(status);
-        pointAtFloorMessage.SetActive(!status);
-        tapToPlacePortalMessage.SetActive(status);
+        GameManager.Instance.StatusPortal(status);
     }
 
     private bool IsTapping()

@@ -12,7 +12,7 @@ public class DebugManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnBattle += OnBattleHandler;
+        GameManager.Instance.OnBattling += OnBattleHandler;
         GameManager.Instance.OnEnemyDead += OnEnemyDeadHandler;
 
     }
@@ -21,7 +21,7 @@ public class DebugManager : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.Instance.OnBattle -= OnBattleHandler;
+        GameManager.Instance.OnBattling -= OnBattleHandler;
         GameManager.Instance.OnEnemyDead -= OnEnemyDeadHandler;
     }
 

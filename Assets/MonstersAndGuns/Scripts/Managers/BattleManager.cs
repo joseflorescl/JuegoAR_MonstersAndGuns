@@ -6,14 +6,14 @@ public class BattleManager : MonoBehaviour
 {
     private void OnEnable()
     {
-        GameManager.Instance.OnBattle += OnBattleHandler;
+        GameManager.Instance.OnBattling += OnBattleHandler;
     }
 
     
 
     private void OnDisable()
     {
-        GameManager.Instance.OnBattle -= OnBattleHandler;
+        GameManager.Instance.OnBattling -= OnBattleHandler;
     }
 
 

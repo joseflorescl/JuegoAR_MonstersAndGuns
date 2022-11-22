@@ -27,16 +27,16 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnMainMenu += OnMainMenuHandler;
-        GameManager.Instance.OnPortalCreation += OnPortalCreationHandler;
+        GameManager.Instance.OnMainMenuActivating += OnMainMenuHandler;
+        GameManager.Instance.OnPortalCreating += OnPortalCreationHandler;
     }
 
     
 
     private void OnDisable()
     {
-        GameManager.Instance.OnMainMenu -= OnMainMenuHandler;
-        GameManager.Instance.OnPortalCreation -= OnPortalCreationHandler;
+        GameManager.Instance.OnMainMenuActivating -= OnMainMenuHandler;
+        GameManager.Instance.OnPortalCreating -= OnPortalCreationHandler;
     }
 
     private void OnMainMenuHandler()

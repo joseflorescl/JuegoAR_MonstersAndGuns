@@ -171,8 +171,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasLoading: {fileID: 1936649223}
   scenesToLoad:
+  - NO AR Session World
   - AR Session
-  - Menu
+  - UI
   - Debug Game
 --- !u!1 &219414187
 GameObject:

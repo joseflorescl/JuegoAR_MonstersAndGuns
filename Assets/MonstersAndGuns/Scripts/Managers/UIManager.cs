@@ -9,13 +9,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float timeToFade = 2f;
     [SerializeField] private Image backgroundImage;
     [SerializeField] private GameObject mainPanel;
-    
-    private void Start()
-    {
-        float targetAlpha = 0f;
-        backgroundImage.CrossFadeAlpha(targetAlpha, timeToFade, true);
-    }
-
+    [SerializeField] private GameObject portalCreationPanel;
+    [SerializeField] private GameObject pointAtFloorMessage;
+    [SerializeField] private GameObject tapToPlacePortalMessage;
 
     public void Close()
     {
@@ -27,30 +23,51 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.StartGame();
     }
 
-
-
     private void OnEnable()
     {
-        GameManager.Instance.OnMainMenu += OnMainMenuHandler;
-        GameManager.Instance.OnPortalCreation += PortalCreationHandler;
-    }
+        GameManager.Instance.OnMainMenuActivating += MainMenuHandler;
+        GameManager.Instance.OnPortalCreating += PortalCreatingHandler;
+        GameManager.Instance.OnStatusPortalChanged += StatusPortalHandler;
+        GameManager.Instance.OnPortalCreated += PortalCreatedHandler;
 
-    private void OnMainMenuHandler()
-    {
-        mainPanel.SetActive(true);
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnMainMenu -= OnMainMenuHandler;
-        GameManager.Instance.OnPortalCreation -= PortalCreationHandler;
+        GameManager.Instance.OnMainMenuActivating -= MainMenuHandler;
+        GameManager.Instance.OnPortalCreating -= PortalCreatingHandler;
+        GameManager.Instance.OnStatusPortalChanged -= StatusPortalHandler;
+        GameManager.Instance.OnPortalCreated -= PortalCreatedHandler;
     }
 
-
-    private void PortalCreationHandler()
+    private void PortalCreatedHandler()
     {
-        // Se desactiva el Main Menu
+        portalCreationPanel.SetActive(false);
+    }
+
+    private void StatusPortalHandler(bool status)
+    {
+        pointAtFloorMessage.SetActive(!status);
+        tapToPlacePortalMessage.SetActive(status);
+    }
+
+    private void MainMenuHandler()
+    {
+        mainPanel.SetActive(true);
+        FadeBackground();
+        portalCreationPanel.SetActive(false);
+    }
+
+    private void PortalCreatingHandler()
+    {
         mainPanel.SetActive(false);
+        portalCreationPanel.SetActive(true);
+    }
+
+    void FadeBackground()
+    {
+        float targetAlpha = 0f;
+        backgroundImage.CrossFadeAlpha(targetAlpha, timeToFade, true);
     }
 
 
