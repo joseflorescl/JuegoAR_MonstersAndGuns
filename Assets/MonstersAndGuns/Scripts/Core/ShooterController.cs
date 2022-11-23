@@ -10,16 +10,18 @@ public abstract  class ShooterController : MonoBehaviour
 
     private void Awake()
     {
-        bulletFactory = GetComponent<BulletFactory>();
+        bulletFactory = GetComponentInChildren<BulletFactory>();
     }
 
 
     public virtual void FireBullet()
     {
-        bulletFactory.Fire();
+        int gunIndex = bulletFactory.Fire();
         // Aquí se llamaria al GM
         // TODO
         // GameManager.Instance.ShooterFired(this); // y el GM puede discriminar por tag qué tipo de objeto realizó el dispardo
+        // TODO: Crear la bala visual, sería un sistema de partículas
+        GameManager.Instance.GunFired(gunIndex);
     }
 
 

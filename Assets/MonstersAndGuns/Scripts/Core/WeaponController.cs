@@ -6,10 +6,16 @@ using UnityEngine;
 //  y provee un método para disparar
 public class WeaponController : MonoBehaviour
 {
+    ParticleSystem vfxBullet;
+
+    private void Awake()
+    {
+        vfxBullet = GetComponentInChildren<ParticleSystem>();
+    }
     public void Fire()
     {
-        print("WeaponController Fire!!");
-        // TODO: en este caso se lanzará una partícula
+        vfxBullet.Play();
+        // TODO: animar el recoil del weapon
     }
   
 }
