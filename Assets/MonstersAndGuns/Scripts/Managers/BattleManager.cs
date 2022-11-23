@@ -36,7 +36,7 @@ public class BattleManager : MonoBehaviour
             for (int i = 0; i < enemies.Count; i++)
             {
                 var enemy = enemies[i];
-                if (enemy.CurrentState == MonsterController.MonsterStates.Patrol)
+                if (enemy.CurrentState == MonsterController.MonsterState.Patrol)
                 {
                     enemy.Attack();
                     break;

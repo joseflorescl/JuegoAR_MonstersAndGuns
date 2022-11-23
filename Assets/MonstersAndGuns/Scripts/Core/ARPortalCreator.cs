@@ -67,7 +67,7 @@ public class ARPortalCreator : MonoBehaviour
 
                 SetStatusPortal(true);
 
-                if (IsTapping())
+                if (InputARController.IsTapping())
                     isCreatingPortal = false;
             }
             else
@@ -77,10 +77,12 @@ public class ARPortalCreator : MonoBehaviour
 
 #if UNITY_EDITOR
             // Como no tengo el XR Simulator necesito probar en el editor cuando se haga click con el mouse
-            if (IsTapping())
+            if (InputARController.IsTapping()) 
+            {
+                SetStatusPortal(true);
                 isCreatingPortal = false;
+            }
 #endif
-
 
             yield return null;
         }
@@ -96,21 +98,5 @@ public class ARPortalCreator : MonoBehaviour
         portal.SetActive(status);
         GameManager.Instance.StatusPortal(status);
     }
-
-    private bool IsTapping()
-    {
-#if UNITY_EDITOR
-        if( Input.GetMouseButtonDown(0))
-        {
-            SetStatusPortal(true);
-            return true;
-        }
-        return false;
-#else
-        return Input.touchCount > 0;
-#endif
-    }
-
-
 
 }

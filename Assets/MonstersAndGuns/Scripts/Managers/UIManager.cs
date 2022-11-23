@@ -10,8 +10,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image backgroundImage;
     [SerializeField] private GameObject mainPanel;
     [SerializeField] private GameObject portalCreationPanel;
+    [SerializeField] private GameObject battlePanel;
+
     [SerializeField] private GameObject pointAtFloorMessage;
     [SerializeField] private GameObject tapToPlacePortalMessage;
+
+    [SerializeField] private float secondsToDeactivateGOMessage = 1;
+    [SerializeField] private GameObject goMessage;
 
     public void Close()
     {
@@ -20,7 +25,7 @@ public class UIManager : MonoBehaviour
 
     public void StartGame()
     {
-        GameManager.Instance.StartGame();
+        GameManager.Instance.GameStarted();
     }
 
     private void OnEnable()
@@ -29,8 +34,11 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnPortalCreating += PortalCreatingHandler;
         GameManager.Instance.OnStatusPortalChanged += StatusPortalHandler;
         GameManager.Instance.OnPortalCreated += PortalCreatedHandler;
+        GameManager.Instance.OnBattling += BattlingHandler;
 
     }
+
+   
 
     private void OnDisable()
     {
@@ -38,6 +46,21 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnPortalCreating -= PortalCreatingHandler;
         GameManager.Instance.OnStatusPortalChanged -= StatusPortalHandler;
         GameManager.Instance.OnPortalCreated -= PortalCreatedHandler;
+        GameManager.Instance.OnBattling -= BattlingHandler;
+    }
+
+    private void BattlingHandler(List<MonsterController> arg1, int arg2)
+    {
+        StartCoroutine(BattlingRoutine());
+        
+    }
+
+    IEnumerator BattlingRoutine()
+    {
+        battlePanel.SetActive(true);
+        // Después de un ratito desactivar el texto de GO!
+        yield return new WaitForSeconds(secondsToDeactivateGOMessage);
+        goMessage.SetActive(false);
     }
 
     private void PortalCreatedHandler()

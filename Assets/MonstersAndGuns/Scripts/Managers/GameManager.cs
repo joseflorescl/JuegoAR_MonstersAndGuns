@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject canvasLoading;
     [SerializeField] private string[] scenesToLoad;
+    [SerializeField] private float waitBeforeInitBattle = 2f;
 
     // TODO: validar que en este nuevo esquema de comunicación entre GameManagers con los submanagers, usando eventos, 
     //  deberíamos asegurarnos que los submanagers son los que hacen uso del GameManager, pero no al revés, es decir
@@ -27,6 +28,8 @@ public class GameManager : MonoBehaviour
     public event Action<List<MonsterController>, int> OnBattling; // Recibe la lista de enemigos creados y el level actual del juego
     public event Action OnEnemyDead;
     public event Action<bool> OnStatusPortalChanged; // La idea es que la UI refleje cuando el portal está activo/inactivo con un texto diferente en cada caso
+    public event Action<int> OnGunFired;
+
 
 
 
@@ -39,12 +42,60 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance  => instance;
 
     SceneController sceneController;
-
-    GameState gameState;
+    GameState currentState;
     int currentLevel;
     GameObject player;
     Transform portal;
     List<MonsterController> enemies;
+
+    GameState CurrentState
+    {
+        get { return currentState; }
+        set 
+        {
+            currentState = value;
+
+            //StopAllCoroutines(); // Esto se debe validar, no siempre hay que detener las corutinas del GM
+            // TODO: colocar el código repartido abajo en una función/corutina y llamarla desde este switch.
+            switch (currentState)
+            {
+                case GameState.Initialization:
+                    StartCoroutine(InitializationRoutine());
+                    break;
+                case GameState.MainMenu:
+                    if (canvasLoading)
+                        canvasLoading.SetActive(false);
+                    OnMainMenuActivating?.Invoke();
+                    break;
+                case GameState.PortalCreation:
+                    OnPortalCreating?.Invoke();
+                    break;
+                case GameState.Spawning:
+                    OnSpawning?.Invoke(currentLevel, portal.position, portal.rotation);
+                    break;
+                case GameState.Battle:
+                    StartCoroutine(BattleRoutine());
+                    break;
+                case GameState.BossBattle:
+                    break;
+                case GameState.GameOver:
+                    break;
+                case GameState.Win:
+                    break;
+                case GameState.Exit:
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    IEnumerator BattleRoutine()
+    {
+        // Se espera un ratito antes de pasar al estado Battle, para darle tiemppo a los monsters de moverse un poco
+        yield return new WaitForSeconds(waitBeforeInitBattle);
+        OnBattling?.Invoke(enemies, currentLevel);
+    }
 
 
     private void Awake()
@@ -60,50 +111,34 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        gameState = GameState.Initialization;
-        currentLevel = 1;
-        StartCoroutine(InitializationRoutine());
+        CurrentState = GameState.Initialization;
     }
 
-
-
-    public void CloseApp()
+    public void CloseApp() => Application.Quit();
+    
+    public void GameStarted()
     {
-        Application.Quit();
-    }
+        if (currentState != GameState.MainMenu) return;
 
-    public void StartGame()
-    {
-        if (gameState != GameState.MainMenu) return;
-
-        print(GetType().Name + " StartGame");
-
-        gameState = GameState.PortalCreation;
-        OnPortalCreating?.Invoke();
+        CurrentState = GameState.PortalCreation;        
     }
 
     public void PortalCreated(Transform portal)
     {
-        if (gameState != GameState.PortalCreation) return;
-
+        if (currentState != GameState.PortalCreation) return;
+        this.portal = portal;
         OnPortalCreated?.Invoke();
 
-        gameState = GameState.Spawning;
-        this.portal = portal;
-        
-        OnSpawning?.Invoke(currentLevel, portal.position, portal.rotation);
-
+        CurrentState = GameState.Spawning;        
     }
 
     public void EnemiesSpawned(List<MonsterController> enemies)
     {
-        if (gameState != GameState.Spawning) { print("EnemiesSpawned en estado incorrecto"); return; }
+        if (currentState != GameState.Spawning) return;
 
-        print("EnemiesSpawned Pre invoke de OnBattle");
-        // Con esto el GM puede comenzar el estado de Battle, gatillando un evento de OnBattle(Lista de enemigos, level del juego)
-        gameState = GameState.Battle;
         this.enemies = enemies;
-        OnBattling?.Invoke(enemies, currentLevel);
+        
+        CurrentState = GameState.Battle;        
     }
 
     public void EnemyDead(MonsterController enemy)
@@ -115,9 +150,7 @@ public class GameManager : MonoBehaviour
     public Vector3 PlayerPosition()
     {
         if (player)
-        {
             return player.transform.position;
-        }
         else
             return Vector3.zero;
     }
@@ -125,9 +158,7 @@ public class GameManager : MonoBehaviour
     public Vector3 PortalForwardDirection()
     {
         if (portal)
-        {
             return portal.transform.forward;
-        }
         else
             return Vector3.forward;
     }
@@ -136,6 +167,11 @@ public class GameManager : MonoBehaviour
     {
         // TODO: lanzar evento para que la UI lo maneje
         OnStatusPortalChanged?.Invoke(status);
+    }
+
+    public void GunFired(int gunIndex)
+    {
+        OnGunFired?.Invoke(gunIndex);
     }
 
     IEnumerator InitializationRoutine()
@@ -147,14 +183,12 @@ public class GameManager : MonoBehaviour
 
         //TODO: se debería esperar un ratito para que la cámara del móbil se active bien
         //yield return new WaitForSeconds(5);
+        //  o lo que hago ahora es dejar la cámara con el Solid Color rojo igual que la imagen de fade
 
+        currentLevel = 1;
         player = GameObject.FindGameObjectWithTag("Player");
-        gameState = GameState.MainMenu;
 
-        if (canvasLoading)
-            canvasLoading.SetActive(false);
-
-        OnMainMenuActivating?.Invoke();
+        CurrentState = GameState.MainMenu;        
     }
 
     

@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class GunsController : MonoBehaviour
 {
-    [SerializeField] private float waitBeforeActivateGuns = 2f;
+    [SerializeField] private int firesPerSecond = 20;
     [SerializeField] private GameObject[] guns; // en ppio son 2 guns
+
+    float fireRate;
+    float nextFire;
 
     private void OnEnable()
     {
@@ -26,14 +29,30 @@ public class GunsController : MonoBehaviour
     private void Start()
     {
         SetStateGuns(false);
+        fireRate = 1f / firesPerSecond;
+        nextFire = 0f;
     }
 
     private IEnumerator BattleRoutine()
     {
-        // Se espera un poco antes de activar las guns
-        yield return new WaitForSeconds(waitBeforeActivateGuns);
         print("A disparar!");
         SetStateGuns(true);
+
+        int gunToFireIndex = 0;
+        while (true)
+        {
+            if (InputARController.IsTapping() && Time.time > nextFire)
+            {
+                nextFire = Time.time + fireRate;
+                gunToFireIndex = (gunToFireIndex + 1) % guns.Length;
+
+                // TODO: Crear la bala visual, sería un sistema de partículas
+                GameManager.Instance.GunFired(gunToFireIndex);
+            }
+
+            yield return null;
+            
+        }
     }
 
     void SetStateGuns(bool state)

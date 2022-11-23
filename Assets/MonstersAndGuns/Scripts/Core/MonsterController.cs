@@ -24,16 +24,16 @@ public class MonsterController : MonoBehaviour
     [SerializeField] private float minDistanceToTarget = 0.1f;
 
 
-    public enum MonsterStates { GoUp, Patrol, Attack }
+    public enum MonsterState { GoUp, Patrol, Attack }
 
     // TODO: hace la var state una property de tal forma que al setear su valor se llame al StartCoroutine, que da más elegante 
     //  que se haga directamente un StartCoroutine dentro de otra corutina.
-    MonsterStates currentState;
+    MonsterState currentState;
     Rigidbody rb;
     Animator anim;
     Vector3 kinematicVelocity;
 
-    public MonsterStates CurrentState
+    public MonsterState CurrentState
     {
         // TODO: implementar una property de este estilo para la clase GameManager
         get { return currentState; }
@@ -45,13 +45,13 @@ public class MonsterController : MonoBehaviour
 
             switch (currentState)
             {
-                case MonsterStates.GoUp:
+                case MonsterState.GoUp:
                     StartCoroutine(GoUpCoroutine());
                     break;
-                case MonsterStates.Patrol:
+                case MonsterState.Patrol:
                     StartCoroutine(PatrolRoutine());
                     break;
-                case MonsterStates.Attack:
+                case MonsterState.Attack:
                     StartCoroutine(AttackRoutine());
                     break;
                 default:
@@ -70,7 +70,7 @@ public class MonsterController : MonoBehaviour
 
     private void Start()
     {
-        CurrentState = MonsterStates.GoUp;
+        CurrentState = MonsterState.GoUp;
     }
 
 
@@ -104,7 +104,7 @@ public class MonsterController : MonoBehaviour
 
         yield return new WaitForSeconds(secondsGoUp);
 
-        CurrentState = MonsterStates.Patrol;
+        CurrentState = MonsterState.Patrol;
     }
 
 
@@ -118,7 +118,7 @@ public class MonsterController : MonoBehaviour
         float secondsSameDirection = Random.Range(minSecondsSameDirection, maxSecondsSameDirection);
         yield return new WaitForSeconds(secondsSameDirection);
 
-        while (currentState == MonsterStates.Patrol)
+        while (currentState == MonsterState.Patrol)
         {
             // Se elige un punto al frente del player (casi, puede ser un poco por detrás también): en una esfera de radio r
             // Se elige un punto random dentro de la semiesfera con origen en el player.position de rado r
@@ -142,7 +142,7 @@ public class MonsterController : MonoBehaviour
 
     public void Attack()
     {
-        CurrentState = MonsterStates.Attack;
+        CurrentState = MonsterState.Attack;
     }
 
     IEnumerator AttackRoutine()

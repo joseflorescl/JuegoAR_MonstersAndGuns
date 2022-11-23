@@ -7,6 +7,7 @@ public class DebugManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text playerPositionText;
     [SerializeField] private TMP_Text monsterCountText;
+    [SerializeField] private TMP_Text gunIndexText;
 
     int monsterCount;
 
@@ -14,6 +15,7 @@ public class DebugManager : MonoBehaviour
     {
         GameManager.Instance.OnBattling += OnBattleHandler;
         GameManager.Instance.OnEnemyDead += OnEnemyDeadHandler;
+        GameManager.Instance.OnGunFired += GunFiredHandler;
 
     }
 
@@ -23,8 +25,13 @@ public class DebugManager : MonoBehaviour
     {
         GameManager.Instance.OnBattling -= OnBattleHandler;
         GameManager.Instance.OnEnemyDead -= OnEnemyDeadHandler;
+        GameManager.Instance.OnGunFired -= GunFiredHandler;
     }
 
+    private void GunFiredHandler(int gunIndex)
+    {
+        gunIndexText.text = gunIndex.ToString();
+    }
 
     private void OnBattleHandler(List<MonsterController> enemies, int level)
     {
