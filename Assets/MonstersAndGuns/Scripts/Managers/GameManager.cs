@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
     GameObject player;
     Transform portal;
     List<MonsterController> enemies;
+    Camera arCamera;
 
     GameState CurrentState
     {
@@ -141,10 +142,13 @@ public class GameManager : MonoBehaviour
         CurrentState = GameState.Battle;        
     }
 
-    public void EnemyDead(MonsterController enemy)
+    public void DeadNotification(GameObject deadObject)
     {
-        enemies.Remove(enemy);
-        OnEnemyDead?.Invoke();
+        if (deadObject.CompareTag("Monster"))
+        {
+            enemies.Remove(deadObject.GetComponent<MonsterController>());
+            OnEnemyDead?.Invoke();
+        }
     }
 
     public Vector3 PlayerPosition()
@@ -187,11 +191,15 @@ public class GameManager : MonoBehaviour
 
         currentLevel = 1;
         player = GameObject.FindGameObjectWithTag("Player");
+        arCamera = Camera.main;
 
         CurrentState = GameState.MainMenu;        
     }
 
-    
+    public Camera GetARCamera()
+    {
+        return arCamera;
+    }
 
 
 

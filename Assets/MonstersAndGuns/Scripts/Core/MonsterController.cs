@@ -151,8 +151,6 @@ public class MonsterController : MonoBehaviour
         var rend = GetComponentInChildren<Renderer>();
         rend.material.color = Color.red;
 
-        Invoke(nameof(Dead), 3);
-
         // Cada 1 seg se va ajustando la dirección hacia el player
         while (true)
         {
@@ -162,22 +160,12 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-
-    private void Dead()
-    {
-        StopAllCoroutines();
-        Destroy(gameObject); // TODO: test!
-        GameManager.Instance.EnemyDead(this);
-    }
-
     private void Update()
     {
         // Rotación en dirección de su velocidad
         var step = turnSpeed * Time.deltaTime;
         var targetRotation = Quaternion.LookRotation(kinematicVelocity);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, step);
-
-        
     }
 
 

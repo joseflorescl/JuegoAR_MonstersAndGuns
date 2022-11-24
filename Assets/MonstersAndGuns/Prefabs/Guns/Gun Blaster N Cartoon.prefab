@@ -107,6 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8485965228651996592}
   - component: {fileID: 2736372117583993898}
+  - component: {fileID: 5521964173991635246}
   m_Layer: 7
   m_Name: Gun Blaster N Cartoon
   m_TagString: Untagged
@@ -144,6 +145,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43f5705bc1da94c4f82016b5d4456328, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &5521964173991635246
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8387205771236289926}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0b6a614b8420f534fad14ea86ddc1eeb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8474526520359171211
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,7 +189,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8474526520359171211}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -0, y: 0.075, z: -0.3}
+  m_LocalPosition: {x: -0, y: 0.075, z: -0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -286,7 +307,7 @@ PrefabInstance:
     - target: {fileID: 5404632372730796683, guid: 2fb79db4237907841ae49b2c0f025ad5,
         type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 0.12
+      value: 0.13
       objectReference: {fileID: 0}
     - target: {fileID: 5404632372730796683, guid: 2fb79db4237907841ae49b2c0f025ad5,
         type: 3}

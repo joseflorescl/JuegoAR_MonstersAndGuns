@@ -5,10 +5,13 @@ using UnityEngine;
 // Esta clase se encarga de disparar balas, por lo que puede ser usada por el player y por los monsters
 public abstract  class ShooterController : MonoBehaviour
 {
+    [SerializeField] protected float damage = 1f;
+
     protected BulletFactory bulletFactory;
+    
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         bulletFactory = GetComponentInChildren<BulletFactory>();
     }
@@ -28,5 +31,12 @@ public abstract  class ShooterController : MonoBehaviour
     //TODO: este método lo usarían los monsters para dispararle al player
     // public virtual void FireBulletToTarget()
     // por esto también se necesitaría un método: TargetPosition()
+
+    public virtual void DoDamage(GameObject opponent)
+    {
+        IDamageable damageable = opponent.GetComponent<IDamageable>();
+        if (damageable != null)
+            damageable.Damage(damage);
+    }
 
 }

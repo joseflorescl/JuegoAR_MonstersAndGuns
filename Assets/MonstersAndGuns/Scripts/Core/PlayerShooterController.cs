@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerShooterController : ShooterController
 {
-    //TODO: mover la actual lógica de GunsControoler a este script
-    //  y el script GunsController se puede borrar
-
     [SerializeField] private int firesPerSecond = 20;
+    [SerializeField] private float waitToRaycast = 0.1f;
+    [SerializeField] private float maxBulletDistance = 100f; // Usada para el raycast
+    [SerializeField] private LayerMask damageableLayerMask; // por ahora solo se puede disparar a los monsters
 
     float fireRate;
     float nextFire;
@@ -28,6 +28,11 @@ public class PlayerShooterController : ShooterController
         StartCoroutine(BattleRoutine());
     }
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     private void Start()
     {
         bulletFactory.gameObject.SetActive(false);
@@ -38,23 +43,31 @@ public class PlayerShooterController : ShooterController
 
     private IEnumerator BattleRoutine()
     {
-        // TODO por revisar desde aquí
-        print("A disparar!");
         bulletFactory.gameObject.SetActive(true);
+        var arCamera = GameManager.Instance.GetARCamera();
 
-        int gunToFireIndex = 0;
         while (true)
         {
             if (InputARController.IsTapping() && Time.time > nextFire)
             {
                 nextFire = Time.time + fireRate;
-                gunToFireIndex = (gunToFireIndex + 1) % 2; // TODO: esto ya no iría
+                FireBullet();             
+                
+                // Ahora hay que validar si hay un monster en el medio de la pantalla, en tal caso causarle daño.
+                //  Pero como el disparo se demora unos ms en llegar al centro de la pantalla, esperamos ese poquito
+                yield return new WaitForSeconds(waitToRaycast);
+                
+                Vector2 middleScreenPoint = arCamera.ViewportToScreenPoint(new Vector2(0.5f, 0.5f));
+                Ray ray = arCamera.ScreenPointToRay(middleScreenPoint);
 
-                FireBullet();                
+                if (Physics.Raycast(ray, out RaycastHit hit, maxBulletDistance, damageableLayerMask))
+                {
+                    DoDamage(hit.collider.gameObject);
+                }
+
             }
 
             yield return null;
-
         }
     }
 

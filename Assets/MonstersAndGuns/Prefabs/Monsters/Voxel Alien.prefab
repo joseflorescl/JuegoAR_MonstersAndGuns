@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 326801174}
   - component: {fileID: 326801175}
   - component: {fileID: 326801172}
-  m_Layer: 0
+  - component: {fileID: 7387550851784182697}
+  m_Layer: 8
   m_Name: Voxel Alien
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,6 +111,21 @@ MonoBehaviour:
   minHeightPatroling: 0.5
   minDistanceToTarget: 0.1
   goUpVector: {x: 0, y: 0, z: 0}
+--- !u!114 &7387550851784182697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3453756640205573976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a193758fb0dcd91458ade2373a849853, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  vfxDeadPrefab: {fileID: 0}
+  vfxDamagePrefab: {fileID: 0}
 --- !u!1 &5936868825163822977
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +137,7 @@ GameObject:
   - component: {fileID: 3230718946313561274}
   - component: {fileID: 289073288834375152}
   - component: {fileID: 3830105594990557540}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -12,7 +12,6 @@ public class ARPortalCreator : MonoBehaviour
     ARPlaneManager arPlaneManager;
 
     List<ARRaycastHit> hits = new List<ARRaycastHit>();
-    Camera arCamera;
     GameObject portal;
     bool isCreatingPortal;
 
@@ -21,7 +20,6 @@ public class ARPortalCreator : MonoBehaviour
     {
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
         arPlaneManager = FindObjectOfType<ARPlaneManager>();
-        arCamera = Camera.main;
     }
 
     private void Start()
@@ -55,6 +53,7 @@ public class ARPortalCreator : MonoBehaviour
     {
         isCreatingPortal = true;
         arPlaneManager.enabled = true;
+        var arCamera = GameManager.Instance.GetARCamera();
 
         while (isCreatingPortal)
         {
