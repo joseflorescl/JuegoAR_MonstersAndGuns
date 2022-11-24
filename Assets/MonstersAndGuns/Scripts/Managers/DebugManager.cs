@@ -13,8 +13,8 @@ public class DebugManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnBattling += OnBattleHandler;
-        GameManager.Instance.OnEnemyDead += OnEnemyDeadHandler;
+        GameManager.Instance.OnBattling += BattleHandler;
+        GameManager.Instance.OnMonsterDead += MonsterDeadHandler;
         GameManager.Instance.OnGunFired += GunFiredHandler;
 
     }
@@ -23,8 +23,8 @@ public class DebugManager : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.Instance.OnBattling -= OnBattleHandler;
-        GameManager.Instance.OnEnemyDead -= OnEnemyDeadHandler;
+        GameManager.Instance.OnBattling -= BattleHandler;
+        GameManager.Instance.OnMonsterDead -= MonsterDeadHandler;
         GameManager.Instance.OnGunFired -= GunFiredHandler;
     }
 
@@ -33,13 +33,13 @@ public class DebugManager : MonoBehaviour
         gunIndexText.text = gunIndex.ToString();
     }
 
-    private void OnBattleHandler(List<MonsterController> enemies, int level)
+    private void BattleHandler(List<MonsterController> monster, int level)
     {
-        monsterCount = enemies.Count;
+        monsterCount = monster.Count;
         monsterCountText.text = monsterCount.ToString();
     }
 
-    private void OnEnemyDeadHandler()
+    private void MonsterDeadHandler(GameObject monsterDead)
     {
         monsterCount--;
         monsterCountText.text = monsterCount.ToString();

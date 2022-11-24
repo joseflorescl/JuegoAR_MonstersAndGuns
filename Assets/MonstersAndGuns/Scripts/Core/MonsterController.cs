@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum MonsterColor { White, Red, Green, Blue, Yellow }
+
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
 public class MonsterController : MonoBehaviour
@@ -22,6 +25,10 @@ public class MonsterController : MonoBehaviour
 
     [SerializeField] private float minHeightPatroling = 0.5f;
     [SerializeField] private float minDistanceToTarget = 0.1f;
+
+    [SerializeField] private MonsterColor initialColor = MonsterColor.White;
+    [SerializeField] private MonsterColor attackColor = MonsterColor.Red;
+    [SerializeField] private Material attackMaterial;
 
 
     public enum MonsterState { GoUp, Patrol, Attack }
@@ -60,7 +67,9 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    public Vector3 goUpVector;
+    public MonsterColor CurrentColor => currentState == MonsterState.Attack ? attackColor : initialColor;
+
+    Vector3 goUpVector;
 
     private void Awake()
     {
@@ -73,7 +82,6 @@ public class MonsterController : MonoBehaviour
         CurrentState = MonsterState.GoUp;
     }
 
-
     IEnumerator GoUpCoroutine()
     {
         // Se elige un vector hacia arriba random
@@ -83,7 +91,7 @@ public class MonsterController : MonoBehaviour
         goUpVector = new Vector3(x, y, z);
         goUpVector.Normalize();
 
-        // Ahora se mueve al enemigo en esa dirección, usando un rb kinemático:
+        // Ahora se mueve al monster en esa dirección, usando un rb kinemático:
         // Notar que un gameObject kinemático 3D NO se movera si se setea su rb.velocity, a diff de un Rb2D que sí me moverá al objeto.
         // Hay que usar MovePosition en el FixedUpdate
 
@@ -149,7 +157,7 @@ public class MonsterController : MonoBehaviour
     {
         anim.SetTrigger("Pursue");
         var rend = GetComponentInChildren<Renderer>();
-        rend.material.color = Color.red;
+        rend.material = attackMaterial;
 
         // Cada 1 seg se va ajustando la dirección hacia el player
         while (true)

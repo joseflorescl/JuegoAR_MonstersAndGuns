@@ -110,7 +110,9 @@ MonoBehaviour:
   radiusSpherePatroling: 20
   minHeightPatroling: 0.5
   minDistanceToTarget: 0.1
-  goUpVector: {x: 0, y: 0, z: 0}
+  initialColor: 0
+  attackColor: 1
+  attackMaterial: {fileID: 2100000, guid: e7978060f31b65b4ca64d70066865494, type: 2}
 --- !u!114 &7387550851784182697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,8 +126,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 1
-  vfxDeadPrefab: {fileID: 0}
-  vfxDamagePrefab: {fileID: 0}
 --- !u!1 &5936868825163822977
 GameObject:
   m_ObjectHideFlags: 0

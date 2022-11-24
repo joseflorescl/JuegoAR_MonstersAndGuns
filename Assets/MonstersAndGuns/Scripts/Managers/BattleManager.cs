@@ -18,27 +18,27 @@ public class BattleManager : MonoBehaviour
 
 
 
-    private void OnBattleHandler(List<MonsterController> enemies, int currentLevel)
+    private void OnBattleHandler(List<MonsterController> monsters, int currentLevel)
     {
-        StartCoroutine(OnBattleRoutine(enemies, currentLevel));
+        StartCoroutine(OnBattleRoutine(monsters, currentLevel));
     }
 
-    IEnumerator OnBattleRoutine(List<MonsterController> enemies, int currentLevel)
+    IEnumerator OnBattleRoutine(List<MonsterController> monsters, int currentLevel)
     {
-        print("OnBattle: Cantidad de enemigos = " + enemies.Count + " - level = " + currentLevel);
+        print("OnBattle: Cantidad de monstruos = " + monsters.Count + " - level = " + currentLevel);
 
         float secondsToAttack = 5 / currentLevel; // TODO: esto se podría controlar por una curva de animación y agregar algo de random
         yield return new WaitForSeconds(secondsToAttack);
 
-        while (enemies.Count > 0)
+        while (monsters.Count > 0)
         {
-            // Busca al primer enemigo en estado Patrol y lo pasa a estado de Attack
-            for (int i = 0; i < enemies.Count; i++)
+            // Busca al primer monstruo en estado Patrol y lo pasa a estado de Attack
+            for (int i = 0; i < monsters.Count; i++)
             {
-                var enemy = enemies[i];
-                if (enemy.CurrentState == MonsterController.MonsterState.Patrol)
+                var monster = monsters[i];
+                if (monster.CurrentState == MonsterController.MonsterState.Patrol)
                 {
-                    enemy.Attack();
+                    monster.Attack();
                     break;
                 }
             }
@@ -46,7 +46,7 @@ public class BattleManager : MonoBehaviour
             yield return new WaitForSeconds(secondsToAttack);
         }
 
-        print("Fin de OnBattleRoutine: ya no quedan enemigos en la lista");
+        print("Fin de OnBattleRoutine: ya no quedan monstruos en la lista");
         
     }
 

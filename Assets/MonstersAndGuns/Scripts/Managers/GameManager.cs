@@ -25,8 +25,9 @@ public class GameManager : MonoBehaviour
     public event Action OnPortalCreating; // Al inicio de la creación del portal en la escena
     public event Action OnPortalCreated; // Una vez que el portal ya ha sido creado
     public event Action<int, Vector3, Quaternion> OnSpawning; // Recibe el level actual del juego, y lo posición/rotación desde donde hacer el spawner
-    public event Action<List<MonsterController>, int> OnBattling; // Recibe la lista de enemigos creados y el level actual del juego
-    public event Action OnEnemyDead;
+    public event Action<List<MonsterController>, int> OnBattling; // Recibe la lista de monsters creados y el level actual del juego
+    public event Action<GameObject> OnMonsterDead;
+    public event Action OnMonsterDamage;
     public event Action<bool> OnStatusPortalChanged; // La idea es que la UI refleje cuando el portal está activo/inactivo con un texto diferente en cada caso
     public event Action<int> OnGunFired;
 
@@ -46,7 +47,7 @@ public class GameManager : MonoBehaviour
     int currentLevel;
     GameObject player;
     Transform portal;
-    List<MonsterController> enemies;
+    List<MonsterController> monsters;
     Camera arCamera;
 
     GameState CurrentState
@@ -95,7 +96,7 @@ public class GameManager : MonoBehaviour
     {
         // Se espera un ratito antes de pasar al estado Battle, para darle tiemppo a los monsters de moverse un poco
         yield return new WaitForSeconds(waitBeforeInitBattle);
-        OnBattling?.Invoke(enemies, currentLevel);
+        OnBattling?.Invoke(monsters, currentLevel);
     }
 
 
@@ -133,11 +134,11 @@ public class GameManager : MonoBehaviour
         CurrentState = GameState.Spawning;        
     }
 
-    public void EnemiesSpawned(List<MonsterController> enemies)
+    public void MonstersSpawned(List<MonsterController> monsters)
     {
         if (currentState != GameState.Spawning) return;
 
-        this.enemies = enemies;
+        this.monsters = monsters;
         
         CurrentState = GameState.Battle;        
     }
@@ -146,10 +147,19 @@ public class GameManager : MonoBehaviour
     {
         if (deadObject.CompareTag("Monster"))
         {
-            enemies.Remove(deadObject.GetComponent<MonsterController>());
-            OnEnemyDead?.Invoke();
+            monsters.Remove(deadObject.GetComponent<MonsterController>());
+            OnMonsterDead?.Invoke(deadObject);
         }
     }
+
+    public void DamageNotification(GameObject deadObject)
+    {
+        if (deadObject.CompareTag("Monster"))
+        {
+            OnMonsterDamage?.Invoke();
+        }
+    }
+
 
     public Vector3 PlayerPosition()
     {
@@ -200,8 +210,5 @@ public class GameManager : MonoBehaviour
     {
         return arCamera;
     }
-
-
-
 
 }

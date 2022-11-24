@@ -6,37 +6,37 @@ using System;
 public class SpawnerManager : MonoBehaviour
 {
 
-    [SerializeField] private float spawnTimeBetweenEnemies = 0.2f;
+    [SerializeField] private float spawnTimeBetweenMonsters = 0.2f;
 
-    // Se crearán <count> enemigos usando el prefab <enemyPrefab>
+    // Se crearán <count> monstruos usando el prefab <monsterPrefab>
     [Serializable]
-    struct EnemyToSpawn
+    struct MonsterToSpawn
     {
-        public MonsterController enemyPrefab;
+        public MonsterController monsterPrefab;
         public int count;
     }
 
 
-    // Esta es la data de los enemigos a crear en un level en particular
-    // Notar se puede usar un array de EnemyToSpawnData por lo que en un nivel se pueden crear enemigos de varios prefab
+    // Esta es la data de los monstruos a crear en un level en particular
+    // Notar se puede usar un array de MonsterToSpawn por lo que en un nivel se pueden crear monstruos de varios prefab
     [Serializable]
-    struct EnemiesByLevel
+    struct MonstersByLevel
     {
-        public EnemyToSpawn[] initialEnemies;
-        public GameObject bossEnemyPrefab;
+        public MonsterToSpawn[] initialMonsters;
+        public GameObject bossMonsterPrefab;
     }
 
-    // Cada elemento de este array es la data de los enemigos a crear en el level == index + 1
-    [SerializeField] private EnemiesByLevel[] enemiesByLevels;
+    // Cada elemento de este array es la data de los monstruos a crear en el level == index + 1
+    [SerializeField] private MonstersByLevel[] monstersByLevels;
 
 
-    WaitForSeconds waitBetweenEnemies;
-    List<MonsterController> enemies;
+    WaitForSeconds waitBetweenMonsters;
+    List<MonsterController> monsters;
 
     private void Start()
     {
-        waitBetweenEnemies = new WaitForSeconds(spawnTimeBetweenEnemies);
-        enemies = new List<MonsterController>();
+        waitBetweenMonsters = new WaitForSeconds(spawnTimeBetweenMonsters);
+        monsters = new List<MonsterController>();
     }
 
     private void OnEnable()
@@ -54,19 +54,19 @@ public class SpawnerManager : MonoBehaviour
 
     private void OnSpawningHandler(int level, Vector3 position, Quaternion rotation)
     {
-        StartCoroutine(EnemiesSpawningRoutine(level, position, rotation));
+        StartCoroutine(MonstersSpawningRoutine(level, position, rotation));
     }
 
-    IEnumerator EnemiesSpawningRoutine(int level, Vector3 position, Quaternion rotation)
+    IEnumerator MonstersSpawningRoutine(int level, Vector3 position, Quaternion rotation)
     {
-        level = Mathf.Clamp(level, 1, enemiesByLevels.Length);
-        var levelEnemies = enemiesByLevels[level - 1];
-        var initialEnemies = levelEnemies.initialEnemies;
+        level = Mathf.Clamp(level, 1, monstersByLevels.Length);
+        var levelMonsters = monstersByLevels[level - 1];
+        var initialMonsters = levelMonsters.initialMonsters;
 
-        for (int i = 0; i < initialEnemies.Length; i++)
+        for (int i = 0; i < initialMonsters.Length; i++)
         {
-            var enemyPrefab = initialEnemies[i].enemyPrefab;
-            var count = initialEnemies[i].count;
+            var monsterPrefab = initialMonsters[i].monsterPrefab;
+            var count = initialMonsters[i].count;
 
             for (int j = 0; j < count; j++)
             {
@@ -78,17 +78,13 @@ public class SpawnerManager : MonoBehaviour
                 y el AudioManager se subscribe a ese evento con un método que emite el sonido de un Pop()
                  */
                 
-                var enemy = Instantiate(enemyPrefab, position, rotation);
-                enemies.Add(enemy);
-                yield return waitBetweenEnemies;
+                var monster = Instantiate(monsterPrefab, position, rotation);
+                monsters.Add(monster);
+                yield return waitBetweenMonsters;
             }
         }
 
-        print("EnemiesSpawningRoutine Fin");
-        GameManager.Instance.EnemiesSpawned(enemies);
-
-        
-
+        GameManager.Instance.MonstersSpawned(monsters);
     }
 
 

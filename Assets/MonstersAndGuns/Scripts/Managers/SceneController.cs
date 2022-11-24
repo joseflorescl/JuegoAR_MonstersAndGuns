@@ -5,18 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
-    //public enum SceneName { Game = 0, ARSession, Menu }
-
-    //public Coroutine LoadARSessionRoutine()
-    //{
-    //    return StartCoroutine( LoadSceneRoutine((int)SceneName.ARSession));
-    //}
-
-    //public Coroutine LoadMenu()
-    //{
-    //    return StartCoroutine(LoadSceneRoutine((int)SceneName.Menu));
-    //}
-
     public Coroutine LoadSceneAdditive(string sceneName)
     {
         return StartCoroutine(LoadSceneRoutine(sceneName));
