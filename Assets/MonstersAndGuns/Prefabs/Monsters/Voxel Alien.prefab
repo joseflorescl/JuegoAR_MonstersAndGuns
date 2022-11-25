@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 326801175}
   - component: {fileID: 326801172}
   - component: {fileID: 7387550851784182697}
+  - component: {fileID: 1634353862729199068}
   m_Layer: 8
   m_Name: Voxel Alien
   m_TagString: Monster
@@ -126,6 +127,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 1
+--- !u!114 &1634353862729199068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3453756640205573976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb568d9a7807664fad72411165a99c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
 --- !u!1 &5936868825163822977
 GameObject:
   m_ObjectHideFlags: 0

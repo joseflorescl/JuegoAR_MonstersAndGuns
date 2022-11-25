@@ -31,7 +31,7 @@ public class MonsterController : MonoBehaviour
     [SerializeField] private Material attackMaterial;
 
 
-    public enum MonsterState { GoUp, Patrol, Attack }
+    public enum MonsterState { Idle, GoUp, Patrol, Attack }
 
     // TODO: hace la var state una property de tal forma que al setear su valor se llame al StartCoroutine, que da más elegante 
     //  que se haga directamente un StartCoroutine dentro de otra corutina.
@@ -52,6 +52,9 @@ public class MonsterController : MonoBehaviour
 
             switch (currentState)
             {
+                case MonsterState.Idle:
+                    // No se hace nada
+                    break;
                 case MonsterState.GoUp:
                     StartCoroutine(GoUpCoroutine());
                     break;
@@ -79,7 +82,10 @@ public class MonsterController : MonoBehaviour
 
     private void Start()
     {
-        CurrentState = MonsterState.GoUp;
+        if (speed == 0)
+            CurrentState = MonsterState.Idle;
+        else
+            CurrentState = MonsterState.GoUp;
     }
 
     IEnumerator GoUpCoroutine()
@@ -170,6 +176,8 @@ public class MonsterController : MonoBehaviour
 
     private void Update()
     {
+        if (CurrentState == MonsterState.Idle) return;
+
         // Rotación en dirección de su velocidad
         var step = turnSpeed * Time.deltaTime;
         var targetRotation = Quaternion.LookRotation(kinematicVelocity);
@@ -179,6 +187,8 @@ public class MonsterController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (CurrentState == MonsterState.Idle) return;
+
         rb.MovePosition(transform.position + kinematicVelocity * Time.deltaTime);
     }
 

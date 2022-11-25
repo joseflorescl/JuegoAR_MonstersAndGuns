@@ -147,7 +147,7 @@ public class GameManager : MonoBehaviour
     {
         if (deadObject.CompareTag("Monster"))
         {
-            monsters.Remove(deadObject.GetComponent<MonsterController>());
+            monsters?.Remove(deadObject.GetComponent<MonsterController>());
             OnMonsterDead?.Invoke(deadObject);
         }
     }
@@ -166,7 +166,10 @@ public class GameManager : MonoBehaviour
         if (player)
             return player.transform.position;
         else
+        {
+            print("No player yet");
             return Vector3.zero;
+        }
     }
 
     public Vector3 PortalForwardDirection()
