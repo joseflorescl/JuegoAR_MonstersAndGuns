@@ -51,6 +51,8 @@ public class ARPortalCreator : MonoBehaviour
 
     IEnumerator PortalCreationRoutine()
     {
+        // TODO: setear el valor del fov de la camara en el rango: 76 - 107
+        // TODO: ver tutoriales de minimap
         isCreatingPortal = true;
         arPlaneManager.enabled = true;
         var arCamera = GameManager.Instance.GetARCamera();

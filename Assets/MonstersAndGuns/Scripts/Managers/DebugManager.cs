@@ -8,6 +8,7 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private TMP_Text playerPositionText;
     [SerializeField] private TMP_Text monsterCountText;
     [SerializeField] private TMP_Text gunIndexText;
+    [SerializeField] private TMP_Text monsterDistanceText;
 
     int monsterCount;
 
@@ -54,5 +55,10 @@ public class DebugManager : MonoBehaviour
     {
         var pos = GameManager.Instance.PlayerPosition();
         playerPositionText.text = pos.ToString();
+    }
+
+    public void SetMonsterDistance(float distance)
+    {
+        monsterDistanceText.text = distance.ToString();
     }
 }

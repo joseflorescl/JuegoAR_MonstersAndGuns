@@ -15,31 +15,30 @@ public class SandboxMoveToTarget : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    
-
     private void Update()
     {
-        if (getPlayerPos && GameManager.Instance.PlayerPosition() != Vector3.zero)
-        {
-            print(Time.frameCount + " Player pos en Update == " + GameManager.Instance.PlayerPosition());
-            var direction = GameManager.Instance.PlayerPosition() - transform.position;
-            direction.Normalize();
+        var direction = GameManager.Instance.PlayerPosition() - transform.position;
+        direction.Normalize();
 
-            kinematicVelocity = direction * speed;
-
-            getPlayerPos = false;
-        }
+        kinematicVelocity = direction * speed;
     }
 
     private void FixedUpdate()
     {
         rb.MovePosition(transform.position + kinematicVelocity * Time.deltaTime);
+        DebugSetMonsterDistance();
     }
 
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawRay(transform.position, kinematicVelocity);
+    }
+
+    void DebugSetMonsterDistance()
+    {
+        float distance = Vector3.Distance(GameManager.Instance.PlayerPosition(), transform.position);
+        FindObjectOfType<DebugManager>().SetMonsterDistance(distance - (1f/2f + 0.25f/2f)); // se le resta el tamaño del player y del monster
     }
 
 }

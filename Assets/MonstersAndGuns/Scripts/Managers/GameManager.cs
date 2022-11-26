@@ -172,6 +172,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public Transform Player()
+    {
+        return player.transform;
+    }
+
+    // TODO: borra esta función
     public Vector3 PortalForwardDirection()
     {
         if (portal)

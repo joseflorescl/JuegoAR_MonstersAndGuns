@@ -1143,8 +1143,9 @@ MonoBehaviour:
   spawnTimeBetweenMonsters: 0.2
   monstersByLevels:
   - initialMonsters:
-    - monsterPrefab: {fileID: 326801172, guid: ef100fe30ca01d94c8c3291c43270037, type: 3}
-      count: 10
+    - monsterPrefab: {fileID: 2268778889781743133, guid: 06e72b04a01f2d94d8753fbf2c44ed4e,
+        type: 3}
+      count: 1
     bossMonsterPrefab: {fileID: 1499589907430632, guid: 65091a4551e906249bdb2eacfcc14d0d,
       type: 3}
 --- !u!1 &1591751907
