@@ -12,19 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78faa53e6a7bf32499ec7e9d09a18b92, type: 3}
   m_Name: Demo Monster Data
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 1
   turnSpeed: 90
   faceInitialDirection: 1
   maxDeviationRandomVectorUp: 0.5
   minSecondsGoUp: 1
   maxSecondsGoUp: 3
-  maxAngleRotationForward: 45
+  spherePatrollingRadius: 5
+  spherePatrollingDistanceToPortal: 0
+  spherePatrollingHeightToPortal: 0.5
   minSecondsSameDirection: 2
   maxSecondsSameDirection: 4
-  radiusSpherePatroling: 5
-  minHeightPatroling: 0.5
-  maxHeightPatroling: 2.5
-  minDistanceToTarget: 0.1
+  minDistanceToTarget: 0.05
   initialColor: 0
   attackColor: 1
   attackMaterial: {fileID: 2100000, guid: cd7cf496992eceb4f9440011908e65e4, type: 2}

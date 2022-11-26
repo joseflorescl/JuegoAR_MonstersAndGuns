@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6f8dc72d31b5ed469875ab6fc3d392f, type: 3}
+  m_Name: Spawner Manager Data
+  m_EditorClassIdentifier: 
+  spawnTimeBetweenMonsters: 0.2
+  monstersByLevels:
+  - initialMonsters:
+    - monsterPrefab: {fileID: 2268778889781743133, guid: 06e72b04a01f2d94d8753fbf2c44ed4e,
+        type: 3}
+      count: 25
+    bossMonsterPrefab: {fileID: 1499589907430632, guid: 65091a4551e906249bdb2eacfcc14d0d,
+      type: 3}

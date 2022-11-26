@@ -112,52 +112,40 @@ public class MonsterController : MonoBehaviour
 
     IEnumerator PatrolRoutine()
     {
-        var player = GameManager.Instance.Player();
+        var portal = GameManager.Instance.Portal();
 
-        // Se calcula el centro de la esfera de patrullaje: siempre estará AL FRENTE DEL PLAYER
-        Vector3 centerSphere = player.TransformPoint(Vector3.forward * monsterData.spherePatrollingDistanceCenterToPlayer);
-        centerSphere.y = monsterData.spherePatrollingHeight;
+        var offset = new Vector3(0f, monsterData.spherePatrollingHeightToPortal, monsterData.spherePatrollingDistanceToPortal);
+
+        // TODO: el primer punto a elegir puede ser un punto aleatorio sobre una esfera de las mismas dimensiones, pero a una distancia
+        // que nos asegure que se alejan del player
 
         while (currentState == MonsterState.Patrol)
         {
-            // Se elige un punto aleatorio en la superficie de la esfera
+            // Se elige un punto aleatorio en la superficie de la esfera de radio r:
             var targetPosition = Random.onUnitSphere * monsterData.spherePatrollingRadius;
-            // Debo elegir la semiesfera de arriba/adelante: Nota: esto podría ser configurable para darle más dificultad al monstruo
+            // Debo elegir la semiesfera de arriba/adelante
             targetPosition.y = Mathf.Abs(targetPosition.y);
             targetPosition.z = Mathf.Abs(targetPosition.z);
+            // Y se aplica el offset, por ahora con respecto al origen 0,0,0
+            targetPosition += offset;
             // Esta posición ahora se debe orientar c/r al player
-            targetPosition = player.transform.TransformPoint(targetPosition);
-            // Y finalmente esa posición se debe desfasar en ejes Z, Y (en X no lo desfaso porque siempre queremos que esté en el medio del player)
-            // Lo desfaso en Z
-            targetPosition += player.forward * monsterData.spherePatrollingDistanceCenterToPlayer;
-            // Lo desfaso en Y
-            targetPosition += player.up * (monsterData.spherePatrollingHeight - player.transform.position.y);
-
-
-            DebugCreateCube(targetPosition, Vector3.one * 0.1f);
-
-            yield return new WaitForSeconds(0.1f);
-
-
-            // TODO: falta hacer que la targetPosition pueda estar también un poco por detrás del player: ahora siempre estará por delante
-            // TODO: también se puede setear una altura máxima, porque en el eje X puede estar bien la distancia, pero hacia arriba es mejor algo menos.
-            //var direction = targetPosition - transform.position;
-            //kinematicVelocity = direction.normalized * monsterData.speed;
+            // Nota importante sobre TransformPoint: si el objeto portal tiene valores != 1 en la escala, el valor resultante no será el esperado
+            targetPosition = portal.transform.TransformPoint(targetPosition);
+            
+            var direction = targetPosition - transform.position;
+            kinematicVelocity = direction.normalized * monsterData.speed;
 
             // Ahora se espera: hasta llegar a este punto o haya pasado un tiempo máximo
-            //secondsSameDirection = Random.Range(monsterData.minSecondsSameDirection, monsterData.maxSecondsSameDirection);
-            //float maxTimeInSameDirection = Time.time + secondsSameDirection;
-            //yield return new WaitUntil(() => Time.time > maxTimeInSameDirection || Vector3.Distance(transform.position, targetPosition) < monsterData.minDistanceToTarget);
+            float secondsSameDirection = Random.Range(monsterData.minSecondsSameDirection, monsterData.maxSecondsSameDirection);
+            float maxTimeInSameDirection = Time.time + secondsSameDirection;
+
+            print("Monster Position: " + transform.position);
+            print("Target Position: " + targetPosition);
+            print("Distance == " + Vector3.Distance(transform.position, targetPosition));
+            yield return new WaitUntil(() => Time.time > maxTimeInSameDirection || Vector3.Distance(transform.position, targetPosition) < monsterData.minDistanceToTarget);
             // El paso a estado Attack es controlado por el BattleManager
         }
         
-    }
-
-    void DebugCreateCube(Vector3 position, Vector3 scale)
-    {
-        var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.transform.position = position;
-        cube.transform.localScale = scale;
     }
 
     public void Attack()

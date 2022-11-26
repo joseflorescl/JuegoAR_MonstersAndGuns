@@ -5,37 +5,14 @@ using System;
 
 public class SpawnerManager : MonoBehaviour
 {
-
-    [SerializeField] private float spawnTimeBetweenMonsters = 0.2f;
-
-    // Se crearán <count> monstruos usando el prefab <monsterPrefab>
-    [Serializable]
-    struct MonsterToSpawn
-    {
-        public MonsterController monsterPrefab;
-        public int count;
-    }
-
-
-    // Esta es la data de los monstruos a crear en un level en particular
-    // Notar se puede usar un array de MonsterToSpawn por lo que en un nivel se pueden crear monstruos de varios prefab
-    [Serializable]
-    struct MonstersByLevel
-    {
-        public MonsterToSpawn[] initialMonsters;
-        public GameObject bossMonsterPrefab;
-    }
-
-    // Cada elemento de este array es la data de los monstruos a crear en el level == index + 1
-    [SerializeField] private MonstersByLevel[] monstersByLevels;
-
-
+    [SerializeField] private SpawnerManagerData data;
+    
     WaitForSeconds waitBetweenMonsters;
     List<MonsterController> monsters;
 
     private void Start()
     {
-        waitBetweenMonsters = new WaitForSeconds(spawnTimeBetweenMonsters);
+        waitBetweenMonsters = new WaitForSeconds(data.spawnTimeBetweenMonsters);
         monsters = new List<MonsterController>();
     }
 
@@ -59,8 +36,8 @@ public class SpawnerManager : MonoBehaviour
 
     IEnumerator MonstersSpawningRoutine(int level, Vector3 position, Quaternion rotation)
     {
-        level = Mathf.Clamp(level, 1, monstersByLevels.Length);
-        var levelMonsters = monstersByLevels[level - 1];
+        level = Mathf.Clamp(level, 1, data.monstersByLevels.Length);
+        var levelMonsters = data.monstersByLevels[level - 1];
         var initialMonsters = levelMonsters.initialMonsters;
 
         for (int i = 0; i < initialMonsters.Length; i++)

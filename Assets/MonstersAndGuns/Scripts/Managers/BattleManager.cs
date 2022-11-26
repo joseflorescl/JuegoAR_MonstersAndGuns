@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
+    [SerializeField] private float secondsToAttack = 60f;
     private void OnEnable()
     {
         GameManager.Instance.OnBattling += OnBattleHandler;
@@ -27,7 +28,7 @@ public class BattleManager : MonoBehaviour
     {
         print("OnBattle: Cantidad de monstruos = " + monsters.Count + " - level = " + currentLevel);
 
-        float secondsToAttack = 5 / currentLevel; // TODO: esto se podría controlar por una curva de animación y agregar algo de random
+        secondsToAttack = 20 / currentLevel; // TODO: esto se podría controlar por una curva de animación y agregar algo de random
         yield return new WaitForSeconds(secondsToAttack);
 
         while (monsters.Count > 0)

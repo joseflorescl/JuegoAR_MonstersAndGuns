@@ -8,9 +8,9 @@ public class GameManager : MonoBehaviour
 {
     public enum GameState { Initialization, MainMenu, PortalCreation, Spawning, Battle, BossBattle, GameOver, Win, Exit }
 
+    [SerializeField] private GameManagerData gameManagerData;
     [SerializeField] private GameObject canvasLoading;
-    [SerializeField] private string[] scenesToLoad;
-    [SerializeField] private float waitBeforeInitBattle = 2f;
+    
 
     // TODO: validar que en este nuevo esquema de comunicación entre GameManagers con los submanagers, usando eventos, 
     //  deberíamos asegurarnos que los submanagers son los que hacen uso del GameManager, pero no al revés, es decir
@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
     IEnumerator BattleRoutine()
     {
         // Se espera un ratito antes de pasar al estado Battle, para darle tiemppo a los monsters de moverse un poco
-        yield return new WaitForSeconds(waitBeforeInitBattle);
+        yield return new WaitForSeconds(gameManagerData.waitBeforeInitBattle);
         OnBattling?.Invoke(monsters, currentLevel);
     }
 
@@ -172,18 +172,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public Transform Player()
+    public Transform Portal()
     {
-        return player.transform;
-    }
-
-    // TODO: borra esta función
-    public Vector3 PortalForwardDirection()
-    {
-        if (portal)
-            return portal.transform.forward;
-        else
-            return Vector3.forward;
+        return portal;
     }
 
     public void StatusPortal(bool status)
@@ -199,9 +190,9 @@ public class GameManager : MonoBehaviour
 
     IEnumerator InitializationRoutine()
     {
-        for (int i = 0; i < scenesToLoad.Length; i++)
+        for (int i = 0; i < gameManagerData.scenesToLoad.Length; i++)
         {
-            yield return sceneController.LoadSceneAdditive(scenesToLoad[i]);        
+            yield return sceneController.LoadSceneAdditive(gameManagerData.scenesToLoad[i]);        
         }
 
         //TODO: se debería esperar un ratito para que la cámara del móbil se active bien

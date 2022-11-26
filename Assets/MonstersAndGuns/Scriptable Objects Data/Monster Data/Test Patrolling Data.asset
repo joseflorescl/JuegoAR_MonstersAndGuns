@@ -18,9 +18,9 @@ MonoBehaviour:
   maxDeviationRandomVectorUp: 0.5
   minSecondsGoUp: 1
   maxSecondsGoUp: 3
-  spherePatrollingRadius: 4
-  spherePatrollingDistanceCenterToPlayer: 5
-  spherePatrollingHeight: 2
+  spherePatrollingRadius: 2
+  spherePatrollingDistanceCenterToPlayer: 2
+  spherePatrollingHeight: 0.5
   minSecondsSameDirection: 2
   maxSecondsSameDirection: 4
   minDistanceToTarget: 0.1
