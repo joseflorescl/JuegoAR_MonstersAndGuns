@@ -12,32 +12,37 @@ public class DebugManager : MonoBehaviour
 
     int monsterCount;
 
+    private void Awake()
+    {
+        monsterCount = 0;
+        monsterCountText.text = "NoData";
+    }
+
+
     private void OnEnable()
     {
-        GameManager.Instance.OnBattling += BattleHandler;
+        GameManager.Instance.OnMonsterCreated += MonsterCreatedHandler;
         GameManager.Instance.OnMonsterDead += MonsterDeadHandler;
         GameManager.Instance.OnGunFired += GunFiredHandler;
     }
 
-   
-
     private void OnDisable()
     {
-        GameManager.Instance.OnBattling -= BattleHandler;
+        GameManager.Instance.OnMonsterCreated -= MonsterCreatedHandler;
         GameManager.Instance.OnMonsterDead -= MonsterDeadHandler;
         GameManager.Instance.OnGunFired -= GunFiredHandler;
+    }
+
+    private void MonsterCreatedHandler()
+    {
+        monsterCount++;
+        monsterCountText.text = monsterCount.ToString();
     }
 
     private void GunFiredHandler(int gunIndex)
     {
         gunIndexText.text = gunIndex.ToString();
-    }
-
-    private void BattleHandler(List<MonsterController> monster, int level)
-    {
-        monsterCount = monster.Count;
-        monsterCountText.text = monsterCount.ToString();
-    }
+    }   
 
     private void MonsterDeadHandler(MonsterController monsterDead)
     {
@@ -45,11 +50,8 @@ public class DebugManager : MonoBehaviour
         monsterCountText.text = monsterCount.ToString();
     }
 
-    private void Start()
-    {
-        monsterCountText.text = "NoData";
-    }
-
+   
+    
     private void Update()
     {
         var pos = GameManager.Instance.PlayerPosition();

@@ -528,6 +528,8 @@ MonoBehaviour:
   pressStartGame:
   - {fileID: 8300000, guid: d6525f623a620a443b43071ae785ba1f, type: 3}
   - {fileID: 8300000, guid: 65788c6e93358e44fbf6229851a8c21d, type: 3}
+  popSound:
+  - {fileID: 8300000, guid: 2f90acb5ed4747044ad1e01b7a3ef371, type: 3}
 --- !u!1 &730817854
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,7 +574,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b2514ca4c68a040aa4c45eda76c332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsToAttack: 10
+  secondsToAttackLevel1: 5
 --- !u!1 &982369420
 GameObject:
   m_ObjectHideFlags: 0

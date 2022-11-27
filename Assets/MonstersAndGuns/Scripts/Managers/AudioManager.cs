@@ -5,15 +5,16 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
 
-    [SerializeField] protected AudioSource BGMAudioSource;
-    [SerializeField] protected AudioSource SFXAudioSource;
+    [SerializeField] private AudioSource BGMAudioSource;
+    [SerializeField] private AudioSource SFXAudioSource;
 
     [Header("BGM Sounds")]
     public AudioClip[] mainMenuMusic;
 
     [Space(10)]
     [Header("SFX Sounds")]
-    public AudioClip[] pressStartGame;
+    [SerializeField] private AudioClip[] pressStartGame;
+    [SerializeField] private AudioClip[] popSound;
 
     HashSet<AudioClip> clipsPlayedThisFrame;
     Coroutine audioRoutine;
@@ -26,13 +27,26 @@ public class AudioManager : MonoBehaviour
     {
         GameManager.Instance.OnMainMenuActivating += MainMenuHandler;
         GameManager.Instance.OnPortalCreating += PortalCreationHandler;
+        GameManager.Instance.OnMonsterCreated += MonsterCreatedHandler;
+
     }
 
+    
     private void OnDisable()
     {
         GameManager.Instance.OnMainMenuActivating -= MainMenuHandler;
         GameManager.Instance.OnPortalCreating -= PortalCreationHandler;
+        GameManager.Instance.OnMonsterCreated -= MonsterCreatedHandler;
+
     }
+
+    private void MonsterCreatedHandler()
+    {
+        print("Pop");
+        PlayRandomSound(popSound);
+    }
+
+
 
     private void MainMenuHandler()
     {
@@ -64,7 +78,16 @@ public class AudioManager : MonoBehaviour
     }
 
 
-    // Las funciones sgtes son genéricas para cualquier juego
+    // Las funciones sgtes son genéricas para cualquier juego - - - - - - - -
+    private float PlayRandomSound(AudioClip[] clips)
+    {
+        // TODO: agregar parametro bool para indicam si se quiere modificar aleatoriamente el pitch, para así tener más variedad de sonidos usando solo 1 clip
+        if (clips == null || clips.Length == 0) return 0f; // Programación defensiva nunca está de más
+        var clip = GetRandomClip(clips);
+        SFXPlayOneShot(clip);
+        return clip.length;
+    }
+
     private AudioClip GetRandomClip(AudioClip[] audioClips)
     {
         int randomIdx = Random.Range(0, audioClips.Length);
@@ -78,14 +101,6 @@ public class AudioManager : MonoBehaviour
             SFXAudioSource.PlayOneShot(clip);
             clipsPlayedThisFrame.Add(clip);
         }
-    }
-
-    private float PlayRandomSound(AudioClip[] clips)
-    {
-        if (clips == null || clips.Length == 0) return 0f; // Programación defensiva nunca está de más
-        var clip = GetRandomClip(clips);
-        SFXPlayOneShot(clip);
-        return clip.length;
     }
 
     private void PlayBGMMusic(AudioClip clip, bool loop)

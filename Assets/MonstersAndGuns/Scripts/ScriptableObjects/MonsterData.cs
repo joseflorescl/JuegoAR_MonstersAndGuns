@@ -13,9 +13,13 @@ public class MonsterData : ScriptableObject
     public float maxDeviationRandomVectorUp = 0.5f;
     public float minSecondsGoUp = 1f;
     public float maxSecondsGoUp = 3f;
+    public float minDistanceToPlayer = 1f; // Si al ir subiendo el player está muy cerca, el ghost cambiará de dirección
+    public float angleToAwayFromPlayer = 60f; // Y se usa el player.forward rotado en un cierto ángulo dado por este valor
 
     [Header("Patrol State")]
     //[Space(10)]
+    public int firstPointMaxAttempts = 3;
+    public float firstPointMinDot = 0.5f;
     public float spherePatrollingRadius = 2f;
     public float spherePatrollingDistanceToPortal = 1f;
     public float spherePatrollingHeight = 0.5f; 

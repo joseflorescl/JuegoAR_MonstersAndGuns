@@ -50,6 +50,8 @@ public class MonsterController : MonoBehaviour
     Collider coll;
     Renderer rend;
     Vector3 kinematicVelocity;
+    Vector3 firstPointPatrolling;
+
 
     private void Awake()
     {
@@ -61,6 +63,8 @@ public class MonsterController : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.MonsterCreated(this);
+
         if (monsterData.speed == 0)
             CurrentState = MonsterState.Idle;
         else
@@ -72,47 +76,45 @@ public class MonsterController : MonoBehaviour
         coll.enabled = false; // Primero se le desactiva el collider mientras el monstruo va subiendo, y se activará al inicio del Patrol
 
         kinematicVelocity = GetRandomVectorUp(monsterData.maxDeviationRandomVectorUp) * monsterData.speed;
+        FaceInitialDirection();
 
-        if (monsterData.faceInitialDirection)
-            transform.rotation = Quaternion.LookRotation(kinematicVelocity);
-        
         float secondsGoUp = Random.Range(monsterData.minSecondsGoUp, monsterData.maxSecondsGoUp);
-        yield return new WaitForSeconds(secondsGoUp);
-        
+        float maxTime = Time.time + secondsGoUp;
+
+        yield return new WaitWhile(() => (Time.time < maxTime) 
+                                      && (Vector3.Distance(transform.position, GameManager.Instance.PlayerPosition()) > monsterData.minDistanceToPlayer));
+
+        if (Time.time < maxTime) // Entonces el yield anterior terminó porque el monstruo está muy cerca del player
+        {
+            float randomAngle = Random.Range(-monsterData.angleToAwayFromPlayer, +monsterData.angleToAwayFromPlayer);
+            var direction = Quaternion.Euler(0, randomAngle, 0) * GameManager.Instance.PlayerForward(); // Ahora rotamos la direction forward del player
+            kinematicVelocity = direction * monsterData.speed;
+            FaceInitialDirection();
+            yield return new WaitForSeconds(maxTime - Time.time);
+        }
+
         CurrentState = MonsterState.Patrol;
     }
 
+    void FaceInitialDirection()
+    {
+        if (monsterData.faceInitialDirection)
+            transform.rotation = Quaternion.LookRotation(kinematicVelocity);
+    }
 
     IEnumerator PatrolRoutine()
     {
         coll.enabled = true;
-        var portal = GameManager.Instance.Portal();
-
-        /*
-        // TODO: el primer punto a elegir debe ser especial, para que el monstruo empiece alejándose del player
-        //  Se puede usar esta idea:
-        Vector3 a = player.forward;
-        Vector3 b = point.position - player.position;
-        a.Normalize();
-        b.Normalize();
-        float dot = Vector3.Dot(a, b);
-
-        //  el primer punto de patrolling puede ser un punto que cumpla que su Dot(a,b) >= 0.4
-        // Si despues de x intentos no encontramos nada se elige el ultimo punto encontrado
-        */
-
         var r = monsterData.spherePatrollingRadius;
-        var h = monsterData.spherePatrollingHeight - portal.position.y; // Se resta la altura del portal para que sea la altura c/r al suelo, no c/r al portal
-        //var h = monsterData.spherePatrollingHeight;
+        var h = monsterData.spherePatrollingHeight;
         var d = monsterData.spherePatrollingDistanceToPortal;
+
+        yield return StartCoroutine(FirstPointPatrolling());
+
+        var targetPosition = firstPointPatrolling;
 
         while (currentState == MonsterState.Patrol)
         {
-            var targetPosition = GetRandomPositionOnSphere(r, h, d);
-           
-            // Nota importante sobre TransformPoint: si el objeto portal tiene valores != 1 en la escala, el valor resultante no será el esperado
-            targetPosition = portal.transform.TransformPoint(targetPosition);  // Esta posición ahora se debe orientar c/r al portal
-
             var direction = targetPosition - transform.position;
             kinematicVelocity = direction.normalized * monsterData.speed;
 
@@ -121,10 +123,37 @@ public class MonsterController : MonoBehaviour
             float maxTimeInSameDirection = Time.time + secondsSameDirection;
             
             yield return new WaitUntil(() => Time.time > maxTimeInSameDirection || Vector3.Distance(transform.position, targetPosition) < monsterData.minDistanceToTarget);
+
+            targetPosition = GetRandomPositionOnSphere(r, h, d);
         }
         
     }
     
+
+    IEnumerator FirstPointPatrolling()
+    {
+        // El primer punto a elegir debe ser especial, para que el monstruo empiece alejándose del player
+        var r = monsterData.spherePatrollingRadius;
+        var h = monsterData.spherePatrollingHeight;
+        var d = monsterData.spherePatrollingDistanceToPortal;
+
+        for (int i = 0; i < monsterData.firstPointMaxAttempts; i++)
+        {
+            firstPointPatrolling = GetRandomPositionOnSphere(r, h, d);
+            Vector3 a = GameManager.Instance.PlayerForward();
+            Vector3 b = firstPointPatrolling - GameManager.Instance.PlayerPosition();
+            a.Normalize();
+            b.Normalize();
+            float dot = Vector3.Dot(a, b);
+            
+            if (dot >= monsterData.firstPointMinDot)
+                break;
+
+            yield return null;
+        }
+        
+        yield break;
+    }
 
     public void Attack()
     {
@@ -151,7 +180,7 @@ public class MonsterController : MonoBehaviour
     {
         if (CurrentState == MonsterState.Idle) return;
 
-        RotateToVelocity();
+        RotateTowardsToVelocity();
     }
 
     private void FixedUpdate()
@@ -161,7 +190,7 @@ public class MonsterController : MonoBehaviour
         rb.MovePosition(transform.position + kinematicVelocity * Time.deltaTime);
     }
 
-    void RotateToVelocity()
+    void RotateTowardsToVelocity()
     {
         var deltaRotation = monsterData.turnSpeed * Time.deltaTime;
         var targetRotation = Quaternion.LookRotation(kinematicVelocity);
@@ -180,7 +209,8 @@ public class MonsterController : MonoBehaviour
 
     Vector3 GetRandomPositionOnSphere(float radius, float height, float distance, bool under = false, bool behind = false)
     {
-        var offset = new Vector3(0f, height, distance);
+        var portal = GameManager.Instance.Portal();
+        var offset = new Vector3(0f, height - portal.position.y, distance); // Por ahora se está probando con una altura c/r al mundo, NO c/r al portal
 
         Vector3 targetPosition = Random.onUnitSphere * radius; // Se elige un punto aleatorio en la superficie de la esfera de radio r
 
@@ -190,9 +220,11 @@ public class MonsterController : MonoBehaviour
             targetPosition.z = Mathf.Abs(targetPosition.z);
 
         targetPosition += offset;
-        return targetPosition;
 
-        //TODO: estoy haciendo pruebas y al parecer la height NO debe ser relativa al portal sino que a la altura de World
+        // Nota importante sobre TransformPoint: si el objeto portal tiene valores != 1 en la escala, el valor resultante no será el esperado
+        targetPosition = portal.transform.TransformPoint(targetPosition);  // Esta posición ahora se debe orientar c/r al portal
+
+        return targetPosition;
     }
 
     private void OnDrawGizmos()

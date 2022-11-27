@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public event Action OnPortalCreated; // Una vez que el portal ya ha sido creado
     public event Action<int, Vector3, Quaternion> OnSpawning; // Recibe el level actual del juego, y lo posición/rotación desde donde hacer el spawner
     public event Action<List<MonsterController>, int> OnBattling; // Recibe la lista de monsters creados y el level actual del juego
+    public event Action OnMonsterCreated;
     public event Action<MonsterController> OnMonsterDead;
     public event Action OnMonsterDamage;
     public event Action<bool> OnStatusPortalChanged; // La idea es que la UI refleje cuando el portal está activo/inactivo con un texto diferente en cada caso
@@ -123,11 +124,10 @@ public class GameManager : MonoBehaviour
         CurrentState = GameState.Spawning;        
     }
 
-    public void MonstersSpawned(List<MonsterController> monsters)
+    public void MonstersSpawned()
     {
         if (currentState != GameState.Spawning) return;
 
-        this.monsters = monsters;
         CurrentState = GameState.Battle;        
     }
 
@@ -160,6 +160,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public Vector3 PlayerForward()
+    {
+        return player.transform.forward;
+    }
+
     public Transform Portal()
     {
         return portal;
@@ -180,8 +185,16 @@ public class GameManager : MonoBehaviour
         OnGunFired?.Invoke(gunIndex);
     }
 
+    public void MonsterCreated(MonsterController monster)
+    {
+        monsters.Add(monster);
+        OnMonsterCreated?.Invoke();
+    }
+
     IEnumerator InitializationRoutine()
     {
+        monsters = new List<MonsterController>();
+
         for (int i = 0; i < gameManagerData.scenesToLoad.Length; i++)
         {
             yield return sceneController.LoadSceneAdditive(gameManagerData.scenesToLoad[i]);        

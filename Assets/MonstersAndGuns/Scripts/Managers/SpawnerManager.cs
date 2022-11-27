@@ -5,16 +5,7 @@ using System;
 
 public class SpawnerManager : MonoBehaviour
 {
-    [SerializeField] private SpawnerManagerData data;
-    
-    WaitForSeconds waitBetweenMonsters;
-    List<MonsterController> monsters;
-
-    private void Start()
-    {
-        waitBetweenMonsters = new WaitForSeconds(data.spawnTimeBetweenMonsters);
-        monsters = new List<MonsterController>();
-    }
+    [SerializeField] private SpawnerManagerData data;   
 
     private void OnEnable()
     {
@@ -34,6 +25,7 @@ public class SpawnerManager : MonoBehaviour
 
     IEnumerator MonstersSpawningRoutine(int level, Vector3 position, Quaternion rotation)
     {
+        WaitForSeconds waitBetweenMonsters = new WaitForSeconds(data.spawnTimeBetweenMonsters);
         level = Mathf.Clamp(level, 1, data.monstersByLevels.Length);
         var levelMonsters = data.monstersByLevels[level - 1];
         var initialMonsters = levelMonsters.initialMonsters;
@@ -44,21 +36,13 @@ public class SpawnerManager : MonoBehaviour
             var count = initialMonsters[i].count;
 
             for (int j = 0; j < count; j++)
-            {
-                // TODO: al instanciar se debería emitir un sonido: esto se podría hacer de esta forma
-                /*
-                 GameManager.Instance.MonsterCreated();
-                y el GM llama a evento OnMonsterCreated?.Invoke();
-                y el AudioManager se subscribe a ese evento con un método que emite el sonido de un Pop()
-                */
-                
-                var monster = Instantiate(monsterPrefab, position, rotation);
-                monsters.Add(monster);
+            {               
+                Instantiate(monsterPrefab, position, rotation);                
                 yield return waitBetweenMonsters;
             }
         }
 
-        GameManager.Instance.MonstersSpawned(monsters);
+        GameManager.Instance.MonstersSpawned();
     }
 
 
