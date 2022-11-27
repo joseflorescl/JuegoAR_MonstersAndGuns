@@ -18,18 +18,16 @@ public class SpawnerManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSpawning += OnSpawningHandler;
+        GameManager.Instance.OnSpawning += SpawningHandler;
     }
-
-  
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSpawning -= OnSpawningHandler;
+        GameManager.Instance.OnSpawning -= SpawningHandler;
     }
 
 
-    private void OnSpawningHandler(int level, Vector3 position, Quaternion rotation)
+    private void SpawningHandler(int level, Vector3 position, Quaternion rotation)
     {
         StartCoroutine(MonstersSpawningRoutine(level, position, rotation));
     }
@@ -47,13 +45,12 @@ public class SpawnerManager : MonoBehaviour
 
             for (int j = 0; j < count; j++)
             {
-                // TODO: después de instanciar al monster se debería setear la property TimeToAttack
                 // TODO: al instanciar se debería emitir un sonido: esto se podría hacer de esta forma
                 /*
                  GameManager.Instance.MonsterCreated();
                 y el GM llama a evento OnMonsterCreated?.Invoke();
                 y el AudioManager se subscribe a ese evento con un método que emite el sonido de un Pop()
-                 */
+                */
                 
                 var monster = Instantiate(monsterPrefab, position, rotation);
                 monsters.Add(monster);

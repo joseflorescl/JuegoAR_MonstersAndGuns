@@ -9,8 +9,6 @@ public class UIControllerNoAR : MonoBehaviour
         GameManager.Instance.OnPortalCreating += PortalCreatingHandler;
     }
 
-   
-
     private void OnDisable()
     {
         GameManager.Instance.OnPortalCreating -= PortalCreatingHandler;

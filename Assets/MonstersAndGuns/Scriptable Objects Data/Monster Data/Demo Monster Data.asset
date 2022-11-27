@@ -20,10 +20,12 @@ MonoBehaviour:
   maxSecondsGoUp: 3
   spherePatrollingRadius: 5
   spherePatrollingDistanceToPortal: 0
-  spherePatrollingHeightToPortal: 0.5
-  minSecondsSameDirection: 2
-  maxSecondsSameDirection: 4
+  spherePatrollingHeight: -1
+  minSecondsSameDirection: 8
+  maxSecondsSameDirection: 12
   minDistanceToTarget: 0.05
+  attackSpeed: 2.5
+  secondsToAdjustDirection: 1
   initialColor: 0
   attackColor: 1
   attackMaterial: {fileID: 2100000, guid: cd7cf496992eceb4f9440011908e65e4, type: 2}

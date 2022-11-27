@@ -18,11 +18,9 @@ public class WeaponController : MonoBehaviour
     public void Fire()
     {
         vfxBullet.Play();
-
-        // Si ya se está animando, entonces no gatillaremos el trigger nuevamente
-        if (!anim.IsInTransition(0))
+        
+        if (!anim.IsInTransition(0)) // Si ya se está animando, entonces no gatillaremos el trigger nuevamente
             anim.SetTrigger("Fire");
     }
 
-    
 }

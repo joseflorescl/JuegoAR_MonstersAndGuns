@@ -8,9 +8,7 @@ public class HealthController : MonoBehaviour, IDamageable
     float health;
 
     public float Health => health;
-
     public bool IsDead => health <= 0f;
-
     public float CurrentHealthPercentage => IsDead ? 0f : health / maxHealth;
 
 
@@ -30,17 +28,13 @@ public class HealthController : MonoBehaviour, IDamageable
             Dead();
         else
             ReceiveDamage();
-
     }
-
-
 
     void Dead()
     {
         GameManager.Instance.DeadNotification(gameObject);
         Destroy(gameObject);
     }
-
 
     void ReceiveDamage()
     {

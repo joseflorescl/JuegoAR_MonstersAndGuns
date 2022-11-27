@@ -11,14 +11,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameManagerData gameManagerData;
     [SerializeField] private GameObject canvasLoading;
     
-
-    // TODO: validar que en este nuevo esquema de comunicación entre GameManagers con los submanagers, usando eventos, 
-    //  deberíamos asegurarnos que los submanagers son los que hacen uso del GameManager, pero no al revés, es decir
-    //  que el GameManager NO hace uso (no sabe de la existencia) de los submanagers.
-
     // TODO: borrar los colliders de los objetos que no lo necesiten
 
-    // Nomenclatura de eventos:
+    // Nomenclatura de eventos: ejemplo
     //   OnClosing: a close event that is raised before a window is closed
     //   OnClosed: and one that is raised after the window is closed 
     public event Action OnMainMenuActivating;
@@ -26,18 +21,15 @@ public class GameManager : MonoBehaviour
     public event Action OnPortalCreated; // Una vez que el portal ya ha sido creado
     public event Action<int, Vector3, Quaternion> OnSpawning; // Recibe el level actual del juego, y lo posición/rotación desde donde hacer el spawner
     public event Action<List<MonsterController>, int> OnBattling; // Recibe la lista de monsters creados y el level actual del juego
-    public event Action<GameObject> OnMonsterDead;
+    public event Action<MonsterController> OnMonsterDead;
     public event Action OnMonsterDamage;
     public event Action<bool> OnStatusPortalChanged; // La idea es que la UI refleje cuando el portal está activo/inactivo con un texto diferente en cada caso
     public event Action<int> OnGunFired;
 
 
-
-
-
     // Será singleton
-    // Y también se configura que su orden de ejecución sea primero que el resto de los scripts que hacen uso de GameManager.Instance
-    // porque no hago uso de lazy instantiation
+    // Y también se configura que su orden de ejecución sea primero que el resto de los scripts que hacen uso de "GameManager.Instance"
+    // porque no estoy haciendo uso de lazy instantiation
     private static GameManager instance = null;
 
     public static GameManager Instance  => instance;
@@ -56,9 +48,7 @@ public class GameManager : MonoBehaviour
         set 
         {
             currentState = value;
-
-            //StopAllCoroutines(); // Esto se debe validar, no siempre hay que detener las corutinas del GM
-            // TODO: colocar el código repartido abajo en una función/corutina y llamarla desde este switch.
+            
             switch (currentState)
             {
                 case GameState.Initialization:
@@ -93,9 +83,8 @@ public class GameManager : MonoBehaviour
     }
 
     IEnumerator BattleRoutine()
-    {
-        // Se espera un ratito antes de pasar al estado Battle, para darle tiemppo a los monsters de moverse un poco
-        yield return new WaitForSeconds(gameManagerData.waitBeforeInitBattle);
+    {        
+        yield return new WaitForSeconds(gameManagerData.waitBeforeInitBattle); // Se les da tiempo a los monsters de moverse un poco antes de dispararles
         OnBattling?.Invoke(monsters, currentLevel);
     }
 
@@ -128,9 +117,9 @@ public class GameManager : MonoBehaviour
     public void PortalCreated(Transform portal)
     {
         if (currentState != GameState.PortalCreation) return;
+
         this.portal = portal;
         OnPortalCreated?.Invoke();
-
         CurrentState = GameState.Spawning;        
     }
 
@@ -139,7 +128,6 @@ public class GameManager : MonoBehaviour
         if (currentState != GameState.Spawning) return;
 
         this.monsters = monsters;
-        
         CurrentState = GameState.Battle;        
     }
 
@@ -147,8 +135,9 @@ public class GameManager : MonoBehaviour
     {
         if (deadObject.CompareTag("Monster"))
         {
-            monsters?.Remove(deadObject.GetComponent<MonsterController>());
-            OnMonsterDead?.Invoke(deadObject);
+            var monster = deadObject.GetComponent<MonsterController>();
+            monsters?.Remove(monster);
+            OnMonsterDead?.Invoke(monster);
         }
     }
 
@@ -160,14 +149,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     public Vector3 PlayerPosition()
     {
         if (player)
             return player.transform.position;
         else
         {
-            print("No player yet");
+            print("No Player yet");
             return Vector3.zero;
         }
     }
@@ -177,9 +165,13 @@ public class GameManager : MonoBehaviour
         return portal;
     }
 
+    public Camera ARCamera()
+    {
+        return arCamera;
+    }
+
     public void StatusPortal(bool status)
     {
-        // TODO: lanzar evento para que la UI lo maneje
         OnStatusPortalChanged?.Invoke(status);
     }
 
@@ -195,20 +187,10 @@ public class GameManager : MonoBehaviour
             yield return sceneController.LoadSceneAdditive(gameManagerData.scenesToLoad[i]);        
         }
 
-        //TODO: se debería esperar un ratito para que la cámara del móbil se active bien
-        //yield return new WaitForSeconds(5);
-        //  o lo que hago ahora es dejar la cámara con el Solid Color rojo igual que la imagen de fade
-
         currentLevel = 1;
         player = GameObject.FindGameObjectWithTag("Player");
         arCamera = Camera.main;
-
         CurrentState = GameState.MainMenu;        
-    }
-
-    public Camera GetARCamera()
-    {
-        return arCamera;
     }
 
 }

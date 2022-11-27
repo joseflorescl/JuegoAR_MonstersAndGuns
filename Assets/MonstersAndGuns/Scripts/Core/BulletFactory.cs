@@ -2,15 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Tiene un array de weapons que puede usar una shooter (player, monster)
 public class BulletFactory : MonoBehaviour
 {
-    public enum FireMethod { AllWeaponsAtOnce, OneWeaponInOrder } // por ahora solo se implementará que se dispare de a 1 arma a la vez: OneWeaponInOrder
+    public enum FireMethod { AllWeaponsAtOnce, OneWeaponInOrder }
 
     [SerializeField] private FireMethod fireMethod = FireMethod.OneWeaponInOrder;
     
-    WeaponController[] weapons;
-
+    WeaponController[] weapons; // Tiene un array de weapons que puede usar una shooter (player, monster)
 
     int weaponToFireIndex = 0;
 
@@ -46,7 +44,6 @@ public class BulletFactory : MonoBehaviour
                 min = weaponToFireIndex;
                 max = weaponToFireIndex + 1;
                 weaponToFireIndex = (weaponToFireIndex + 1) % weapons.Length;
-
                 break;           
             default:
                 min = max = -1;

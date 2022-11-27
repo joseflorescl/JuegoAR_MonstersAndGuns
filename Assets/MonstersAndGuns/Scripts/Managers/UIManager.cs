@@ -11,10 +11,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject mainPanel;
     [SerializeField] private GameObject portalCreationPanel;
     [SerializeField] private GameObject battlePanel;
-
     [SerializeField] private GameObject pointAtFloorMessage;
     [SerializeField] private GameObject tapToPlacePortalMessage;
-
     [SerializeField] private float secondsToDeactivateGOMessage = 1;
     [SerializeField] private GameObject goMessage;
 
@@ -38,8 +36,6 @@ public class UIManager : MonoBehaviour
 
     }
 
-   
-
     private void OnDisable()
     {
         GameManager.Instance.OnMainMenuActivating -= MainMenuHandler;
@@ -49,7 +45,7 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnBattling -= BattlingHandler;
     }
 
-    private void BattlingHandler(List<MonsterController> arg1, int arg2)
+    private void BattlingHandler(List<MonsterController> monsters, int level)
     {
         StartCoroutine(BattlingRoutine());
         
@@ -93,5 +89,5 @@ public class UIManager : MonoBehaviour
         backgroundImage.CrossFadeAlpha(targetAlpha, timeToFade, true);
     }
 
-
+    //TODO: meter los paneles ppales en un array de tal forma que sea más simple desactivarlos todos de una (como en juego Planet Force)
 }

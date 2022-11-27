@@ -6,7 +6,7 @@ using System;
 public class VFXManager : MonoBehaviour
 {
     [Serializable]
-    struct ParticleColor
+    public struct ParticleColor
     {
         public MonsterColor monsterColor;
         public ParticleSystem vfxPrefab;
@@ -17,9 +17,6 @@ public class VFXManager : MonoBehaviour
 
     Dictionary<MonsterColor, ParticleSystem> monsterDeadParticleColorsInstances;
     Dictionary<MonsterColor, ParticleSystem> monsterDamageParticleColorsInstances;
-
-
-
 
     private void OnEnable()
     {
@@ -56,17 +53,13 @@ public class VFXManager : MonoBehaviour
 
     }
 
-    private void MonsterDeadHandler(GameObject monsterDead)
+    private void MonsterDeadHandler(MonsterController monsterDead)
     {
-        var rend = monsterDead.GetComponentInChildren<Renderer>();
-        var center = rend.bounds.center;
-
-        // Hay que obtener el color del monstruo:
-        var monsterColor = monsterDead.GetComponent<MonsterController>().CurrentColor;
-
-        var part = monsterDeadParticleColorsInstances[monsterColor];
-        part.transform.position = center;
-        part.Play();
+        var monsterColor = monsterDead.CurrentColor;
+        var position = monsterDead.ExplosionPosition;
+        var particles = monsterDeadParticleColorsInstances[monsterColor];
+        particles.transform.position = position;
+        particles.Play();
     }
 
    

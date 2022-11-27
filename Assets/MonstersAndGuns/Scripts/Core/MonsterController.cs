@@ -4,6 +4,7 @@ using UnityEngine;
 
 
 public enum MonsterColor { White, Red, Green, Blue, Yellow }
+public enum MonsterState { Idle, GoUp, Patrol, Attack }
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
@@ -12,32 +13,23 @@ public class MonsterController : MonoBehaviour
 {
     [SerializeField] private MonsterData monsterData;
 
-
-    public enum MonsterState { Idle, GoUp, Patrol, Attack }
-
-    // TODO: hace la var state una property de tal forma que al setear su valor se llame al StartCoroutine, que da más elegante 
-    //  que se haga directamente un StartCoroutine dentro de otra corutina.
     MonsterState currentState;
-    Rigidbody rb;
-    Animator anim;
-    Collider coll;
-    Vector3 kinematicVelocity;
+
+    public MonsterColor CurrentColor => currentState == MonsterState.Attack ? monsterData.attackColor : monsterData.initialColor;
+    public Vector3 ExplosionPosition => rend.bounds.center; // Por ahora es el centro del mesh renderer, pero se podría elegir otra posicion adhoc
 
     public MonsterState CurrentState
     {
-        // TODO: implementar una property de este estilo para la clase GameManager
         get { return currentState; }
         private set
         {
             currentState = value;
             StopAllCoroutines();
 
-
             switch (currentState)
             {
                 case MonsterState.Idle:
-                    // No se hace nada
-                    break;
+                    break; // No se hace nada
                 case MonsterState.GoUp:
                     StartCoroutine(GoUpCoroutine());
                     break;
@@ -53,15 +45,18 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    public MonsterColor CurrentColor => currentState == MonsterState.Attack ? monsterData.attackColor : monsterData.initialColor;
-
-    
+    Rigidbody rb;
+    Animator anim;
+    Collider coll;
+    Renderer rend;
+    Vector3 kinematicVelocity;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         coll = GetComponent<Collider>();
+        rend = GetComponentInChildren<Renderer>();
     }
 
     private void Start()
@@ -74,83 +69,66 @@ public class MonsterController : MonoBehaviour
 
     IEnumerator GoUpCoroutine()
     {
-        // Primero se le desactiva el collider mientras el monstruo va subiendo, y se activará antes de pasar a Patrol
-        coll.enabled = false;
+        coll.enabled = false; // Primero se le desactiva el collider mientras el monstruo va subiendo, y se activará al inicio del Patrol
 
-        // Se elige un vector hacia arriba random
-        float x = Random.Range(-monsterData.maxDeviationRandomVectorUp, +monsterData.maxDeviationRandomVectorUp);
-        float z = Random.Range(-monsterData.maxDeviationRandomVectorUp, +monsterData.maxDeviationRandomVectorUp);
-        float y = 1f;
-        var goUpVector = new Vector3(x, y, z);
-        goUpVector.Normalize();
-
-        // Ahora se mueve al monster en esa dirección, usando un rb kinemático:
-        // Notar que un gameObject kinemático 3D NO se movera si se setea su rb.velocity, a diff de un Rb2D que sí me moverá al objeto.
-        // Hay que usar MovePosition en el FixedUpdate
-
-        // Notar que si NO se usa interpolación, siempre tendremos que transform.position == rb.position
-        //  pero al usar interpolación, en el Update veremos que a veces transform.position != rb.position, pero en el
-        //  FixedUpdate ambos valores siempre serán iguales
-
-        // Esto es interesante: cuando el objeto es kinemático, pero la interpolación se setea a None,
-        //  al moverlo en el FixedUpdate el objeto solo se moverá hasta alcanzar la posición del vector de velocidad, no se seguirá moviendo.
-        //  En conclusión: si el objeto es un rb3D kinemático, se debe setear la interpolación.
-        kinematicVelocity = goUpVector * monsterData.speed;
-        
+        kinematicVelocity = GetRandomVectorUp(monsterData.maxDeviationRandomVectorUp) * monsterData.speed;
 
         if (monsterData.faceInitialDirection)
             transform.rotation = Quaternion.LookRotation(kinematicVelocity);
         
         float secondsGoUp = Random.Range(monsterData.minSecondsGoUp, monsterData.maxSecondsGoUp);
-
         yield return new WaitForSeconds(secondsGoUp);
-        coll.enabled = true;
-
+        
         CurrentState = MonsterState.Patrol;
     }
 
 
     IEnumerator PatrolRoutine()
     {
+        coll.enabled = true;
         var portal = GameManager.Instance.Portal();
 
-        var offset = new Vector3(0f, monsterData.spherePatrollingHeightToPortal, monsterData.spherePatrollingDistanceToPortal);
+        /*
+        // TODO: el primer punto a elegir debe ser especial, para que el monstruo empiece alejándose del player
+        //  Se puede usar esta idea:
+        Vector3 a = player.forward;
+        Vector3 b = point.position - player.position;
+        a.Normalize();
+        b.Normalize();
+        float dot = Vector3.Dot(a, b);
 
-        // TODO: el primer punto a elegir puede ser un punto aleatorio sobre una esfera de las mismas dimensiones, pero a una distancia
-        // que nos asegure que se alejan del player
+        //  el primer punto de patrolling puede ser un punto que cumpla que su Dot(a,b) >= 0.4
+        // Si despues de x intentos no encontramos nada se elige el ultimo punto encontrado
+        */
+
+        var r = monsterData.spherePatrollingRadius;
+        var h = monsterData.spherePatrollingHeight - portal.position.y; // Se resta la altura del portal para que sea la altura c/r al suelo, no c/r al portal
+        //var h = monsterData.spherePatrollingHeight;
+        var d = monsterData.spherePatrollingDistanceToPortal;
 
         while (currentState == MonsterState.Patrol)
         {
-            // Se elige un punto aleatorio en la superficie de la esfera de radio r:
-            var targetPosition = Random.onUnitSphere * monsterData.spherePatrollingRadius;
-            // Debo elegir la semiesfera de arriba/adelante
-            targetPosition.y = Mathf.Abs(targetPosition.y);
-            targetPosition.z = Mathf.Abs(targetPosition.z);
-            // Y se aplica el offset, por ahora con respecto al origen 0,0,0
-            targetPosition += offset;
-            // Esta posición ahora se debe orientar c/r al player
+            var targetPosition = GetRandomPositionOnSphere(r, h, d);
+           
             // Nota importante sobre TransformPoint: si el objeto portal tiene valores != 1 en la escala, el valor resultante no será el esperado
-            targetPosition = portal.transform.TransformPoint(targetPosition);
-            
+            targetPosition = portal.transform.TransformPoint(targetPosition);  // Esta posición ahora se debe orientar c/r al portal
+
             var direction = targetPosition - transform.position;
             kinematicVelocity = direction.normalized * monsterData.speed;
 
             // Ahora se espera: hasta llegar a este punto o haya pasado un tiempo máximo
             float secondsSameDirection = Random.Range(monsterData.minSecondsSameDirection, monsterData.maxSecondsSameDirection);
             float maxTimeInSameDirection = Time.time + secondsSameDirection;
-
-            print("Monster Position: " + transform.position);
-            print("Target Position: " + targetPosition);
-            print("Distance == " + Vector3.Distance(transform.position, targetPosition));
+            
             yield return new WaitUntil(() => Time.time > maxTimeInSameDirection || Vector3.Distance(transform.position, targetPosition) < monsterData.minDistanceToTarget);
-            // El paso a estado Attack es controlado por el BattleManager
         }
         
     }
+    
 
     public void Attack()
     {
-        CurrentState = MonsterState.Attack;
+        CurrentState = MonsterState.Attack; // El paso a estado Attack es controlado por el BattleManager
     }
 
     IEnumerator AttackRoutine()
@@ -160,12 +138,12 @@ public class MonsterController : MonoBehaviour
         var rend = GetComponentInChildren<Renderer>();
         rend.material = monsterData.attackMaterial;
 
-        // Cada 1 seg se va ajustando la dirección hacia el player
+        // Cada x seg se va ajustando la dirección hacia el player
         while (true)
         {
             var direction = GameManager.Instance.PlayerPosition() - transform.position;
-            kinematicVelocity = direction.normalized * monsterData.speed;
-            yield return new WaitForSeconds(1);
+            kinematicVelocity = direction.normalized * monsterData.attackSpeed;
+            yield return new WaitForSeconds(monsterData.secondsToAdjustDirection);
         }
     }
 
@@ -173,12 +151,8 @@ public class MonsterController : MonoBehaviour
     {
         if (CurrentState == MonsterState.Idle) return;
 
-        // Rotación en dirección de su velocidad
-        var step = monsterData.turnSpeed * Time.deltaTime;
-        var targetRotation = Quaternion.LookRotation(kinematicVelocity);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, step);
+        RotateToVelocity();
     }
-
 
     private void FixedUpdate()
     {
@@ -187,11 +161,43 @@ public class MonsterController : MonoBehaviour
         rb.MovePosition(transform.position + kinematicVelocity * Time.deltaTime);
     }
 
+    void RotateToVelocity()
+    {
+        var deltaRotation = monsterData.turnSpeed * Time.deltaTime;
+        var targetRotation = Quaternion.LookRotation(kinematicVelocity);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, deltaRotation);
+    }
+
+    Vector3 GetRandomVectorUp(float maxDeviationRandomVectorUp)
+    {
+        float x = Random.Range(-maxDeviationRandomVectorUp, +maxDeviationRandomVectorUp);
+        float z = Random.Range(-maxDeviationRandomVectorUp, +maxDeviationRandomVectorUp);
+        float y = 1f;
+        var goUpVector = new Vector3(x, y, z);
+        goUpVector.Normalize();
+        return goUpVector;
+    }
+
+    Vector3 GetRandomPositionOnSphere(float radius, float height, float distance, bool under = false, bool behind = false)
+    {
+        var offset = new Vector3(0f, height, distance);
+
+        Vector3 targetPosition = Random.onUnitSphere * radius; // Se elige un punto aleatorio en la superficie de la esfera de radio r
+
+        if (!under)
+            targetPosition.y = Mathf.Abs(targetPosition.y);
+        if (!behind)
+            targetPosition.z = Mathf.Abs(targetPosition.z);
+
+        targetPosition += offset;
+        return targetPosition;
+
+        //TODO: estoy haciendo pruebas y al parecer la height NO debe ser relativa al portal sino que a la altura de World
+    }
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawRay(transform.position, kinematicVelocity);
-
     }
 
 }

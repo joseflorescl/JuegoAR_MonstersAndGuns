@@ -11,7 +11,7 @@ public class ARPortalCreator : MonoBehaviour
     ARRaycastManager arRaycastManager;
     ARPlaneManager arPlaneManager;
 
-    List<ARRaycastHit> hits = new List<ARRaycastHit>();
+    List<ARRaycastHit> hits;
     GameObject portal;
     bool isCreatingPortal;
 
@@ -20,6 +20,7 @@ public class ARPortalCreator : MonoBehaviour
     {
         arRaycastManager = FindObjectOfType<ARRaycastManager>();
         arPlaneManager = FindObjectOfType<ARPlaneManager>();
+        hits = new List<ARRaycastHit>();
     }
 
     private void Start()
@@ -43,7 +44,6 @@ public class ARPortalCreator : MonoBehaviour
 
     private void PortalCreationHandler()
     {
-        //monsterMenu.SetActive(false);
         SetStatusPortal(false);
         StartCoroutine(PortalCreationRoutine());
     }
@@ -51,16 +51,14 @@ public class ARPortalCreator : MonoBehaviour
 
     IEnumerator PortalCreationRoutine()
     {
-        // TODO: setear el valor del fov de la camara en el rango: 76 - 107
-        // TODO: ver tutoriales de minimap
         isCreatingPortal = true;
         arPlaneManager.enabled = true;
-        var arCamera = GameManager.Instance.GetARCamera();
+        var arCamera = GameManager.Instance.ARCamera();
+
+        Vector2 middleScreenPoint = arCamera.ViewportToScreenPoint(new Vector2(0.5f, 0.5f));
 
         while (isCreatingPortal)
         {
-            Vector2 middleScreenPoint = arCamera.ViewportToScreenPoint(new Vector2(0.5f, 0.5f));
-
             if (arRaycastManager.Raycast(middleScreenPoint, hits, TrackableType.Planes))
             {
                 var pose = hits[0].pose;

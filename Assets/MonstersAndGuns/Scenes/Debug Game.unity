@@ -2161,7 +2161,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &800446677
 Transform:
   m_ObjectHideFlags: 0
@@ -6975,6 +6975,8 @@ MonoBehaviour:
   monsterData: {fileID: 11400000, guid: f16d8e609953a15439f15050d6401e5a, type: 2}
   cubeCount: 200
   sizeCubes: 0.05
+  waitSeconds: 10
+  portal: {fileID: 0}
 --- !u!1 &1762836644
 GameObject:
   m_ObjectHideFlags: 0

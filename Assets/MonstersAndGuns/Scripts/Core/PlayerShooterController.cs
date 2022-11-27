@@ -22,15 +22,9 @@ public class PlayerShooterController : ShooterController
         GameManager.Instance.OnBattling -= BattleHandler;
     }
 
-    private void BattleHandler(List<MonsterController> arg1, int arg2)
+    private void BattleHandler(List<MonsterController> monsters, int level)
     {
-
         StartCoroutine(BattleRoutine());
-    }
-
-    protected override void Awake()
-    {
-        base.Awake();
     }
 
     private void Start()
@@ -40,11 +34,10 @@ public class PlayerShooterController : ShooterController
         nextFire = 0f;
     }
 
-
     private IEnumerator BattleRoutine()
     {
         bulletFactory.gameObject.SetActive(true);
-        var arCamera = GameManager.Instance.GetARCamera();
+        var arCamera = GameManager.Instance.ARCamera();
 
         while (true)
         {
@@ -61,15 +54,11 @@ public class PlayerShooterController : ShooterController
                 Ray ray = arCamera.ScreenPointToRay(middleScreenPoint);
 
                 if (Physics.Raycast(ray, out RaycastHit hit, maxBulletDistance, damageableLayerMask))
-                {
                     DoDamage(hit.collider.gameObject);
-                }
-
             }
 
             yield return null;
         }
     }
 
-   
 }

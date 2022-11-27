@@ -8,15 +8,12 @@ public class AudioManager : MonoBehaviour
     [SerializeField] protected AudioSource BGMAudioSource;
     [SerializeField] protected AudioSource SFXAudioSource;
 
-    // TODO: esta data se puede pasar a Scriptable Object
     [Header("BGM Sounds")]
     public AudioClip[] mainMenuMusic;
 
     [Space(10)]
     [Header("SFX Sounds")]
     public AudioClip[] pressStartGame;
-
-
 
     HashSet<AudioClip> clipsPlayedThisFrame;
     Coroutine audioRoutine;
@@ -27,25 +24,23 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnMainMenuActivating += OnMainMenuHandler;
-        GameManager.Instance.OnPortalCreating += OnPortalCreationHandler;
+        GameManager.Instance.OnMainMenuActivating += MainMenuHandler;
+        GameManager.Instance.OnPortalCreating += PortalCreationHandler;
     }
-
-    
 
     private void OnDisable()
     {
-        GameManager.Instance.OnMainMenuActivating -= OnMainMenuHandler;
-        GameManager.Instance.OnPortalCreating -= OnPortalCreationHandler;
+        GameManager.Instance.OnMainMenuActivating -= MainMenuHandler;
+        GameManager.Instance.OnPortalCreating -= PortalCreationHandler;
     }
 
-    private void OnMainMenuHandler()
+    private void MainMenuHandler()
     {
         PlayMainMenuMusic();
     }
 
 
-    private void OnPortalCreationHandler()
+    private void PortalCreationHandler()
     {
         BGMAudioSource.Stop();
         SFXAudioSource.Stop();
@@ -69,9 +64,7 @@ public class AudioManager : MonoBehaviour
     }
 
 
-
-
-
+    // Las funciones sgtes son genéricas para cualquier juego
     private AudioClip GetRandomClip(AudioClip[] audioClips)
     {
         int randomIdx = Random.Range(0, audioClips.Length);
@@ -103,12 +96,10 @@ public class AudioManager : MonoBehaviour
         BGMAudioSource.Play();
     }
 
-
     private void StopAudioRoutine()
     {
         if (audioRoutine != null)
             StopCoroutine(audioRoutine);
     }
-
 
 }

@@ -7,7 +7,6 @@ using System;
 [CreateAssetMenu(fileName = "New Spawner Manager Data", menuName = "Monsters n Guns/Spawner Manager Data")]
 public class SpawnerManagerData : ScriptableObject
 {
-
     // Se crearán <count> monstruos usando el prefab <monsterPrefab>
     [Serializable]
     public struct MonsterToSpawn

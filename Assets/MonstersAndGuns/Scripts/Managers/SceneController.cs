@@ -15,6 +15,5 @@ public class SceneController : MonoBehaviour
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         yield return new WaitUntil(() => asyncLoad.isDone);
     }
-    
 
 }

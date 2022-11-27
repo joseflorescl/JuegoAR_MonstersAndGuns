@@ -9,8 +9,6 @@ public class DoDamage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //print(System.Reflection.MethodBase.GetCurrentMethod().Name + " " + name);//GetType().FullName
-
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
         if (damageable != null)
         {

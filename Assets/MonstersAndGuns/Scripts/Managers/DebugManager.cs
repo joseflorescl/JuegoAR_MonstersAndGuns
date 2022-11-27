@@ -17,7 +17,6 @@ public class DebugManager : MonoBehaviour
         GameManager.Instance.OnBattling += BattleHandler;
         GameManager.Instance.OnMonsterDead += MonsterDeadHandler;
         GameManager.Instance.OnGunFired += GunFiredHandler;
-
     }
 
    
@@ -40,7 +39,7 @@ public class DebugManager : MonoBehaviour
         monsterCountText.text = monsterCount.ToString();
     }
 
-    private void MonsterDeadHandler(GameObject monsterDead)
+    private void MonsterDeadHandler(MonsterController monsterDead)
     {
         monsterCount--;
         monsterCountText.text = monsterCount.ToString();

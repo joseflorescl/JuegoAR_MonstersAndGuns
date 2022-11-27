@@ -7,6 +7,8 @@ public class SandboxPatrole : MonoBehaviour
     public MonsterData monsterData;
     public int cubeCount = 200;
     public float sizeCubes = 0.05f;
+    public float waitSeconds = 10f;
+    public Transform portal;
 
     private void Start()
     {
@@ -24,10 +26,12 @@ public class SandboxPatrole : MonoBehaviour
 
     IEnumerator DebugCreateCubesRoutine()
     {
-        yield return new WaitForSeconds(30); // Esperamos hasta que el portal este creado
+        yield return new WaitForSeconds(waitSeconds); // Esperamos hasta que el portal este creado
 
-        var portal = GameManager.Instance.Portal();
-        var offset = new Vector3(0f, monsterData.spherePatrollingHeightToPortal, monsterData.spherePatrollingDistanceToPortal);
+        if (portal == null)
+          portal = GameManager.Instance.Portal();
+
+        var offset = new Vector3(0f, monsterData.spherePatrollingHeight - portal.position.y, monsterData.spherePatrollingDistanceToPortal);
 
         for (int i = 0; i < cubeCount; i++)
         {
