@@ -86,14 +86,24 @@ public class MonsterController : MonoBehaviour
 
         if (Time.time < maxTime) // Entonces el yield anterior terminó porque el monstruo está muy cerca del player
         {
-            float randomAngle = Random.Range(-monsterData.angleToAwayFromPlayer, +monsterData.angleToAwayFromPlayer);
-            var direction = Quaternion.Euler(0, randomAngle, 0) * GameManager.Instance.PlayerForward(); // Ahora rotamos la direction forward del player
+            var direction = GetDirectionAwayFromPlayer();
             kinematicVelocity = direction * monsterData.speed;
             FaceInitialDirection();
             yield return new WaitForSeconds(maxTime - Time.time);
         }
 
         CurrentState = MonsterState.Patrol;
+    }
+
+
+    Vector3 GetDirectionAwayFromPlayer()
+    {
+        var direction = transform.position - GameManager.Instance.PlayerPosition();
+        direction.y = 0;
+        var angle = Random.Range(-monsterData.angleToAwayFromPlayer, +monsterData.angleToAwayFromPlayer);
+        direction = Quaternion.Euler(0, angle, 0) * direction;
+        direction.Normalize();
+        return direction;
     }
 
     void FaceInitialDirection()

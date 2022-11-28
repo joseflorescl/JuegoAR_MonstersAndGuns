@@ -11439,16 +11439,16 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UIpackSheet_transparent_538
+      name: Health_Bar_Background
       rect:
         serializedVersion: 2
-        x: 432
-        y: 216
-        width: 16
-        height: 16
+        x: 427
+        y: 218
+        width: 26
+        height: 12
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 1, y: 1, z: 1, w: 1}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -16378,7 +16378,6 @@ TextureImporter:
       UIpackSheet_transparent_504: -265819202
       UIpackSheet_transparent_712: 1086072933
       UIpackSheet_transparent_574: -1484628409
-      UIpackSheet_transparent_538: -337471242
       UIpackSheet_transparent_620: -678615248
       UIpackSheet_transparent_247: -1468725258
       UIpackSheet_transparent_611: -163790782
@@ -16510,6 +16509,7 @@ TextureImporter:
       UIpackSheet_transparent_735: 1509973217
       UIpackSheet_transparent_659: -1685278027
       UIpackSheet_transparent_204: 800791982
+      Health_Bar_Background: -337471242
       UIpackSheet_transparent_18: -1490863361
       UIpackSheet_transparent_50: 27513796
       UIpackSheet_transparent_613: -1983285332

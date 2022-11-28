@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,6 +16,18 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject tapToPlacePortalMessage;
     [SerializeField] private float secondsToDeactivateGOMessage = 1;
     [SerializeField] private GameObject goMessage;
+    [SerializeField] private TMP_Text levelText;
+    [SerializeField] private Image healthBarImage;
+
+
+    GameObject[] messagesPanelCenter;
+
+    private void Awake()
+    {
+        messagesPanelCenter = new GameObject[] { mainPanel, portalCreationPanel, battlePanel };
+        HideAllMessages();
+    }
+
 
     public void Close()
     {
@@ -33,8 +46,13 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnStatusPortalChanged += StatusPortalHandler;
         GameManager.Instance.OnPortalCreated += PortalCreatedHandler;
         GameManager.Instance.OnBattling += BattlingHandler;
+        GameManager.Instance.OnPlayerDamage += PlayerDamageHandler;
+        GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
+
 
     }
+
+    
 
     private void OnDisable()
     {
@@ -43,19 +61,34 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnStatusPortalChanged -= StatusPortalHandler;
         GameManager.Instance.OnPortalCreated -= PortalCreatedHandler;
         GameManager.Instance.OnBattling -= BattlingHandler;
+        GameManager.Instance.OnPlayerDamage -= PlayerDamageHandler;
+        GameManager.Instance.OnPlayerDead -= PlayerDeadHandler;
+
+    }
+
+    private void PlayerDeadHandler()
+    {
+        healthBarImage.fillAmount = 0;
+    }
+
+    private void PlayerDamageHandler(float currentHealthPercentage)
+    {
+        healthBarImage.fillAmount = currentHealthPercentage;
     }
 
     private void BattlingHandler(List<MonsterController> monsters, int level)
     {
-        StartCoroutine(BattlingRoutine());
+        StartCoroutine(BattlingRoutine(level));
         
     }
 
-    IEnumerator BattlingRoutine()
+    IEnumerator BattlingRoutine(int level)
     {
+        HideAllMessages();
         battlePanel.SetActive(true);
-        // Después de un ratito desactivar el texto de GO!
-        yield return new WaitForSeconds(secondsToDeactivateGOMessage);
+        levelText.text = level.ToString();
+        healthBarImage.fillAmount = 1f; // Por ahora se asume simplemente que cuando parte un nuevo level la salud está a full
+        yield return new WaitForSeconds(secondsToDeactivateGOMessage); // Después de un ratito desactivar el texto de GO!
         goMessage.SetActive(false);
     }
 
@@ -72,14 +105,14 @@ public class UIManager : MonoBehaviour
 
     private void MainMenuHandler()
     {
+        HideAllMessages();
         mainPanel.SetActive(true);
         FadeBackground();
-        portalCreationPanel.SetActive(false);
     }
 
     private void PortalCreatingHandler()
     {
-        mainPanel.SetActive(false);
+        HideAllMessages();
         portalCreationPanel.SetActive(true);
     }
 
@@ -89,5 +122,12 @@ public class UIManager : MonoBehaviour
         backgroundImage.CrossFadeAlpha(targetAlpha, timeToFade, true);
     }
 
-    //TODO: meter los paneles ppales en un array de tal forma que sea más simple desactivarlos todos de una (como en juego Planet Force)
+    void HideAllMessages()
+    {
+        for (int i = 0; i < messagesPanelCenter.Length; i++)
+        {
+            messagesPanelCenter[i].SetActive(false);
+        }
+    }
+
 }

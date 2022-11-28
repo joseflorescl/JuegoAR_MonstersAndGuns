@@ -521,15 +521,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BGMAudioSource: {fileID: 2098209742}
   SFXAudioSource: {fileID: 219414189}
+  pitchVariation: 0.2
   mainMenuMusic:
   - {fileID: 8300000, guid: 54acaaf7cd2f85742a77410d6cee0893, type: 3}
   - {fileID: 8300000, guid: d4f3d80811fb2c44c89f4415f7306caa, type: 3}
   - {fileID: 8300000, guid: 29407ca7a42581c4aa5d206d87120aaf, type: 3}
+  battleMusic:
+  - {fileID: 8300000, guid: b469c9cbc59973e48b8d0f32720f5ffe, type: 3}
+  - {fileID: 8300000, guid: a3346ca1a5bab454886134b1b642cf56, type: 3}
+  - {fileID: 8300000, guid: 39b7b2dd8e82e8a498e185f5a063f3d7, type: 3}
   pressStartGame:
   - {fileID: 8300000, guid: d6525f623a620a443b43071ae785ba1f, type: 3}
   - {fileID: 8300000, guid: 65788c6e93358e44fbf6229851a8c21d, type: 3}
   popSound:
   - {fileID: 8300000, guid: 2f90acb5ed4747044ad1e01b7a3ef371, type: 3}
+  monsterExplosions:
+  - {fileID: 8300000, guid: 28ba75cb082576d4dbf605f7dae61916, type: 3}
+  - {fileID: 8300000, guid: ed724879ffa96ce45852e3064d735e03, type: 3}
+  - {fileID: 8300000, guid: 3b388c00f53e2b2439362734f063bfb8, type: 3}
+  - {fileID: 8300000, guid: d9df44feac147cb468a9dc3ac19581fc, type: 3}
+  - {fileID: 8300000, guid: 3c8326da32977854a9bc5013aa6262d2, type: 3}
+  - {fileID: 8300000, guid: d04d11627130c63429df6b1b252fb06d, type: 3}
+  - {fileID: 8300000, guid: 6b157c0d720c2314cbf61504cf46435e, type: 3}
+  - {fileID: 8300000, guid: 0190784fbf9bd1d47a18e0e03aec22cb, type: 3}
+  - {fileID: 8300000, guid: b3ac434acb7030f4cbe3d71b17bfdb06, type: 3}
+  - {fileID: 8300000, guid: 5e3250df8bd07a1459a63e8214f7d539, type: 3}
+  - {fileID: 8300000, guid: 019444f7c6d15d645b95754eadefbeb0, type: 3}
+  - {fileID: 8300000, guid: be9fa5468ddfeda4bbdba4f3b8595b5c, type: 3}
+  gunFired:
+  - {fileID: 8300000, guid: 251fef16b5831af44ac43e7b5ea68a83, type: 3}
 --- !u!1 &730817854
 GameObject:
   m_ObjectHideFlags: 0

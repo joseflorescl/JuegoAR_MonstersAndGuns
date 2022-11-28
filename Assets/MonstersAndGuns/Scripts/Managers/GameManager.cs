@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     public event Action OnMonsterCreated;
     public event Action<MonsterController> OnMonsterDead;
     public event Action OnMonsterDamage;
+    public event Action<float> OnPlayerDamage;
+    public event Action OnPlayerDead;
     public event Action<bool> OnStatusPortalChanged; // La idea es que la UI refleje cuando el portal está activo/inactivo con un texto diferente en cada caso
     public event Action<int> OnGunFired;
 
@@ -131,21 +133,32 @@ public class GameManager : MonoBehaviour
         CurrentState = GameState.Battle;        
     }
 
-    public void DeadNotification(GameObject deadObject)
+    public void DeadNotification(HealthController deadObject)
     {
         if (deadObject.CompareTag("Monster"))
         {
             var monster = deadObject.GetComponent<MonsterController>();
             monsters?.Remove(monster);
             OnMonsterDead?.Invoke(monster);
+            Destroy(deadObject);
+        }
+        else if (deadObject.CompareTag("Player"))
+        {
+            // TODO:
+            print("Game Over!");
+            OnPlayerDead?.Invoke();
         }
     }
 
-    public void DamageNotification(GameObject deadObject)
+    public void DamageNotification(HealthController deadObject)
     {
         if (deadObject.CompareTag("Monster"))
         {
             OnMonsterDamage?.Invoke();
+        }
+        else if (deadObject.CompareTag("Player"))
+        {
+            OnPlayerDamage?.Invoke(deadObject.CurrentHealthPercentage);
         }
     }
 

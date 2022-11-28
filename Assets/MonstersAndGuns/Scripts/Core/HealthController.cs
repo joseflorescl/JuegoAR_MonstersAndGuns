@@ -32,12 +32,12 @@ public class HealthController : MonoBehaviour, IDamageable
 
     void Dead()
     {
-        GameManager.Instance.DeadNotification(gameObject);
-        Destroy(gameObject);
+        GameManager.Instance.DeadNotification(this);
+        
     }
 
     void ReceiveDamage()
     {
-        GameManager.Instance.DamageNotification(gameObject);
+        GameManager.Instance.DamageNotification(this);
     }
 }
