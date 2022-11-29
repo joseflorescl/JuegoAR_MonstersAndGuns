@@ -62,4 +62,9 @@ public class DebugManager : MonoBehaviour
     {
         monsterDistanceText.text = distance.ToString();
     }
+
+    public void TestDebug()
+    {
+        //FindObjectOfType<UIManager>().PlayerDamageHandler(0);
+    }
 }

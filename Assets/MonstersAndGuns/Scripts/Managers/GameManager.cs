@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     public event Action OnPlayerDead;
     public event Action<bool> OnStatusPortalChanged; // La idea es que la UI refleje cuando el portal está activo/inactivo con un texto diferente en cada caso
     public event Action<int> OnGunFired;
+    public event Action OnGameOver;
 
 
     // Será singleton
@@ -74,6 +75,7 @@ public class GameManager : MonoBehaviour
                 case GameState.BossBattle:
                     break;
                 case GameState.GameOver:
+                    OnGameOver?.Invoke();
                     break;
                 case GameState.Win:
                     break;
@@ -115,7 +117,7 @@ public class GameManager : MonoBehaviour
         if (currentState != GameState.MainMenu) return;
 
         CurrentState = GameState.PortalCreation;        
-    }
+    }    
 
     public void PortalCreated(Transform portal)
     {
@@ -140,13 +142,13 @@ public class GameManager : MonoBehaviour
             var monster = deadObject.GetComponent<MonsterController>();
             monsters?.Remove(monster);
             OnMonsterDead?.Invoke(monster);
-            Destroy(deadObject);
+            Destroy(deadObject.gameObject);
         }
         else if (deadObject.CompareTag("Player"))
-        {
-            // TODO:
-            print("Game Over!");
+        {            
             OnPlayerDead?.Invoke();
+            //TODO: esperar un ratito antes de pasar al estado de GameOver, para que los sonidos se alcancen a reproducir bien.
+            CurrentState = GameState.GameOver;
         }
     }
 

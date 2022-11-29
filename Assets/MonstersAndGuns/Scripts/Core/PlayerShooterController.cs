@@ -15,11 +15,22 @@ public class PlayerShooterController : ShooterController
     private void OnEnable()
     {
         GameManager.Instance.OnBattling += BattleHandler;
+        GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
+
     }
+
+    
 
     private void OnDisable()
     {
         GameManager.Instance.OnBattling -= BattleHandler;
+        GameManager.Instance.OnPlayerDead -= PlayerDeadHandler;
+    }
+
+    private void PlayerDeadHandler()
+    {
+        StopAllCoroutines();
+        bulletFactory.gameObject.SetActive(false);
     }
 
     private void BattleHandler(List<MonsterController> monsters, int level)

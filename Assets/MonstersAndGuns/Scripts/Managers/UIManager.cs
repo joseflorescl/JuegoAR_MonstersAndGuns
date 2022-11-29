@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,24 +6,38 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private float timeToFade = 2f;
-    [SerializeField] private Image backgroundImage;
+    [Header("UI Game Panels")]
+    [SerializeField] private GameObject backgroundPanel;
     [SerializeField] private GameObject mainPanel;
     [SerializeField] private GameObject portalCreationPanel;
+    [SerializeField] private GameObject HUDPanel;
     [SerializeField] private GameObject battlePanel;
+    [SerializeField] private GameObject gameOverPanel;
+
+    [Space(10)]
+    [Header("UI Elements")]
+    [SerializeField] private Image backgroundImage;    
     [SerializeField] private GameObject pointAtFloorMessage;
     [SerializeField] private GameObject tapToPlacePortalMessage;
-    [SerializeField] private float secondsToDeactivateGOMessage = 1;
     [SerializeField] private GameObject goMessage;
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private Image healthBarImage;
+    [SerializeField] private Image splatImage;
+
+    [Space(10)]
+    [Header("Settings")]
+    [SerializeField] private Sprite[] splatSprites;
+    [SerializeField] private float secondsToDeactivateGOMessage = 1;
+    [SerializeField] private float timeToFadeBackground = 2f;
+    [SerializeField] private float timeToFadeSplat = 1f;
+    [SerializeField] private int splatImageRandomOffset = 200;
 
 
     GameObject[] messagesPanelCenter;
 
     private void Awake()
     {
-        messagesPanelCenter = new GameObject[] { mainPanel, portalCreationPanel, battlePanel };
+        messagesPanelCenter = new GameObject[] { backgroundPanel, mainPanel, portalCreationPanel, HUDPanel, battlePanel, gameOverPanel };
         HideAllMessages();
     }
 
@@ -39,6 +52,12 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.GameStarted();
     }
 
+    public void RestartGame()
+    {
+        //TODO
+        print("Restart");
+    }
+
     private void OnEnable()
     {
         GameManager.Instance.OnMainMenuActivating += MainMenuHandler;
@@ -48,11 +67,8 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnBattling += BattlingHandler;
         GameManager.Instance.OnPlayerDamage += PlayerDamageHandler;
         GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
-
-
+        GameManager.Instance.OnGameOver += GameOverHandler;
     }
-
-    
 
     private void OnDisable()
     {
@@ -63,7 +79,17 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnBattling -= BattlingHandler;
         GameManager.Instance.OnPlayerDamage -= PlayerDamageHandler;
         GameManager.Instance.OnPlayerDead -= PlayerDeadHandler;
+        GameManager.Instance.OnGameOver -= GameOverHandler;
 
+    }
+
+    private void GameOverHandler()
+    {        
+        HideAllMessages();
+        backgroundPanel.SetActive(true);
+        //TODO: tal vez hay que hacer un fade del background...
+        HUDPanel.SetActive(true);
+        gameOverPanel.SetActive(true);
     }
 
     private void PlayerDeadHandler()
@@ -74,20 +100,34 @@ public class UIManager : MonoBehaviour
     private void PlayerDamageHandler(float currentHealthPercentage)
     {
         healthBarImage.fillAmount = currentHealthPercentage;
+        ShowSplatBlood();
+    }
+
+    void ShowSplatBlood()
+    {
+        int x = Random.Range(splatImageRandomOffset, Screen.width - splatImageRandomOffset);
+        int y = Random.Range(splatImageRandomOffset, Screen.height - splatImageRandomOffset);
+        splatImage.transform.position = new Vector3(x, y, 0); // el ancla está en el centro
+
+        int idx = Random.Range(0, splatSprites.Length);
+        splatImage.sprite = splatSprites[idx];
+        splatImage.canvasRenderer.SetAlpha(1f);
+        splatImage.CrossFadeAlpha(0f, timeToFadeSplat, true);
     }
 
     private void BattlingHandler(List<MonsterController> monsters, int level)
     {
         StartCoroutine(BattlingRoutine(level));
-        
     }
 
     IEnumerator BattlingRoutine(int level)
     {
         HideAllMessages();
+        HUDPanel.SetActive(true);
         battlePanel.SetActive(true);
         levelText.text = level.ToString();
         healthBarImage.fillAmount = 1f; // Por ahora se asume simplemente que cuando parte un nuevo level la salud está a full
+        splatImage.canvasRenderer.SetAlpha(0f);
         yield return new WaitForSeconds(secondsToDeactivateGOMessage); // Después de un ratito desactivar el texto de GO!
         goMessage.SetActive(false);
     }
@@ -106,8 +146,9 @@ public class UIManager : MonoBehaviour
     private void MainMenuHandler()
     {
         HideAllMessages();
+        backgroundPanel.SetActive(true);
         mainPanel.SetActive(true);
-        FadeBackground();
+        FadeBackground(0f);
     }
 
     private void PortalCreatingHandler()
@@ -116,10 +157,9 @@ public class UIManager : MonoBehaviour
         portalCreationPanel.SetActive(true);
     }
 
-    void FadeBackground()
+    void FadeBackground(float targetAlpha)
     {
-        float targetAlpha = 0f;
-        backgroundImage.CrossFadeAlpha(targetAlpha, timeToFade, true);
+        backgroundImage.CrossFadeAlpha(targetAlpha, timeToFadeBackground, true);
     }
 
     void HideAllMessages()

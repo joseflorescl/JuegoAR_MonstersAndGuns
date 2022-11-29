@@ -9,11 +9,22 @@ public class BattleManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.Instance.OnBattling += BattleHandler;
+        GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
+
     }
+
+    
 
     private void OnDisable()
     {
         GameManager.Instance.OnBattling -= BattleHandler;
+        GameManager.Instance.OnPlayerDead -= PlayerDeadHandler;
+
+    }
+
+    private void PlayerDeadHandler()
+    {
+        StopAllCoroutines();
     }
 
 
