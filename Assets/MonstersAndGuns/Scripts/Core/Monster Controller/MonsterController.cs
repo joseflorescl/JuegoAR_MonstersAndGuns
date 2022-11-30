@@ -2,66 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public enum MonsterColor { White, Red, Green, Blue, Yellow }
-public enum MonsterState { Idle, GoUp, Patrol, Attack }
-
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(Collider))]
-public class MonsterController : MonoBehaviour
-{
-    [SerializeField] private MonsterData monsterData;
-
-    MonsterState currentState;
-
-    public int Score => monsterData.scorePoints;
-    public MonsterColor CurrentColor => currentState == MonsterState.Attack ? monsterData.attackColor : monsterData.initialColor;
-    public Vector3 ExplosionPosition => rend.bounds.center; // Por ahora es el centro del mesh renderer, pero se podría elegir otra posicion adhoc
-
-    public MonsterState CurrentState
-    {
-        get { return currentState; }
-        private set
-        {
-            currentState = value;
-            StopAllCoroutines();
-
-            switch (currentState)
-            {
-                case MonsterState.Idle:
-                    break; // No se hace nada
-                case MonsterState.GoUp:
-                    StartCoroutine(GoUpCoroutine());
-                    break;
-                case MonsterState.Patrol:
-                    StartCoroutine(PatrolRoutine());
-                    break;
-                case MonsterState.Attack:
-                    StartCoroutine(AttackRoutine());
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    Rigidbody rb;
-    Animator anim;
-    Collider coll;
-    Renderer rend;
-    Vector3 kinematicVelocity;
-    Vector3 firstPointPatrolling;
-
-
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-        anim = GetComponent<Animator>();
-        coll = GetComponent<Collider>();
-        rend = GetComponentInChildren<Renderer>();
-    }
-
+public class MonsterController : BaseMonsterController
+{    
     private void Start()
     {
         GameManager.Instance.MonsterCreated(this);
@@ -70,6 +12,31 @@ public class MonsterController : MonoBehaviour
             CurrentState = MonsterState.Idle;
         else
             CurrentState = MonsterState.GoUp;
+    }
+
+    protected override void Idle()
+    {
+        // NADA
+    }
+
+    protected override void GoUp()
+    {
+        StartCoroutine(GoUpCoroutine());
+    }
+
+    protected override void Patrol()
+    {
+        StartCoroutine(PatrolRoutine());
+    }
+
+    protected override void Attack()
+    {
+        StartCoroutine(AttackRoutine());
+    }
+
+    public void DoAttack()
+    {
+        CurrentState = MonsterState.Attack; // El paso a estado Attack es controlado por el BattleManager
     }
 
     IEnumerator GoUpCoroutine()
@@ -107,11 +74,7 @@ public class MonsterController : MonoBehaviour
         return direction;
     }
 
-    void FaceInitialDirection()
-    {
-        if (monsterData.faceInitialDirection)
-            transform.rotation = Quaternion.LookRotation(kinematicVelocity);
-    }
+    
 
     IEnumerator PatrolRoutine()
     {
@@ -124,7 +87,7 @@ public class MonsterController : MonoBehaviour
 
         var targetPosition = firstPointPatrolling;
 
-        while (currentState == MonsterState.Patrol)
+        while (CurrentState == MonsterState.Patrol)
         {
             var direction = targetPosition - transform.position;
             kinematicVelocity = direction.normalized * monsterData.speed;
@@ -166,10 +129,7 @@ public class MonsterController : MonoBehaviour
         yield break;
     }
 
-    public void Attack()
-    {
-        CurrentState = MonsterState.Attack; // El paso a estado Attack es controlado por el BattleManager
-    }
+   
 
     IEnumerator AttackRoutine()
     {
@@ -185,27 +145,6 @@ public class MonsterController : MonoBehaviour
             kinematicVelocity = direction.normalized * monsterData.attackSpeed;
             yield return new WaitForSeconds(monsterData.secondsToAdjustDirection);
         }
-    }
-
-    private void Update()
-    {
-        if (CurrentState == MonsterState.Idle) return;
-
-        RotateTowardsToVelocity();
-    }
-
-    private void FixedUpdate()
-    {
-        if (CurrentState == MonsterState.Idle) return;
-
-        rb.MovePosition(transform.position + kinematicVelocity * Time.deltaTime);
-    }
-
-    void RotateTowardsToVelocity()
-    {
-        var deltaRotation = monsterData.turnSpeed * Time.deltaTime;
-        var targetRotation = Quaternion.LookRotation(kinematicVelocity);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, deltaRotation);
     }
 
     Vector3 GetRandomVectorUp(float maxDeviationRandomVectorUp)
@@ -236,11 +175,6 @@ public class MonsterController : MonoBehaviour
         targetPosition = portal.transform.TransformPoint(targetPosition);  // Esta posición ahora se debe orientar c/r al portal
 
         return targetPosition;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawRay(transform.position, kinematicVelocity);
     }
 
 }

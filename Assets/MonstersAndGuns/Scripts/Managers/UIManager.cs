@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject battlePanel;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject vfxPanel;
+    [SerializeField] private GameObject warningBossBattlePanel;
 
     [Space(10)]
     [Header("UI Elements")]
@@ -33,6 +34,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float timeToFadeBackground = 2f;
     [SerializeField] private float timeToFadeSplat = 1f;
     [SerializeField] private int splatImageRandomOffset = 200;
+    [SerializeField] private int showWarningBossBattleCount = 4;
+    [SerializeField] private float blinkingDelayWarningBossBattle = 0.5f;
 
 
     GameObject[] messagesPanelCenter;
@@ -40,7 +43,7 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        messagesPanelCenter = new GameObject[] { backgroundPanel, mainPanel, portalCreationPanel, HUDPanel, battlePanel, gameOverPanel, vfxPanel };
+        messagesPanelCenter = new GameObject[] { backgroundPanel, mainPanel, portalCreationPanel, HUDPanel, battlePanel, gameOverPanel, vfxPanel, warningBossBattlePanel };
         HideAllMessages();
     }
 
@@ -74,6 +77,8 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
         GameManager.Instance.OnGameOver += GameOverHandler;
         GameManager.Instance.OnScoreUpdated += ScoreUpdatedHandler;
+        GameManager.Instance.OnBossBattle += BossBattleHandler;
+
 
     }
 
@@ -90,8 +95,35 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnPlayerDead -= PlayerDeadHandler;
         GameManager.Instance.OnGameOver -= GameOverHandler;
         GameManager.Instance.OnScoreUpdated -= ScoreUpdatedHandler;
+        GameManager.Instance.OnBossBattle -= BossBattleHandler;
+
 
     }
+
+    private void BossBattleHandler()
+    {
+        StartCoroutine(BossBattleHandlerRoutine());
+    }
+
+    IEnumerator BossBattleHandlerRoutine()
+    {                
+        yield return new WaitForSeconds(blinkingDelayWarningBossBattle); // Se espera un poquito para esperar la explosión del último monstruo
+
+        backgroundPanel.SetActive(true);
+        FadeGraphic(backgroundImage, 1f, 0.5f, timeToFadeBackground);
+
+        bool state = true;
+        for (int i = 0; i < showWarningBossBattleCount*2; i++)
+        {
+            warningBossBattlePanel.SetActive(state);
+            yield return new WaitForSeconds(blinkingDelayWarningBossBattle);
+            state = !state;
+        }
+
+        backgroundPanel.SetActive(false);
+
+    }
+
 
     private void ScoreUpdatedHandler(int score)
     {

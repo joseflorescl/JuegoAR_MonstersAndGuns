@@ -8,6 +8,7 @@ public class MonsterData : ScriptableObject
     public float speed = 2f;    
     public float turnSpeed = 90f;
     public int scorePoints = 100;
+    public bool rotateTowardsVelocity = true;
 
     [Header("Go Up State")]
     public bool faceInitialDirection = true;

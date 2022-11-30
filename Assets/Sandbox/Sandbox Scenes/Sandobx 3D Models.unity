@@ -598,9 +598,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c434d8822835948b8ba3af025bba23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManagerData: {fileID: 0}
   canvasLoading: {fileID: 0}
-  scenesToLoad: []
-  waitBeforeInitBattle: 2
 --- !u!4 &509026124
 Transform:
   m_ObjectHideFlags: 0
@@ -7365,6 +7364,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06e72b04a01f2d94d8753fbf2c44ed4e, type: 3}
+--- !u!1001 &7661249406146413889
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1400900077538849546, guid: 73a479f191587d84783694e8b40856c5,
+        type: 3}
+      propertyPath: m_Name
+      value: Demo Boss Monster 50cm
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620479435826600522, guid: 73a479f191587d84783694e8b40856c5,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620479435826600522, guid: 73a479f191587d84783694e8b40856c5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620479435826600522, guid: 73a479f191587d84783694e8b40856c5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620479435826600522, guid: 73a479f191587d84783694e8b40856c5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620479435826600522, guid: 73a479f191587d84783694e8b40856c5,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620479435826600522, guid: 73a479f191587d84783694e8b40856c5,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620479435826600522, guid: 73a479f191587d84783694e8b40856c5,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620479435826600522, guid: 73a479f191587d84783694e8b40856c5,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620479435826600522, guid: 73a479f191587d84783694e8b40856c5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620479435826600522, guid: 73a479f191587d84783694e8b40856c5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8620479435826600522, guid: 73a479f191587d84783694e8b40856c5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 73a479f191587d84783694e8b40856c5, type: 3}
 --- !u!1 &8409922624490997530
 GameObject:
   m_ObjectHideFlags: 0

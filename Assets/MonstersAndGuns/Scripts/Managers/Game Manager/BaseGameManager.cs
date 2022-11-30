@@ -27,6 +27,7 @@ public abstract class BaseGameManager : MonoBehaviour
     public event Action OnRestart;
     public event Action<int> OnScoreUpdated;
     public event Action OnMonstersSpawned;
+    public event Action OnBossBattle;
 
     protected void RaiseMainMenuActivating() => OnMainMenuActivating?.Invoke();
     protected void RaisePortalCreating() => OnPortalCreating?.Invoke();
@@ -44,6 +45,7 @@ public abstract class BaseGameManager : MonoBehaviour
     protected void RaiseRestart() => OnRestart?.Invoke();
     protected void RaiseScoreUpdated(int score) => OnScoreUpdated?.Invoke(score);
     protected void RaiseMonstersSpawned() => OnMonstersSpawned?.Invoke();
+    protected void RaiseBossBattle() => OnBossBattle?.Invoke();
 
     protected Transform portal;
     protected Camera arCamera;

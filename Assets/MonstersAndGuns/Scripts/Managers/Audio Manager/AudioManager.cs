@@ -2,13 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : BaseAudioManager
 {
-
-    [SerializeField] private AudioSource BGMAudioSource;
     [SerializeField] private AudioSource SFXAudioSource;
     [SerializeField] private AudioSource SFXVoiceAudioSource;
-    [SerializeField] private float pitchVariation = 0.2f;
 
     [Header("BGM Sounds")]
     public AudioClip[] mainMenuMusic;
@@ -30,14 +27,6 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private float volumeScalePlayerDead = 1f;
     [SerializeField] private float delayPlayerDeadSound = 0.2f;
 
-
-    HashSet<AudioClip> clipsPlayedThisFrame;
-    Coroutine audioRoutine;
-
-    private void Awake() => clipsPlayedThisFrame = new HashSet<AudioClip>();
-
-    private void LateUpdate() => clipsPlayedThisFrame.Clear();
-
     private void OnEnable()
     {
         GameManager.Instance.OnMainMenuActivating += MainMenuHandler;
@@ -51,12 +40,7 @@ public class AudioManager : MonoBehaviour
         GameManager.Instance.OnGameOver += GameOverHandler;
         GameManager.Instance.OnMonstersSpawned += MonstersSpawnedHandler;
         GameManager.Instance.OnSpawning += SpawningHandler;
-
-
-
     }
-
-    
 
     private void OnDisable()
     {
@@ -80,7 +64,6 @@ public class AudioManager : MonoBehaviour
 
     private void MonstersSpawnedHandler()
     {
-        print("Battle Music");
         PlayBattleMusic();
     }
 
@@ -88,7 +71,6 @@ public class AudioManager : MonoBehaviour
     {
         PlayRandomSound(goSound, SFXAudioSource);
     }
-
 
     private void GameOverHandler()
     {
@@ -106,9 +88,6 @@ public class AudioManager : MonoBehaviour
         PlayRandomSoundWithDelay(playerDamage, SFXVoiceAudioSource, delayPlayerDamageSound, randomPitch: true, volumeScale: volumeScalePlayerDamage);
     }
 
-
-
-
     private void GunFiredHandler(int obj)
     {
         PlayRandomSound(gunFired, SFXAudioSource, randomPitch: false, volumeScale: volumeScaleGunFired);
@@ -119,14 +98,10 @@ public class AudioManager : MonoBehaviour
         PlayRandomSound(monsterExplosions, SFXAudioSource);
     }
 
-    
-
     private void MonsterCreatedHandler()
     {
         PlayRandomSound(popSound, SFXAudioSource, randomPitch: true);
     }
-
-
 
     private void MainMenuHandler()
     {
@@ -169,73 +144,6 @@ public class AudioManager : MonoBehaviour
         StopAudioRoutine();
         var clip = GetRandomClip(gameOverMusic);
         PlayBGMMusic(clip, false);
-    }
-
-
-    // Las funciones sgtes son genéricas para cualquier juego - - - - - - - -
-    private float PlayRandomSound(AudioClip[] clips, AudioSource audioSource, bool randomPitch = false, float volumeScale = 1f)
-    {
-        if (clips == null || clips.Length == 0) return 0f; // Programación defensiva nunca está de más
-        var clip = GetRandomClip(clips);
-        SFXPlayOneShot(clip, audioSource, randomPitch, volumeScale);
-        return clip.length;
-    }
-
-
-    void PlayRandomSoundWithDelay(AudioClip[] clips, AudioSource audioSource, float delay, bool randomPitch = false, float volumeScale = 1f)
-    {
-        StartCoroutine(PlayRandomSoundWithDelayRoutine(clips, audioSource, delay, randomPitch, volumeScale));
-    }
-
-    IEnumerator PlayRandomSoundWithDelayRoutine(AudioClip[] clips, AudioSource audioSource, float delay, bool randomPitch = false, float volumeScale = 1f)
-    {
-        yield return new WaitForSeconds(delay);
-        PlayRandomSound(clips, audioSource, randomPitch, volumeScale);
-    }
-
-    private AudioClip GetRandomClip(AudioClip[] audioClips)
-    {
-        int randomIdx = Random.Range(0, audioClips.Length);
-        return audioClips[randomIdx];
-    }
-
-    private void SFXPlayOneShot(AudioClip clip, AudioSource audioSource, bool randomPitch = false, float volumeScale = 1f)
-    {
-        if (!clipsPlayedThisFrame.Contains(clip))
-        {
-            SFXAudioSource.pitch = randomPitch ? GetRandomPitch() : 1f;
-            audioSource.PlayOneShot(clip, volumeScale);
-            clipsPlayedThisFrame.Add(clip);
-
-            //print("SFXPlayOneShot " + clip.name + " pitch: " + SFXAudioSource.pitch + " volume: " + volumeScale);
-            
-        }
-    }
-
-    float GetRandomPitch()
-    {
-        return Random.Range(1f - pitchVariation, 1f + pitchVariation);
-    }
-
-
-    private void PlayBGMMusic(AudioClip clip, bool loop)
-    {
-        BGMAudioSource.loop = loop;
-        BGMAudioSource.Stop();
-        BGMAudioSource.clip = clip;
-        BGMAudioSource.Play();
-    }
-
-    private void StopAudioRoutine()
-    {
-        if (audioRoutine != null)
-            StopCoroutine(audioRoutine);
-    }
-
-    private void StopGameMusic()
-    {
-        StopAudioRoutine();
-        BGMAudioSource.Stop();
     }
 
 }

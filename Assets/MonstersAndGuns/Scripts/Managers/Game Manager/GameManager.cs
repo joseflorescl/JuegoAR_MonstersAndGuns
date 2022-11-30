@@ -61,8 +61,9 @@ public class GameManager : BaseGameManager
     }
 
     protected override void BossBattle()
-    {
-        //TODO
+    {       
+        print("Se inicia la batalla con el Boss");
+        RaiseBossBattle();
     }
 
     protected override void GameOver()

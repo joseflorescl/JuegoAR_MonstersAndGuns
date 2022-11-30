@@ -5,30 +5,50 @@ using System;
 
 public class SpawnerManager : MonoBehaviour
 {
-    [SerializeField] private SpawnerManagerData data;   
+    [SerializeField] private SpawnerManagerData data;
+
+    int currentLevel;
+    MonstersByLevel currentMonstersByLevel;
+
+
 
     private void OnEnable()
     {
         GameManager.Instance.OnSpawning += SpawningHandler;
-    }
+        GameManager.Instance.OnBossBattle += BossBattleHandler;
+    }    
 
     private void OnDisable()
     {
         GameManager.Instance.OnSpawning -= SpawningHandler;
+        GameManager.Instance.OnBossBattle -= BossBattleHandler;
     }
 
 
     private void SpawningHandler(int level, Vector3 position, Quaternion rotation)
     {
-        StartCoroutine(MonstersSpawningRoutine(level, position, rotation));
+        currentLevel = level;
+        StartCoroutine(MonstersSpawningRoutine(position, rotation));
     }
 
-    IEnumerator MonstersSpawningRoutine(int level, Vector3 position, Quaternion rotation)
+    private void BossBattleHandler()
+    {
+        StartCoroutine(BossBattleRoutine());
+    }
+
+    IEnumerator BossBattleRoutine()
+    {
+        yield return new WaitForSeconds(data.delaySpawningBossMonster);
+        Instantiate(currentMonstersByLevel.bossMonsterPrefab, GameManager.Instance.Portal.position, GameManager.Instance.Portal.rotation);
+    }
+
+    IEnumerator MonstersSpawningRoutine(Vector3 position, Quaternion rotation)
     {
         WaitForSeconds waitBetweenMonsters = new WaitForSeconds(data.spawnTimeBetweenMonsters);
-        level = Mathf.Clamp(level, 1, data.monstersByLevels.Length);
-        var levelMonsters = data.monstersByLevels[level - 1];
-        var initialMonsters = levelMonsters.initialMonsters;
+        currentLevel = Mathf.Clamp(currentLevel, 1, data.monstersByLevels.Length);
+        currentMonstersByLevel = data.monstersByLevels[currentLevel - 1];
+
+        var initialMonsters = currentMonstersByLevel.initialMonsters;
 
         for (int i = 0; i < initialMonsters.Length; i++)
         {

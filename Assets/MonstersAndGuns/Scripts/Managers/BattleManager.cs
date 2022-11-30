@@ -42,7 +42,7 @@ public class BattleManager : MonoBehaviour
                 var monster = monsters[i];
                 if (monster.CurrentState == MonsterState.Patrol)
                 {
-                    monster.Attack();
+                    monster.DoAttack();
                     break;
                 }
             }
