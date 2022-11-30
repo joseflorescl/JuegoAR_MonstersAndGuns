@@ -508,6 +508,7 @@ RectTransform:
   - {fileID: 401971627}
   - {fileID: 1232587906}
   - {fileID: 296302291}
+  - {fileID: 1778968399}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1337,6 +1338,7 @@ MonoBehaviour:
   HUDPanel: {fileID: 401971626}
   battlePanel: {fileID: 1232587905}
   gameOverPanel: {fileID: 296302290}
+  vfxPanel: {fileID: 1778968398}
   backgroundImage: {fileID: 1130159148}
   pointAtFloorMessage: {fileID: 304063661}
   tapToPlacePortalMessage: {fileID: 316781142}
@@ -1344,6 +1346,7 @@ MonoBehaviour:
   levelText: {fileID: 375735883}
   healthBarImage: {fileID: 334838453}
   splatImage: {fileID: 1524877663}
+  scoreText: {fileID: 1871495487}
   splatSprites:
   - {fileID: 21300000, guid: c7f1daac3d3ddca44a3b344a24839ed5, type: 3}
   - {fileID: 21300000, guid: 4799e0dd618733548b306f6b4dfadf7c, type: 3}
@@ -2283,7 +2286,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1232587906
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2297,7 +2300,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1593303225}
-  - {fileID: 1524877665}
   m_Father: {fileID: 194715161}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2939,13 +2941,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1524877662}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1232587906}
-  m_RootOrder: 1
+  m_Father: {fileID: 1778968399}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3438,6 +3440,43 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1698808746}
   m_CullTransparentMesh: 1
+--- !u!1 &1778968398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1778968399}
+  m_Layer: 5
+  m_Name: VFX Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1778968399
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778968398}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1524877665}
+  m_Father: {fileID: 194715161}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1834618323
 GameObject:
   m_ObjectHideFlags: 0

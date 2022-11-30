@@ -24,19 +24,28 @@ public class DebugManager : MonoBehaviour
         GameManager.Instance.OnMonsterCreated += MonsterCreatedHandler;
         GameManager.Instance.OnMonsterDead += MonsterDeadHandler;
         GameManager.Instance.OnGunFired += GunFiredHandler;
+        GameManager.Instance.OnRestart += RestartHandler;
+
     }
+
+    
 
     private void OnDisable()
     {
         GameManager.Instance.OnMonsterCreated -= MonsterCreatedHandler;
         GameManager.Instance.OnMonsterDead -= MonsterDeadHandler;
         GameManager.Instance.OnGunFired -= GunFiredHandler;
+        GameManager.Instance.OnRestart -= RestartHandler;
+    }
+
+    private void RestartHandler()
+    {
+        UpdateMonsterCount(0);
     }
 
     private void MonsterCreatedHandler()
     {
-        monsterCount++;
-        monsterCountText.text = monsterCount.ToString();
+        UpdateMonsterCount(monsterCount + 1);
     }
 
     private void GunFiredHandler(int gunIndex)
@@ -46,15 +55,20 @@ public class DebugManager : MonoBehaviour
 
     private void MonsterDeadHandler(MonsterController monsterDead)
     {
-        monsterCount--;
+        UpdateMonsterCount(monsterCount - 1);
+    }
+
+    void UpdateMonsterCount(int count)
+    {
+        monsterCount = count;
         monsterCountText.text = monsterCount.ToString();
     }
 
-   
-    
+
+
     private void Update()
     {
-        var pos = GameManager.Instance.PlayerPosition();
+        var pos = GameManager.Instance.PlayerPosition;
         playerPositionText.text = pos.ToString();
     }
 

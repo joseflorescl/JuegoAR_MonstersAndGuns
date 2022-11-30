@@ -26,21 +26,26 @@ public class ARPortalCreator : MonoBehaviour
     private void Start()
     {
         portal = Instantiate(portalPrefab);
-        portal.SetActive(false);
-        arPlaneManager.enabled = false;
-        isCreatingPortal = false;
+        RestartHandler();
     }
 
     private void OnEnable()
     {
         GameManager.Instance.OnPortalCreating += PortalCreationHandler;
+        GameManager.Instance.OnRestart += RestartHandler;
     }
 
     private void OnDisable()
     {
         GameManager.Instance.OnPortalCreating -= PortalCreationHandler;
+        GameManager.Instance.OnRestart -= RestartHandler;
     }
 
+    private void RestartHandler()
+    {
+        portal.SetActive(false);
+        InitPortalCreation(false);
+    }
 
     private void PortalCreationHandler()
     {
@@ -48,12 +53,11 @@ public class ARPortalCreator : MonoBehaviour
         StartCoroutine(PortalCreationRoutine());
     }
 
-
     IEnumerator PortalCreationRoutine()
     {
-        isCreatingPortal = true;
-        arPlaneManager.enabled = true;
-        var arCamera = GameManager.Instance.ARCamera();
+        InitPortalCreation(true);
+
+        var arCamera = GameManager.Instance.ARCamera;
 
         Vector2 middleScreenPoint = arCamera.ViewportToScreenPoint(new Vector2(0.5f, 0.5f));
 
@@ -87,15 +91,22 @@ public class ARPortalCreator : MonoBehaviour
         }
 
         arPlaneManager.enabled = false;
+        arRaycastManager.enabled = false;
 
         GameManager.Instance.PortalCreated(portal.transform);
     }
-    
 
     private void SetStatusPortal(bool status)
     {
         portal.SetActive(status);
         GameManager.Instance.StatusPortal(status);
+    }
+
+    void InitPortalCreation(bool value)
+    {
+        arPlaneManager.enabled = value;
+        arRaycastManager.enabled = value;
+        isCreatingPortal = value;
     }
 
 }

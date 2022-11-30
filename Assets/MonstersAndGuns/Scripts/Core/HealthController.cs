@@ -14,29 +14,32 @@ public class HealthController : MonoBehaviour, IDamageable
 
     private void Awake()
     {
+        RestoreHealth();
+    }
+
+    public void RestoreHealth()
+    {
         health = maxHealth;
     }
 
-
-    public void Damage(float damage)
+    public void Damage(float damage, DamageMode mode)
     {
         if (IsDead) return;
 
         health -= damage;
 
         if (health <= 0)
-            Dead();
+            Dead(mode);
         else
-            ReceiveDamage();
+            ReceiveDamage(mode);
     }
 
-    void Dead()
+    void Dead(DamageMode mode)
     {
-        GameManager.Instance.DeadNotification(this);
-        
+        GameManager.Instance.DeadNotification(this, mode);
     }
 
-    void ReceiveDamage()
+    void ReceiveDamage(DamageMode mode)
     {
         GameManager.Instance.DamageNotification(this);
     }

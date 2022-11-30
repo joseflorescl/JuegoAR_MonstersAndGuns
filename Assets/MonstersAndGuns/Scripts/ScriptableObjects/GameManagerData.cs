@@ -7,4 +7,5 @@ public class GameManagerData : ScriptableObject
 {
     public string[] scenesToLoad;
     public float waitBeforeInitBattle = 2f;
+    public float waitBeforeGameOver = 1f;
 }

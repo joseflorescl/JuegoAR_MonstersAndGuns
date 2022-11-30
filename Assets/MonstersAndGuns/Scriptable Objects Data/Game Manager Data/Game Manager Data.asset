@@ -18,3 +18,4 @@ MonoBehaviour:
   - UI
   - Debug Game
   waitBeforeInitBattle: 2
+  waitBeforeGameOver: 2

@@ -10,16 +10,12 @@ public class BattleManager : MonoBehaviour
     {
         GameManager.Instance.OnBattling += BattleHandler;
         GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
-
     }
-
-    
 
     private void OnDisable()
     {
         GameManager.Instance.OnBattling -= BattleHandler;
         GameManager.Instance.OnPlayerDead -= PlayerDeadHandler;
-
     }
 
     private void PlayerDeadHandler()
@@ -36,7 +32,6 @@ public class BattleManager : MonoBehaviour
     IEnumerator BattleRoutine(List<MonsterController> monsters, int currentLevel)
     {
         var secondsToAttack = secondsToAttackLevel1 / currentLevel; // TODO: esto se podría controlar por una curva de animación y agregar algo de random
-        
 
         while (monsters.Count > 0)
         {

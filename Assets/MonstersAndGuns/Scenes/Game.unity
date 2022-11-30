@@ -657,8 +657,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 29407ca7a42581c4aa5d206d87120aaf, type: 3}
   - {fileID: 8300000, guid: a6d8e18ce760bc74fa23830de55fcd18, type: 3}
   - {fileID: 8300000, guid: 30e85a04d16ce0a48beedf1e397d0e70, type: 3}
-  battleMusic:
   - {fileID: 8300000, guid: b469c9cbc59973e48b8d0f32720f5ffe, type: 3}
+  battleMusic:
   - {fileID: 8300000, guid: 9a5ef0678558cbb459486849b6dd2ba4, type: 3}
   - {fileID: 8300000, guid: 0d2d46858fb6386468bcf06558973b46, type: 3}
   gameOverMusic:
@@ -682,6 +682,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: be9fa5468ddfeda4bbdba4f3b8595b5c, type: 3}
   gunFired:
   - {fileID: 8300000, guid: 251fef16b5831af44ac43e7b5ea68a83, type: 3}
+  goSound:
+  - {fileID: 8300000, guid: 25c87f4cf19299a4d9e6c7980fd607fd, type: 3}
   volumeScaleGunFired: 0.5
   playerDamage:
   - {fileID: 8300000, guid: efb7376f2843c404d9b901906ace4ad2, type: 3}

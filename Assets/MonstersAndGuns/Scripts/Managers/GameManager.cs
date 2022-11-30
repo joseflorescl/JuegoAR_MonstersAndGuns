@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public enum GameState { Initialization, MainMenu, PortalCreation, Spawning, Battle, BossBattle, GameOver, Win, Exit }
+    const string GAMEDATA_KEY = "MonstersAndGunsData";
+    public enum GameState { Initialization, MainMenu, PortalCreation, Spawning, Battle, BossBattle, GameOver, Win, Exit, Restart }
 
     [SerializeField] private GameManagerData gameManagerData;
     [SerializeField] private GameObject canvasLoading;
@@ -29,6 +30,8 @@ public class GameManager : MonoBehaviour
     public event Action<bool> OnStatusPortalChanged; // La idea es que la UI refleje cuando el portal está activo/inactivo con un texto diferente en cada caso
     public event Action<int> OnGunFired;
     public event Action OnGameOver;
+    public event Action OnRestart;
+    public event Action<int> OnScoreUpdated;
 
 
     // Será singleton
@@ -40,11 +43,26 @@ public class GameManager : MonoBehaviour
 
     SceneController sceneController;
     GameState currentState;
-    int currentLevel;
     GameObject player;
     Transform portal;
     List<MonsterController> monsters;
     Camera arCamera;
+    GameplayData gameplayData;
+
+    public Transform Portal => portal;
+    public Camera ARCamera => arCamera;
+    public Vector3 PlayerForward => player.transform.forward;
+    public Vector3 PlayerPosition => player ? player.transform.position : Vector3.zero;
+
+    private int Score 
+    {
+        get { return gameplayData.Score; }
+        set 
+        { 
+            gameplayData.Score = value;
+            OnScoreUpdated?.Invoke(gameplayData.Score);
+        }
+    }
 
     GameState CurrentState
     {
@@ -67,7 +85,7 @@ public class GameManager : MonoBehaviour
                     OnPortalCreating?.Invoke();
                     break;
                 case GameState.Spawning:
-                    OnSpawning?.Invoke(currentLevel, portal.position, portal.rotation);
+                    OnSpawning?.Invoke(gameplayData.Level, portal.position, portal.rotation);
                     break;
                 case GameState.Battle:
                     StartCoroutine(BattleRoutine());
@@ -75,11 +93,14 @@ public class GameManager : MonoBehaviour
                 case GameState.BossBattle:
                     break;
                 case GameState.GameOver:
-                    OnGameOver?.Invoke();
+                    StartCoroutine(GameOverRoutine(gameManagerData.waitBeforeGameOver));
                     break;
                 case GameState.Win:
                     break;
                 case GameState.Exit:
+                    break;
+                case GameState.Restart:
+                    Restart();
                     break;
                 default:
                     break;
@@ -90,7 +111,7 @@ public class GameManager : MonoBehaviour
     IEnumerator BattleRoutine()
     {        
         yield return new WaitForSeconds(gameManagerData.waitBeforeInitBattle); // Se les da tiempo a los monsters de moverse un poco antes de dispararles
-        OnBattling?.Invoke(monsters, currentLevel);
+        OnBattling?.Invoke(monsters, gameplayData.Level);
     }
 
 
@@ -117,7 +138,14 @@ public class GameManager : MonoBehaviour
         if (currentState != GameState.MainMenu) return;
 
         CurrentState = GameState.PortalCreation;        
-    }    
+    }
+
+    public void GameRestarted()
+    {
+        if (currentState != GameState.GameOver) return;
+
+        CurrentState = GameState.Restart;
+    }
 
     public void PortalCreated(Transform portal)
     {
@@ -135,21 +163,36 @@ public class GameManager : MonoBehaviour
         CurrentState = GameState.Battle;        
     }
 
-    public void DeadNotification(HealthController deadObject)
+    public void DeadNotification(HealthController deadObject, DamageMode damageMode)
     {
         if (deadObject.CompareTag("Monster"))
         {
             var monster = deadObject.GetComponent<MonsterController>();
+
+            if (damageMode == DamageMode.Shooting)
+                Score += monster.Score;
+
             monsters?.Remove(monster);
             OnMonsterDead?.Invoke(monster);
             Destroy(deadObject.gameObject);
+            
+            if (monsters.Count == 0)
+            {
+                CurrentState = GameState.BossBattle;
+            }
+
         }
         else if (deadObject.CompareTag("Player"))
         {            
             OnPlayerDead?.Invoke();
-            //TODO: esperar un ratito antes de pasar al estado de GameOver, para que los sonidos se alcancen a reproducir bien.
             CurrentState = GameState.GameOver;
         }
+    }
+
+    IEnumerator GameOverRoutine(float delayGameOver)
+    {
+        yield return new WaitForSeconds(delayGameOver);
+        OnGameOver?.Invoke();
     }
 
     public void DamageNotification(HealthController deadObject)
@@ -162,32 +205,6 @@ public class GameManager : MonoBehaviour
         {
             OnPlayerDamage?.Invoke(deadObject.CurrentHealthPercentage);
         }
-    }
-
-    public Vector3 PlayerPosition()
-    {
-        if (player)
-            return player.transform.position;
-        else
-        {
-            print("No Player yet");
-            return Vector3.zero;
-        }
-    }
-
-    public Vector3 PlayerForward()
-    {
-        return player.transform.forward;
-    }
-
-    public Transform Portal()
-    {
-        return portal;
-    }
-
-    public Camera ARCamera()
-    {
-        return arCamera;
     }
 
     public void StatusPortal(bool status)
@@ -215,10 +232,26 @@ public class GameManager : MonoBehaviour
             yield return sceneController.LoadSceneAdditive(gameManagerData.scenesToLoad[i]);        
         }
 
-        currentLevel = 1;
         player = GameObject.FindGameObjectWithTag("Player");
         arCamera = Camera.main;
+        gameplayData = GameDataRepository.GetById(GAMEDATA_KEY);
+        OnScoreUpdated?.Invoke(gameplayData.Score);
+
         CurrentState = GameState.MainMenu;        
     }
 
+    void Restart()
+    {
+        for (int i = 0; i < monsters.Count; i++)
+            Destroy(monsters[i].gameObject);
+
+        monsters.Clear();
+
+        gameplayData.Level = 1;
+        Score = 0;
+
+        OnRestart?.Invoke();
+
+        CurrentState = GameState.PortalCreation;
+    }
 }

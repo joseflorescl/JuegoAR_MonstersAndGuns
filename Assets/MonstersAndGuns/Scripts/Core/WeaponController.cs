@@ -15,6 +15,7 @@ public class WeaponController : MonoBehaviour
         vfxBullet = GetComponentInChildren<ParticleSystem>();
         anim = GetComponent<Animator>();
     }
+
     public void Fire()
     {
         vfxBullet.Play();

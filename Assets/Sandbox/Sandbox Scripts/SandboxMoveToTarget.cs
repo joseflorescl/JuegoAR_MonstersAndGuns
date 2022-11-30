@@ -17,7 +17,7 @@ public class SandboxMoveToTarget : MonoBehaviour
 
     private void Update()
     {
-        var direction = GameManager.Instance.PlayerPosition() - transform.position;
+        var direction = GameManager.Instance.PlayerPosition - transform.position;
         direction.Normalize();
 
         kinematicVelocity = direction * speed;
@@ -37,7 +37,7 @@ public class SandboxMoveToTarget : MonoBehaviour
 
     void DebugSetMonsterDistance()
     {
-        float distance = Vector3.Distance(GameManager.Instance.PlayerPosition(), transform.position);
+        float distance = Vector3.Distance(GameManager.Instance.PlayerPosition, transform.position);
         FindObjectOfType<DebugManager>().SetMonsterDistance(distance - (1f/2f + 0.25f/2f)); // se le resta el tamaño del player y del monster
     }
 

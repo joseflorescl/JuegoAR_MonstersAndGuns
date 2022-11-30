@@ -21,6 +21,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip[] popSound;
     [SerializeField] private AudioClip[] monsterExplosions;
     [SerializeField] private AudioClip[] gunFired;
+    [SerializeField] private AudioClip[] goSound;
     [SerializeField] private float volumeScaleGunFired = 0.25f;
     [SerializeField] private AudioClip[] playerDamage;
     [SerializeField] private float volumeScalePlayerDamage = 1f;
@@ -41,6 +42,7 @@ public class AudioManager : MonoBehaviour
     {
         GameManager.Instance.OnMainMenuActivating += MainMenuHandler;
         GameManager.Instance.OnPortalCreating += PortalCreationHandler;
+        GameManager.Instance.OnBattling += BattleHandler;
         GameManager.Instance.OnMonsterCreated += MonsterCreatedHandler;
         GameManager.Instance.OnSpawning += SpawningHandler;
         GameManager.Instance.OnMonsterDead += MonsterDeadHandler;
@@ -52,12 +54,12 @@ public class AudioManager : MonoBehaviour
 
     }
 
-    
 
     private void OnDisable()
     {
         GameManager.Instance.OnMainMenuActivating -= MainMenuHandler;
         GameManager.Instance.OnPortalCreating -= PortalCreationHandler;
+        GameManager.Instance.OnBattling -= BattleHandler;
         GameManager.Instance.OnMonsterCreated -= MonsterCreatedHandler;
         GameManager.Instance.OnSpawning -= SpawningHandler;
         GameManager.Instance.OnMonsterDead -= MonsterDeadHandler;
@@ -67,6 +69,12 @@ public class AudioManager : MonoBehaviour
         GameManager.Instance.OnGameOver -= GameOverHandler;
     }
 
+    private void BattleHandler(List<MonsterController> arg1, int arg2)
+    {
+        PlayRandomSound(goSound, SFXAudioSource);
+    }
+
+
     private void GameOverHandler()
     {
         PlayGameOverMusic();
@@ -74,6 +82,7 @@ public class AudioManager : MonoBehaviour
 
     private void PlayerDeadHandler()
     {
+        StopGameMusic();
         PlayRandomSoundWithDelay(playerDead, SFXVoiceAudioSource, delayPlayerDeadSound, randomPitch: false, volumeScale: volumeScalePlayerDead);
     }
 
@@ -97,8 +106,6 @@ public class AudioManager : MonoBehaviour
 
     private void SpawningHandler(int arg1, Vector3 arg2, Quaternion arg3)
     {
-        // TODO: me falta detener la corutina de audio, como se hace el juego Planet Force
-
         PlayBattleMusic(); // Queda mejor colocar la música de batalla al inicio del spawning
     }
 
@@ -141,12 +148,14 @@ public class AudioManager : MonoBehaviour
 
     private void PlayBattleMusic()
     {
+        StopAudioRoutine();
         var clip = GetRandomClip(battleMusic);
         PlayBGMMusic(clip, true);
     }
 
     private void PlayGameOverMusic()
     {
+        StopAudioRoutine();
         var clip = GetRandomClip(gameOverMusic);
         PlayBGMMusic(clip, false);
     }
@@ -210,6 +219,12 @@ public class AudioManager : MonoBehaviour
     {
         if (audioRoutine != null)
             StopCoroutine(audioRoutine);
+    }
+
+    private void StopGameMusic()
+    {
+        StopAudioRoutine();
+        BGMAudioSource.Stop();
     }
 
 }

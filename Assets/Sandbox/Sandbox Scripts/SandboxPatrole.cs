@@ -29,7 +29,7 @@ public class SandboxPatrole : MonoBehaviour
         yield return new WaitForSeconds(waitSeconds); // Esperamos hasta que el portal este creado
 
         if (portal == null)
-          portal = GameManager.Instance.Portal();
+          portal = GameManager.Instance.Portal;
 
         var offset = new Vector3(0f, monsterData.spherePatrollingHeight - portal.position.y, monsterData.spherePatrollingDistanceToPortal);
 

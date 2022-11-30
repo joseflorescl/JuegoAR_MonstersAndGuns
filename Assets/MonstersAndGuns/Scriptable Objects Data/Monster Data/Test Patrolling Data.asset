@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   turnSpeed: 90
+  scorePoints: 100
   faceInitialDirection: 1
   maxDeviationRandomVectorUp: 0.5
   minSecondsGoUp: 1
   maxSecondsGoUp: 3
+  minDistanceToPlayer: 1
+  angleToAwayFromPlayer: 30
+  firstPointMaxAttempts: 3
+  firstPointMinDot: 0.5
   spherePatrollingRadius: 2
   spherePatrollingDistanceToPortal: 1
   spherePatrollingHeight: 0.5

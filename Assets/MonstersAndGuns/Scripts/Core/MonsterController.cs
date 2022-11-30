@@ -15,6 +15,7 @@ public class MonsterController : MonoBehaviour
 
     MonsterState currentState;
 
+    public int Score => monsterData.scorePoints;
     public MonsterColor CurrentColor => currentState == MonsterState.Attack ? monsterData.attackColor : monsterData.initialColor;
     public Vector3 ExplosionPosition => rend.bounds.center; // Por ahora es el centro del mesh renderer, pero se podría elegir otra posicion adhoc
 
@@ -82,7 +83,7 @@ public class MonsterController : MonoBehaviour
         float maxTime = Time.time + secondsGoUp;
 
         yield return new WaitWhile(() => (Time.time < maxTime) 
-                                      && (Vector3.Distance(transform.position, GameManager.Instance.PlayerPosition()) > monsterData.minDistanceToPlayer));
+                                      && (Vector3.Distance(transform.position, GameManager.Instance.PlayerPosition) > monsterData.minDistanceToPlayer));
 
         if (Time.time < maxTime) // Entonces el yield anterior terminó porque el monstruo está muy cerca del player
         {
@@ -98,7 +99,7 @@ public class MonsterController : MonoBehaviour
 
     Vector3 GetDirectionAwayFromPlayer()
     {
-        var direction = transform.position - GameManager.Instance.PlayerPosition();
+        var direction = transform.position - GameManager.Instance.PlayerPosition;
         direction.y = 0;
         var angle = Random.Range(-monsterData.angleToAwayFromPlayer, +monsterData.angleToAwayFromPlayer);
         direction = Quaternion.Euler(0, angle, 0) * direction;
@@ -150,8 +151,8 @@ public class MonsterController : MonoBehaviour
         for (int i = 0; i < monsterData.firstPointMaxAttempts; i++)
         {
             firstPointPatrolling = GetRandomPositionOnSphere(r, h, d);
-            Vector3 a = GameManager.Instance.PlayerForward();
-            Vector3 b = firstPointPatrolling - GameManager.Instance.PlayerPosition();
+            Vector3 a = GameManager.Instance.PlayerForward;
+            Vector3 b = firstPointPatrolling - GameManager.Instance.PlayerPosition;
             a.Normalize();
             b.Normalize();
             float dot = Vector3.Dot(a, b);
@@ -180,7 +181,7 @@ public class MonsterController : MonoBehaviour
         // Cada x seg se va ajustando la dirección hacia el player
         while (true)
         {
-            var direction = GameManager.Instance.PlayerPosition() - transform.position;
+            var direction = GameManager.Instance.PlayerPosition - transform.position;
             kinematicVelocity = direction.normalized * monsterData.attackSpeed;
             yield return new WaitForSeconds(monsterData.secondsToAdjustDirection);
         }
@@ -219,7 +220,7 @@ public class MonsterController : MonoBehaviour
 
     Vector3 GetRandomPositionOnSphere(float radius, float height, float distance, bool under = false, bool behind = false)
     {
-        var portal = GameManager.Instance.Portal();
+        var portal = GameManager.Instance.Portal;
         var offset = new Vector3(0f, height - portal.position.y, distance); // Por ahora se está probando con una altura c/r al mundo, NO c/r al portal
 
         Vector3 targetPosition = Random.onUnitSphere * radius; // Se elige un punto aleatorio en la superficie de la esfera de radio r

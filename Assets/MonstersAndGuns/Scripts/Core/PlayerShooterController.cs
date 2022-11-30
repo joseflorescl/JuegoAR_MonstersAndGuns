@@ -7,19 +7,13 @@ public class PlayerShooterController : ShooterController
     [SerializeField] private int firesPerSecond = 20;
     [SerializeField] private float waitToRaycast = 0.1f;
     [SerializeField] private float maxBulletDistance = 100f; // Usada para el raycast
-    [SerializeField] private LayerMask damageableLayerMask; // por ahora solo se puede disparar a los monsters
-
-    float fireRate;
-    float nextFire;
+    [SerializeField] private LayerMask damageableLayerMask; // por ahora solo se puede disparar a los monsters    
 
     private void OnEnable()
     {
         GameManager.Instance.OnBattling += BattleHandler;
         GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
-
-    }
-
-    
+    }    
 
     private void OnDisable()
     {
@@ -41,14 +35,15 @@ public class PlayerShooterController : ShooterController
     private void Start()
     {
         bulletFactory.gameObject.SetActive(false);
-        fireRate = 1f / firesPerSecond;
-        nextFire = 0f;
     }
 
     private IEnumerator BattleRoutine()
     {
         bulletFactory.gameObject.SetActive(true);
-        var arCamera = GameManager.Instance.ARCamera();
+        var arCamera = GameManager.Instance.ARCamera;
+
+        float fireRate = 1f / firesPerSecond;
+        float nextFire = 0f;
 
         while (true)
         {

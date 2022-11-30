@@ -12,7 +12,7 @@ public class DoDamage : MonoBehaviour
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
         if (damageable != null)
         {
-            damageable.Damage(damage);
+            damageable.Damage(damage, DamageMode.Collision);
         }
     }
 

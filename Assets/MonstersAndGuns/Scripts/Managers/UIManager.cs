@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject HUDPanel;
     [SerializeField] private GameObject battlePanel;
     [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject vfxPanel;
 
     [Space(10)]
     [Header("UI Elements")]
@@ -23,6 +24,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private Image healthBarImage;
     [SerializeField] private Image splatImage;
+    [SerializeField] private TMP_Text scoreText;
 
     [Space(10)]
     [Header("Settings")]
@@ -34,10 +36,11 @@ public class UIManager : MonoBehaviour
 
 
     GameObject[] messagesPanelCenter;
+    int score;
 
     private void Awake()
     {
-        messagesPanelCenter = new GameObject[] { backgroundPanel, mainPanel, portalCreationPanel, HUDPanel, battlePanel, gameOverPanel };
+        messagesPanelCenter = new GameObject[] { backgroundPanel, mainPanel, portalCreationPanel, HUDPanel, battlePanel, gameOverPanel, vfxPanel };
         HideAllMessages();
     }
 
@@ -54,8 +57,7 @@ public class UIManager : MonoBehaviour
 
     public void RestartGame()
     {
-        //TODO
-        print("Restart");
+        GameManager.Instance.GameRestarted();
     }
 
     private void OnEnable()
@@ -68,7 +70,11 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnPlayerDamage += PlayerDamageHandler;
         GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
         GameManager.Instance.OnGameOver += GameOverHandler;
+        GameManager.Instance.OnScoreUpdated += ScoreUpdatedHandler;
+
     }
+
+    
 
     private void OnDisable()
     {
@@ -80,21 +86,28 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnPlayerDamage -= PlayerDamageHandler;
         GameManager.Instance.OnPlayerDead -= PlayerDeadHandler;
         GameManager.Instance.OnGameOver -= GameOverHandler;
+        GameManager.Instance.OnScoreUpdated -= ScoreUpdatedHandler;
 
     }
 
+    private void ScoreUpdatedHandler(int score)
+    {
+        this.score = score;
+    }
+
     private void GameOverHandler()
-    {        
-        HideAllMessages();
-        backgroundPanel.SetActive(true);
-        //TODO: tal vez hay que hacer un fade del background...
-        HUDPanel.SetActive(true);
+    {                
         gameOverPanel.SetActive(true);
+        scoreText.text = score.ToString();
     }
 
     private void PlayerDeadHandler()
     {
+        battlePanel.SetActive(false);
+        backgroundPanel.SetActive(true);
         healthBarImage.fillAmount = 0;
+        ShowSplatBlood();
+        FadeGraphic(backgroundImage, 1f, 0.5f, timeToFadeBackground);
     }
 
     private void PlayerDamageHandler(float currentHealthPercentage)
@@ -111,8 +124,15 @@ public class UIManager : MonoBehaviour
 
         int idx = Random.Range(0, splatSprites.Length);
         splatImage.sprite = splatSprites[idx];
-        splatImage.canvasRenderer.SetAlpha(1f);
-        splatImage.CrossFadeAlpha(0f, timeToFadeSplat, true);
+
+        FadeGraphic(splatImage, 1f, 0f, timeToFadeSplat);       
+
+    }
+
+    void FadeGraphic(Graphic graphic, float fromAlpha, float toAlpha, float duration)
+    {
+        graphic.canvasRenderer.SetAlpha(fromAlpha);
+        graphic.CrossFadeAlpha(toAlpha, duration, true);
     }
 
     private void BattlingHandler(List<MonsterController> monsters, int level)
@@ -125,9 +145,11 @@ public class UIManager : MonoBehaviour
         HideAllMessages();
         HUDPanel.SetActive(true);
         battlePanel.SetActive(true);
+        vfxPanel.SetActive(true);
         levelText.text = level.ToString();
         healthBarImage.fillAmount = 1f; // Por ahora se asume simplemente que cuando parte un nuevo level la salud está a full
         splatImage.canvasRenderer.SetAlpha(0f);
+        goMessage.SetActive(true);
         yield return new WaitForSeconds(secondsToDeactivateGOMessage); // Después de un ratito desactivar el texto de GO!
         goMessage.SetActive(false);
     }
@@ -148,19 +170,14 @@ public class UIManager : MonoBehaviour
         HideAllMessages();
         backgroundPanel.SetActive(true);
         mainPanel.SetActive(true);
-        FadeBackground(0f);
+        FadeGraphic(backgroundImage, 1f, 0f, timeToFadeBackground);
     }
 
     private void PortalCreatingHandler()
     {
         HideAllMessages();
         portalCreationPanel.SetActive(true);
-    }
-
-    void FadeBackground(float targetAlpha)
-    {
-        backgroundImage.CrossFadeAlpha(targetAlpha, timeToFadeBackground, true);
-    }
+    }   
 
     void HideAllMessages()
     {
