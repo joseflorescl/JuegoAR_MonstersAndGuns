@@ -659,6 +659,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 30e85a04d16ce0a48beedf1e397d0e70, type: 3}
   - {fileID: 8300000, guid: b469c9cbc59973e48b8d0f32720f5ffe, type: 3}
   battleMusic:
+  - {fileID: 8300000, guid: 4e62a34cbaf532d498b15077304813cc, type: 3}
+  - {fileID: 8300000, guid: 02c8b66dbeb17184bb3a932899cfe3fc, type: 3}
   - {fileID: 8300000, guid: 9a5ef0678558cbb459486849b6dd2ba4, type: 3}
   - {fileID: 8300000, guid: 0d2d46858fb6386468bcf06558973b46, type: 3}
   gameOverMusic:
@@ -669,6 +671,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 65788c6e93358e44fbf6229851a8c21d, type: 3}
   popSound:
   - {fileID: 8300000, guid: 2f90acb5ed4747044ad1e01b7a3ef371, type: 3}
+  - {fileID: 8300000, guid: b7b5e694d3f167f469d93eb254c72ace, type: 3}
+  - {fileID: 8300000, guid: 1eec622399352e243a7afc610b1a79ae, type: 3}
   monsterExplosions:
   - {fileID: 8300000, guid: 28ba75cb082576d4dbf605f7dae61916, type: 3}
   - {fileID: 8300000, guid: ed724879ffa96ce45852e3064d735e03, type: 3}

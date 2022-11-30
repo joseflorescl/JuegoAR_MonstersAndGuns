@@ -45,9 +45,12 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void Close()
+    public void Close() // Llamada por Botón
     {
-        GameManager.Instance.CloseApp();
+        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 
     public void StartGame()

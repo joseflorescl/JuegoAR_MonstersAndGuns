@@ -4,118 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : BaseGameManager
 {
-    const string GAMEDATA_KEY = "MonstersAndGunsData";
-    public enum GameState { Initialization, MainMenu, PortalCreation, Spawning, Battle, BossBattle, GameOver, Win, Exit, Restart }
-
     [SerializeField] private GameManagerData gameManagerData;
     [SerializeField] private GameObject canvasLoading;
-    
-    // TODO: borrar los colliders de los objetos que no lo necesiten
-
-    // Nomenclatura de eventos: ejemplo
-    //   OnClosing: a close event that is raised before a window is closed
-    //   OnClosed: and one that is raised after the window is closed 
-    public event Action OnMainMenuActivating;
-    public event Action OnPortalCreating; // Al inicio de la creación del portal en la escena
-    public event Action OnPortalCreated; // Una vez que el portal ya ha sido creado
-    public event Action<int, Vector3, Quaternion> OnSpawning; // Recibe el level actual del juego, y lo posición/rotación desde donde hacer el spawner
-    public event Action<List<MonsterController>, int> OnBattling; // Recibe la lista de monsters creados y el level actual del juego
-    public event Action OnMonsterCreated;
-    public event Action<MonsterController> OnMonsterDead;
-    public event Action OnMonsterDamage;
-    public event Action<float> OnPlayerDamage;
-    public event Action OnPlayerDead;
-    public event Action<bool> OnStatusPortalChanged; // La idea es que la UI refleje cuando el portal está activo/inactivo con un texto diferente en cada caso
-    public event Action<int> OnGunFired;
-    public event Action OnGameOver;
-    public event Action OnRestart;
-    public event Action<int> OnScoreUpdated;
-
 
     // Será singleton
     // Y también se configura que su orden de ejecución sea primero que el resto de los scripts que hacen uso de "GameManager.Instance"
     // porque no estoy haciendo uso de lazy instantiation
     private static GameManager instance = null;
 
-    public static GameManager Instance  => instance;
+    public static GameManager Instance => instance;
 
-    SceneController sceneController;
-    GameState currentState;
-    GameObject player;
-    Transform portal;
-    List<MonsterController> monsters;
-    Camera arCamera;
-    GameplayData gameplayData;
-
-    public Transform Portal => portal;
-    public Camera ARCamera => arCamera;
-    public Vector3 PlayerForward => player.transform.forward;
-    public Vector3 PlayerPosition => player ? player.transform.position : Vector3.zero;
-
-    private int Score 
-    {
-        get { return gameplayData.Score; }
-        set 
-        { 
-            gameplayData.Score = value;
-            OnScoreUpdated?.Invoke(gameplayData.Score);
-        }
-    }
-
-    GameState CurrentState
-    {
-        get { return currentState; }
-        set 
-        {
-            currentState = value;
-            
-            switch (currentState)
-            {
-                case GameState.Initialization:
-                    StartCoroutine(InitializationRoutine());
-                    break;
-                case GameState.MainMenu:
-                    if (canvasLoading)
-                        canvasLoading.SetActive(false);
-                    OnMainMenuActivating?.Invoke();
-                    break;
-                case GameState.PortalCreation:
-                    OnPortalCreating?.Invoke();
-                    break;
-                case GameState.Spawning:
-                    OnSpawning?.Invoke(gameplayData.Level, portal.position, portal.rotation);
-                    break;
-                case GameState.Battle:
-                    StartCoroutine(BattleRoutine());
-                    break;
-                case GameState.BossBattle:
-                    break;
-                case GameState.GameOver:
-                    StartCoroutine(GameOverRoutine(gameManagerData.waitBeforeGameOver));
-                    break;
-                case GameState.Win:
-                    break;
-                case GameState.Exit:
-                    break;
-                case GameState.Restart:
-                    Restart();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    IEnumerator BattleRoutine()
-    {        
-        yield return new WaitForSeconds(gameManagerData.waitBeforeInitBattle); // Se les da tiempo a los monsters de moverse un poco antes de dispararles
-        OnBattling?.Invoke(monsters, gameplayData.Level);
-    }
-
-
-    private void Awake()
+    protected void Awake()
     {
         if (instance == null)
             instance = this;
@@ -125,102 +26,85 @@ public class GameManager : MonoBehaviour
         sceneController = FindObjectOfType<SceneController>();
     }
 
+    // TODO: borrar los colliders de los objetos que no lo necesiten
 
     private void Start()
     {
         CurrentState = GameState.Initialization;
     }
 
-    public void CloseApp() => Application.Quit();
-    
-    public void GameStarted()
+    protected override void Initialization()
     {
-        if (currentState != GameState.MainMenu) return;
-
-        CurrentState = GameState.PortalCreation;        
+        StartCoroutine(InitializationRoutine());
     }
 
-    public void GameRestarted()
+    protected override void MainMenu()
     {
-        if (currentState != GameState.GameOver) return;
-
-        CurrentState = GameState.Restart;
+        if (canvasLoading)
+            canvasLoading.SetActive(false);
+        RaiseMainMenuActivating();
     }
 
-    public void PortalCreated(Transform portal)
+    protected override void PortalCreation()
     {
-        if (currentState != GameState.PortalCreation) return;
-
-        this.portal = portal;
-        OnPortalCreated?.Invoke();
-        CurrentState = GameState.Spawning;        
+        RaisePortalCreating();
     }
 
-    public void MonstersSpawned()
+    protected override void Spawning()
     {
-        if (currentState != GameState.Spawning) return;
-
-        CurrentState = GameState.Battle;        
+        RaiseSpawning(gameplayData.Level, portal.position, portal.rotation);
     }
 
-    public void DeadNotification(HealthController deadObject, DamageMode damageMode)
+    protected override void Battle()
     {
-        if (deadObject.CompareTag("Monster"))
-        {
-            var monster = deadObject.GetComponent<MonsterController>();
+        StartCoroutine(BattleRoutine());
+    }
 
-            if (damageMode == DamageMode.Shooting)
-                Score += monster.Score;
+    protected override void BossBattle()
+    {
+        //TODO
+    }
 
-            monsters?.Remove(monster);
-            OnMonsterDead?.Invoke(monster);
-            Destroy(deadObject.gameObject);
-            
-            if (monsters.Count == 0)
-            {
-                CurrentState = GameState.BossBattle;
-            }
+    protected override void GameOver()
+    {
+        StartCoroutine(GameOverRoutine(gameManagerData.waitBeforeGameOver));
+    }
 
-        }
-        else if (deadObject.CompareTag("Player"))
-        {            
-            OnPlayerDead?.Invoke();
-            CurrentState = GameState.GameOver;
-        }
+    protected override void Win()
+    {
+        //TODO
+    }
+
+    protected override void Exit()
+    {
+        //TODO
+    }
+
+    protected override void Restart()
+    {
+        for (int i = 0; i < monsters.Count; i++)
+            Destroy(monsters[i].gameObject);
+
+        monsters.Clear();
+
+        gameplayData.Level = 1;
+        Score = 0;
+
+        RaiseRestart();
+
+        CurrentState = GameState.PortalCreation;
+    }
+
+    IEnumerator BattleRoutine()
+    {        
+        yield return new WaitForSeconds(gameManagerData.waitBeforeInitBattle); // Se les da tiempo a los monsters de moverse un poco antes de dispararles
+        RaiseBattling(monsters, gameplayData.Level);
     }
 
     IEnumerator GameOverRoutine(float delayGameOver)
     {
         yield return new WaitForSeconds(delayGameOver);
-        OnGameOver?.Invoke();
-    }
-
-    public void DamageNotification(HealthController deadObject)
-    {
-        if (deadObject.CompareTag("Monster"))
-        {
-            OnMonsterDamage?.Invoke();
-        }
-        else if (deadObject.CompareTag("Player"))
-        {
-            OnPlayerDamage?.Invoke(deadObject.CurrentHealthPercentage);
-        }
-    }
-
-    public void StatusPortal(bool status)
-    {
-        OnStatusPortalChanged?.Invoke(status);
-    }
-
-    public void GunFired(int gunIndex)
-    {
-        OnGunFired?.Invoke(gunIndex);
-    }
-
-    public void MonsterCreated(MonsterController monster)
-    {
-        monsters.Add(monster);
-        OnMonsterCreated?.Invoke();
+        RaiseGameOver();
     }
 
     IEnumerator InitializationRoutine()
@@ -235,23 +119,80 @@ public class GameManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         arCamera = Camera.main;
         gameplayData = GameDataRepository.GetById(GAMEDATA_KEY);
-        OnScoreUpdated?.Invoke(gameplayData.Score);
-
+        RaiseScoreUpdated(gameplayData.Score);
         CurrentState = GameState.MainMenu;        
     }
 
-    void Restart()
+    public void GameStarted()
     {
-        for (int i = 0; i < monsters.Count; i++)
-            Destroy(monsters[i].gameObject);
-
-        monsters.Clear();
-
-        gameplayData.Level = 1;
-        Score = 0;
-
-        OnRestart?.Invoke();
+        if (CurrentState != GameState.MainMenu) return;
 
         CurrentState = GameState.PortalCreation;
     }
+
+    public void GameRestarted()
+    {
+        if (CurrentState != GameState.GameOver) return;
+
+        CurrentState = GameState.Restart;
+    }
+
+    public void PortalCreated(Transform portal)
+    {
+        if (CurrentState != GameState.PortalCreation) return;
+
+        this.portal = portal;
+        RaisePortalCreated();
+        CurrentState = GameState.Spawning;
+    }
+
+    public void MonstersSpawned()
+    {
+        if (CurrentState != GameState.Spawning) return;
+
+        RaiseMonstersSpawned();
+        CurrentState = GameState.Battle;
+    }
+
+    public void DeadNotification(HealthController deadObject, DamageMode damageMode)
+    {
+        if (deadObject.CompareTag("Monster"))
+        {
+            var monster = deadObject.GetComponent<MonsterController>();
+
+            if (damageMode == DamageMode.Shooting)
+                Score += monster.Score;
+
+            monsters?.Remove(monster);
+            RaiseMonsterDead(monster);
+            Destroy(deadObject.gameObject);
+
+            if (monsters.Count == 0)
+                CurrentState = GameState.BossBattle;
+        }
+        else if (deadObject.CompareTag("Player"))
+        {
+            RaisePlayerDead();
+            CurrentState = GameState.GameOver;
+        }
+    }
+
+    public void DamageNotification(HealthController deadObject)
+    {
+        if (deadObject.CompareTag("Monster"))
+            RaiseMonsterDamage();
+        else if (deadObject.CompareTag("Player"))
+            RaisePlayerDamage(deadObject.CurrentHealthPercentage);
+    }
+
+    public void StatusPortal(bool status) => RaiseStatusPortalChanged(status);
+
+    public void GunFired(int gunIndex) => RaiseGunFired(gunIndex);
+
+    public void MonsterCreated(MonsterController monster)
+    {
+        monsters.Add(monster);
+        RaiseMonsterCreated();
+    }
+
 }

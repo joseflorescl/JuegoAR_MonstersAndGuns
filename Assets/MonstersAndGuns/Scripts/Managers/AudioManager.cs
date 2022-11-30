@@ -43,30 +43,45 @@ public class AudioManager : MonoBehaviour
         GameManager.Instance.OnMainMenuActivating += MainMenuHandler;
         GameManager.Instance.OnPortalCreating += PortalCreationHandler;
         GameManager.Instance.OnBattling += BattleHandler;
-        GameManager.Instance.OnMonsterCreated += MonsterCreatedHandler;
-        GameManager.Instance.OnSpawning += SpawningHandler;
+        GameManager.Instance.OnMonsterCreated += MonsterCreatedHandler;        
         GameManager.Instance.OnMonsterDead += MonsterDeadHandler;
         GameManager.Instance.OnGunFired += GunFiredHandler;
         GameManager.Instance.OnPlayerDamage += PlayerDamageHandler;
         GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
         GameManager.Instance.OnGameOver += GameOverHandler;
+        GameManager.Instance.OnMonstersSpawned += MonstersSpawnedHandler;
+        GameManager.Instance.OnSpawning += SpawningHandler;
+
 
 
     }
 
+    
 
     private void OnDisable()
     {
         GameManager.Instance.OnMainMenuActivating -= MainMenuHandler;
         GameManager.Instance.OnPortalCreating -= PortalCreationHandler;
         GameManager.Instance.OnBattling -= BattleHandler;
-        GameManager.Instance.OnMonsterCreated -= MonsterCreatedHandler;
-        GameManager.Instance.OnSpawning -= SpawningHandler;
+        GameManager.Instance.OnMonsterCreated -= MonsterCreatedHandler;        
         GameManager.Instance.OnMonsterDead -= MonsterDeadHandler;
         GameManager.Instance.OnGunFired -= GunFiredHandler;
         GameManager.Instance.OnPlayerDamage -= PlayerDamageHandler;
         GameManager.Instance.OnPlayerDead -= PlayerDeadHandler;
         GameManager.Instance.OnGameOver -= GameOverHandler;
+        GameManager.Instance.OnMonstersSpawned -= MonstersSpawnedHandler;
+        GameManager.Instance.OnSpawning -= SpawningHandler;
+    }
+
+    private void SpawningHandler(int arg1, Vector3 arg2, Quaternion arg3)
+    {
+        StopGameMusic();
+    }
+
+    private void MonstersSpawnedHandler()
+    {
+        print("Battle Music");
+        PlayBattleMusic();
     }
 
     private void BattleHandler(List<MonsterController> arg1, int arg2)
@@ -104,11 +119,7 @@ public class AudioManager : MonoBehaviour
         PlayRandomSound(monsterExplosions, SFXAudioSource);
     }
 
-    private void SpawningHandler(int arg1, Vector3 arg2, Quaternion arg3)
-    {
-        PlayBattleMusic(); // Queda mejor colocar la música de batalla al inicio del spawning
-    }
-
+    
 
     private void MonsterCreatedHandler()
     {
