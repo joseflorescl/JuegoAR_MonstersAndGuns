@@ -17,7 +17,7 @@ public abstract class BaseGameManager : MonoBehaviour
     public event Action<int, Vector3, Quaternion> OnSpawning; // Recibe el level actual del juego, y lo posición/rotación desde donde hacer el spawner
     public event Action<List<MonsterController>, int> OnBattling; // Recibe la lista de monsters creados y el level actual del juego
     public event Action OnMonsterCreated;
-    public event Action<MonsterController> OnMonsterDead;
+    public event Action<BaseMonsterController> OnMonsterDead;
     public event Action OnMonsterDamage;
     public event Action<float> OnPlayerDamage;
     public event Action OnPlayerDead;
@@ -35,7 +35,7 @@ public abstract class BaseGameManager : MonoBehaviour
     protected void RaiseSpawning(int level, Vector3 position, Quaternion rotation) => OnSpawning?.Invoke(level, position, rotation);
     protected void RaiseBattling(List<MonsterController> monsters, int level) => OnBattling?.Invoke(monsters, level);
     protected void RaiseMonsterCreated() => OnMonsterCreated?.Invoke();
-    protected void RaiseMonsterDead(MonsterController monster) => OnMonsterDead?.Invoke(monster);
+    protected void RaiseMonsterDead(BaseMonsterController monster) => OnMonsterDead?.Invoke(monster);
     protected void RaiseMonsterDamage() => OnMonsterDamage?.Invoke();
     protected void RaisePlayerDamage(float currentHealthPercentage) => OnPlayerDamage?.Invoke(currentHealthPercentage);
     protected void RaisePlayerDead() => OnPlayerDead?.Invoke();
@@ -49,15 +49,16 @@ public abstract class BaseGameManager : MonoBehaviour
 
     protected Transform portal;
     protected Camera arCamera;
-    protected GameObject player;
+    protected Transform player;
     protected List<MonsterController> monsters;
     protected GameplayData gameplayData;
     protected SceneController sceneController;
 
+    public Transform Player => player;
     public Transform Portal => portal;
     public Camera ARCamera => arCamera;
-    public Vector3 PlayerForward => player.transform.forward;
-    public Vector3 PlayerPosition => player ? player.transform.position : Vector3.zero;
+    public Vector3 PlayerForward => player.forward;
+    public Vector3 PlayerPosition => player ? player.position : Vector3.zero;
     protected int Score
     {
         get { return gameplayData.Score; }

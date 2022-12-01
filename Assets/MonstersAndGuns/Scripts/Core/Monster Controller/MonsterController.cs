@@ -8,7 +8,7 @@ public class MonsterController : BaseMonsterController
     {
         GameManager.Instance.MonsterCreated(this);
 
-        if (monsterData.speed == 0)
+        if (monsterData.goUpSpeed == 0)
             CurrentState = MonsterState.Idle;
         else
             CurrentState = MonsterState.GoUp;
@@ -43,7 +43,7 @@ public class MonsterController : BaseMonsterController
     {
         coll.enabled = false; // Primero se le desactiva el collider mientras el monstruo va subiendo, y se activará al inicio del Patrol
 
-        kinematicVelocity = GetRandomVectorUp(monsterData.maxDeviationRandomVectorUp) * monsterData.speed;
+        kinematicVelocity = GetRandomVectorUp(monsterData.maxDeviationRandomVectorUp) * monsterData.goUpSpeed;
         FaceInitialDirection();
 
         float secondsGoUp = Random.Range(monsterData.minSecondsGoUp, monsterData.maxSecondsGoUp);
@@ -55,7 +55,7 @@ public class MonsterController : BaseMonsterController
         if (Time.time < maxTime) // Entonces el yield anterior terminó porque el monstruo está muy cerca del player
         {
             var direction = GetDirectionAwayFromPlayer();
-            kinematicVelocity = direction * monsterData.speed;
+            kinematicVelocity = direction * monsterData.goUpSpeed;
             FaceInitialDirection();
             yield return new WaitForSeconds(maxTime - Time.time);
         }
@@ -81,7 +81,7 @@ public class MonsterController : BaseMonsterController
         coll.enabled = true;
         var r = monsterData.spherePatrollingRadius;
         var h = monsterData.spherePatrollingHeight;
-        var d = monsterData.spherePatrollingDistanceToPortal;
+        var d = monsterData.spherePatrollingDistanceToTarget;
 
         yield return StartCoroutine(FirstPointPatrolling());
 
@@ -90,7 +90,7 @@ public class MonsterController : BaseMonsterController
         while (CurrentState == MonsterState.Patrol)
         {
             var direction = targetPosition - transform.position;
-            kinematicVelocity = direction.normalized * monsterData.speed;
+            kinematicVelocity = direction.normalized * monsterData.patrolSpeed;
 
             // Ahora se espera: hasta llegar a este punto o haya pasado un tiempo máximo
             float secondsSameDirection = Random.Range(monsterData.minSecondsSameDirection, monsterData.maxSecondsSameDirection);
@@ -98,7 +98,7 @@ public class MonsterController : BaseMonsterController
             
             yield return new WaitUntil(() => Time.time > maxTimeInSameDirection || Vector3.Distance(transform.position, targetPosition) < monsterData.minDistanceToTarget);
 
-            targetPosition = GetRandomPositionOnSphere(r, h, d);
+            targetPosition = GetRandomPositionOnSphere(GameManager.Instance.Portal, r, h, d);
         }
         
     }
@@ -109,11 +109,11 @@ public class MonsterController : BaseMonsterController
         // El primer punto a elegir debe ser especial, para que el monstruo empiece alejándose del player
         var r = monsterData.spherePatrollingRadius;
         var h = monsterData.spherePatrollingHeight;
-        var d = monsterData.spherePatrollingDistanceToPortal;
+        var d = monsterData.spherePatrollingDistanceToTarget;
 
         for (int i = 0; i < monsterData.firstPointMaxAttempts; i++)
         {
-            firstPointPatrolling = GetRandomPositionOnSphere(r, h, d);
+            firstPointPatrolling = GetRandomPositionOnSphere(GameManager.Instance.Portal, r, h, d);
             Vector3 a = GameManager.Instance.PlayerForward;
             Vector3 b = firstPointPatrolling - GameManager.Instance.PlayerPosition;
             a.Normalize();
@@ -147,34 +147,7 @@ public class MonsterController : BaseMonsterController
         }
     }
 
-    Vector3 GetRandomVectorUp(float maxDeviationRandomVectorUp)
-    {
-        float x = Random.Range(-maxDeviationRandomVectorUp, +maxDeviationRandomVectorUp);
-        float z = Random.Range(-maxDeviationRandomVectorUp, +maxDeviationRandomVectorUp);
-        float y = 1f;
-        var goUpVector = new Vector3(x, y, z);
-        goUpVector.Normalize();
-        return goUpVector;
-    }
-
-    Vector3 GetRandomPositionOnSphere(float radius, float height, float distance, bool under = false, bool behind = false)
-    {
-        var portal = GameManager.Instance.Portal;
-        var offset = new Vector3(0f, height - portal.position.y, distance); // Por ahora se está probando con una altura c/r al mundo, NO c/r al portal
-
-        Vector3 targetPosition = Random.onUnitSphere * radius; // Se elige un punto aleatorio en la superficie de la esfera de radio r
-
-        if (!under)
-            targetPosition.y = Mathf.Abs(targetPosition.y);
-        if (!behind)
-            targetPosition.z = Mathf.Abs(targetPosition.z);
-
-        targetPosition += offset;
-
-        // Nota importante sobre TransformPoint: si el objeto portal tiene valores != 1 en la escala, el valor resultante no será el esperado
-        targetPosition = portal.transform.TransformPoint(targetPosition);  // Esta posición ahora se debe orientar c/r al portal
-
-        return targetPosition;
-    }
+    
+   
 
 }

@@ -53,7 +53,7 @@ public class DebugManager : MonoBehaviour
         gunIndexText.text = gunIndex.ToString();
     }   
 
-    private void MonsterDeadHandler(MonsterController monsterDead)
+    private void MonsterDeadHandler(BaseMonsterController monsterDead)
     {
         UpdateMonsterCount(monsterCount - 1);
     }

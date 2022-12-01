@@ -5,12 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Monster Data", menuName = "Monsters n Guns/Monster Data")]
 public class MonsterData : ScriptableObject
 {
-    public float speed = 2f;    
+    public enum RotateTowardsMode { Player, Velocity, None}
+    
     public float turnSpeed = 90f;
     public int scorePoints = 100;
-    public bool rotateTowardsVelocity = true;
+    public RotateTowardsMode rotateTowardsMode = RotateTowardsMode.Velocity;
 
     [Header("Go Up State")]
+    public float goUpSpeed = 2f;
     public bool faceInitialDirection = true;
     public float maxDeviationRandomVectorUp = 0.5f;
     public float minSecondsGoUp = 1f;
@@ -20,10 +22,11 @@ public class MonsterData : ScriptableObject
 
     [Header("Patrol State")]
     //[Space(10)]
+    public float patrolSpeed = 2f;
     public int firstPointMaxAttempts = 3;
     public float firstPointMinDot = 0.5f;
     public float spherePatrollingRadius = 2f;
-    public float spherePatrollingDistanceToPortal = 1f;
+    public float spherePatrollingDistanceToTarget = 1f;
     public float spherePatrollingHeight = 0.5f; 
     public float minSecondsSameDirection = 2f;
     public float maxSecondsSameDirection = 4f;

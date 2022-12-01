@@ -650,9 +650,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BGMAudioSource: {fileID: 2098209742}
+  pitchVariation: 0.2
   SFXAudioSource: {fileID: 219414189}
   SFXVoiceAudioSource: {fileID: 1617442}
-  pitchVariation: 0.2
   mainMenuMusic:
   - {fileID: 8300000, guid: 29407ca7a42581c4aa5d206d87120aaf, type: 3}
   - {fileID: 8300000, guid: a6d8e18ce760bc74fa23830de55fcd18, type: 3}
@@ -1440,7 +1440,22 @@ MonoBehaviour:
   - monsterColor: 4
     vfxPrefab: {fileID: 4389850068504539480, guid: fdb621e21ccf1e64cb5733863c441ca5,
       type: 3}
-  monsterDamageParticleColors: []
+  monsterDamageParticleColors:
+  - monsterColor: 0
+    vfxPrefab: {fileID: 3671871919858223796, guid: 567e062df3c81e446be4287e172c6ffc,
+      type: 3}
+  - monsterColor: 1
+    vfxPrefab: {fileID: 3988382710727861068, guid: 2bdfc6f5699050b4b8fd895275ee36ac,
+      type: 3}
+  - monsterColor: 2
+    vfxPrefab: {fileID: 4662686026309371745, guid: 9f208426b7af02a4290706dd79270fe9,
+      type: 3}
+  - monsterColor: 3
+    vfxPrefab: {fileID: 7548266275715129477, guid: 50891235af7c3d1448c236f3ae35e77b,
+      type: 3}
+  - monsterColor: 4
+    vfxPrefab: {fileID: 1793616605902376991, guid: d755c2072bc80f646b189e50632ae806,
+      type: 3}
 --- !u!1 &1720418963
 GameObject:
   m_ObjectHideFlags: 0

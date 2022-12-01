@@ -49,11 +49,11 @@ public class VFXManager : MonoBehaviour
 
     private void MonsterDamageHandler()
     {
-        // TODO: en caso del boss monster se muestran partículas.
+        print("VFX MonsterDamageHandler");
 
     }
 
-    private void MonsterDeadHandler(MonsterController monsterDead)
+    private void MonsterDeadHandler(BaseMonsterController monsterDead)
     {
         var monsterColor = monsterDead.CurrentColor;
         var position = monsterDead.ExplosionPosition;

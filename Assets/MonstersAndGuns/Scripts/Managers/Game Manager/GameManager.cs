@@ -117,7 +117,7 @@ public class GameManager : BaseGameManager
             yield return sceneController.LoadSceneAdditive(gameManagerData.scenesToLoad[i]);        
         }
 
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         arCamera = Camera.main;
         gameplayData = GameDataRepository.GetById(GAMEDATA_KEY);
         RaiseScoreUpdated(gameplayData.Score);
@@ -171,6 +171,14 @@ public class GameManager : BaseGameManager
             if (monsters.Count == 0)
                 CurrentState = GameState.BossBattle;
         }
+        else if(deadObject.CompareTag("BossMonster"))
+        {
+            //TODO: mandar un mensaje de boss muerto: por ahora solo mandamos el mensaje de monster dead, habría que 
+            //  crear evento para boss monster dead
+            print("Boss Muerto");
+            RaiseMonsterDead(deadObject.GetComponent<BossMonsterController>());
+            Destroy(deadObject.gameObject);
+        }
         else if (deadObject.CompareTag("Player"))
         {
             RaisePlayerDead();
@@ -180,7 +188,7 @@ public class GameManager : BaseGameManager
 
     public void DamageNotification(HealthController deadObject)
     {
-        if (deadObject.CompareTag("Monster"))
+        if (deadObject.CompareTag("Monster") || deadObject.CompareTag("BossMonster"))
             RaiseMonsterDamage();
         else if (deadObject.CompareTag("Player"))
             RaisePlayerDamage(deadObject.CurrentHealthPercentage);

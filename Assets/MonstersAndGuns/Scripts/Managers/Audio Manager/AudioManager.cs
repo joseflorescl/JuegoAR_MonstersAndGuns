@@ -93,7 +93,7 @@ public class AudioManager : BaseAudioManager
         PlayRandomSound(gunFired, SFXAudioSource, randomPitch: false, volumeScale: volumeScaleGunFired);
     }
 
-    private void MonsterDeadHandler(MonsterController obj)
+    private void MonsterDeadHandler(BaseMonsterController obj)
     {
         PlayRandomSound(monsterExplosions, SFXAudioSource);
     }

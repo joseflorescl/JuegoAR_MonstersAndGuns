@@ -31,7 +31,7 @@ public class SandboxPatrole : MonoBehaviour
         if (portal == null)
           portal = GameManager.Instance.Portal;
 
-        var offset = new Vector3(0f, monsterData.spherePatrollingHeight - portal.position.y, monsterData.spherePatrollingDistanceToPortal);
+        var offset = new Vector3(0f, monsterData.spherePatrollingHeight - portal.position.y, monsterData.spherePatrollingDistanceToTarget);
 
         for (int i = 0; i < cubeCount; i++)
         {
