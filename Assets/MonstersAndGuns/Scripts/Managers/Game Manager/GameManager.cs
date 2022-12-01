@@ -155,6 +155,14 @@ public class GameManager : BaseGameManager
         CurrentState = GameState.Battle;
     }
 
+
+    public void BossMonsterSpawned()
+    {
+        if (CurrentState != GameState.BossBattle) return;
+
+        RaiseBossMonsterSpawned();
+    }
+
     public void DeadNotification(HealthController deadObject, DamageMode damageMode)
     {
         if (deadObject.CompareTag("Monster"))
@@ -172,11 +180,10 @@ public class GameManager : BaseGameManager
                 CurrentState = GameState.BossBattle;
         }
         else if(deadObject.CompareTag("BossMonster"))
-        {
-            //TODO: mandar un mensaje de boss muerto: por ahora solo mandamos el mensaje de monster dead, habría que 
-            //  crear evento para boss monster dead
+        {            
             print("Boss Muerto");
-            RaiseMonsterDead(deadObject.GetComponent<BossMonsterController>());
+            var bossMonster = deadObject.GetComponent<BossMonsterController>();
+            RaiseBossMonsterDead(bossMonster);
             Destroy(deadObject.gameObject);
         }
         else if (deadObject.CompareTag("Player"))
@@ -188,8 +195,10 @@ public class GameManager : BaseGameManager
 
     public void DamageNotification(HealthController deadObject)
     {
-        if (deadObject.CompareTag("Monster") || deadObject.CompareTag("BossMonster"))
-            RaiseMonsterDamage();
+        if (deadObject.CompareTag("Monster"))
+            print("[Monster Damage] - Not implemented yet");
+        else if (deadObject.CompareTag("BossMonster"))
+            RaiseBossMonsterDamage(deadObject.GetComponent<BaseMonsterController>());
         else if (deadObject.CompareTag("Player"))
             RaisePlayerDamage(deadObject.CurrentHealthPercentage);
     }

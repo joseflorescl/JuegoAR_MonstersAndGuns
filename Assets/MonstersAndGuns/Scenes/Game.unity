@@ -653,50 +653,7 @@ MonoBehaviour:
   pitchVariation: 0.2
   SFXAudioSource: {fileID: 219414189}
   SFXVoiceAudioSource: {fileID: 1617442}
-  mainMenuMusic:
-  - {fileID: 8300000, guid: 29407ca7a42581c4aa5d206d87120aaf, type: 3}
-  - {fileID: 8300000, guid: a6d8e18ce760bc74fa23830de55fcd18, type: 3}
-  - {fileID: 8300000, guid: 30e85a04d16ce0a48beedf1e397d0e70, type: 3}
-  - {fileID: 8300000, guid: b469c9cbc59973e48b8d0f32720f5ffe, type: 3}
-  battleMusic:
-  - {fileID: 8300000, guid: 4e62a34cbaf532d498b15077304813cc, type: 3}
-  - {fileID: 8300000, guid: 02c8b66dbeb17184bb3a932899cfe3fc, type: 3}
-  - {fileID: 8300000, guid: 9a5ef0678558cbb459486849b6dd2ba4, type: 3}
-  - {fileID: 8300000, guid: 0d2d46858fb6386468bcf06558973b46, type: 3}
-  gameOverMusic:
-  - {fileID: 8300000, guid: b79d683de652ae84c8b11c45263bf412, type: 3}
-  - {fileID: 8300000, guid: aa4986285cbf7f648bd1e7d7cabee9c6, type: 3}
-  pressStartGame:
-  - {fileID: 8300000, guid: d6525f623a620a443b43071ae785ba1f, type: 3}
-  - {fileID: 8300000, guid: 65788c6e93358e44fbf6229851a8c21d, type: 3}
-  popSound:
-  - {fileID: 8300000, guid: 2f90acb5ed4747044ad1e01b7a3ef371, type: 3}
-  - {fileID: 8300000, guid: b7b5e694d3f167f469d93eb254c72ace, type: 3}
-  - {fileID: 8300000, guid: 1eec622399352e243a7afc610b1a79ae, type: 3}
-  monsterExplosions:
-  - {fileID: 8300000, guid: 28ba75cb082576d4dbf605f7dae61916, type: 3}
-  - {fileID: 8300000, guid: ed724879ffa96ce45852e3064d735e03, type: 3}
-  - {fileID: 8300000, guid: 3b388c00f53e2b2439362734f063bfb8, type: 3}
-  - {fileID: 8300000, guid: d9df44feac147cb468a9dc3ac19581fc, type: 3}
-  - {fileID: 8300000, guid: 3c8326da32977854a9bc5013aa6262d2, type: 3}
-  - {fileID: 8300000, guid: d04d11627130c63429df6b1b252fb06d, type: 3}
-  - {fileID: 8300000, guid: 6b157c0d720c2314cbf61504cf46435e, type: 3}
-  - {fileID: 8300000, guid: 0190784fbf9bd1d47a18e0e03aec22cb, type: 3}
-  - {fileID: 8300000, guid: 5e3250df8bd07a1459a63e8214f7d539, type: 3}
-  - {fileID: 8300000, guid: be9fa5468ddfeda4bbdba4f3b8595b5c, type: 3}
-  gunFired:
-  - {fileID: 8300000, guid: 251fef16b5831af44ac43e7b5ea68a83, type: 3}
-  goSound:
-  - {fileID: 8300000, guid: 25c87f4cf19299a4d9e6c7980fd607fd, type: 3}
-  volumeScaleGunFired: 0.5
-  playerDamage:
-  - {fileID: 8300000, guid: efb7376f2843c404d9b901906ace4ad2, type: 3}
-  volumeScalePlayerDamage: 1
-  delayPlayerDamageSound: 0.2
-  playerDead:
-  - {fileID: 8300000, guid: f5e114b528b3a644ebc57f9e2d54aa43, type: 3}
-  volumeScalePlayerDead: 1
-  delayPlayerDeadSound: 0.2
+  data: {fileID: 11400000, guid: f88857e2970cc8540ba3ca59728e3578, type: 2}
 --- !u!1 &730817854
 GameObject:
   m_ObjectHideFlags: 0
@@ -1425,36 +1382,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterDeadParticleColors:
-  - monsterColor: 0
+  - monsterVFXColor: 0
     vfxPrefab: {fileID: 4389850068504539480, guid: ba47a6f9aba949e47bd2d35f6d274ea8,
       type: 3}
-  - monsterColor: 1
+  - monsterVFXColor: 1
     vfxPrefab: {fileID: 4389850068504539480, guid: 588a24e6cccaa2346848a23e8d936061,
       type: 3}
-  - monsterColor: 2
+  - monsterVFXColor: 2
     vfxPrefab: {fileID: 4389850068504539480, guid: 66dddfc32512e8c41bdf78454a7793f5,
       type: 3}
-  - monsterColor: 3
+  - monsterVFXColor: 3
     vfxPrefab: {fileID: 4389850068504539480, guid: b284a9f45b473084cb0ea87636dd13d4,
       type: 3}
-  - monsterColor: 4
+  - monsterVFXColor: 4
     vfxPrefab: {fileID: 4389850068504539480, guid: fdb621e21ccf1e64cb5733863c441ca5,
       type: 3}
+  - monsterVFXColor: 5
+    vfxPrefab: {fileID: 4389850068504539480, guid: 69ceb006a24bfda4880e8f30aa002ea5,
+      type: 3}
   monsterDamageParticleColors:
-  - monsterColor: 0
+  - monsterVFXColor: 0
     vfxPrefab: {fileID: 3671871919858223796, guid: 567e062df3c81e446be4287e172c6ffc,
       type: 3}
-  - monsterColor: 1
+  - monsterVFXColor: 1
     vfxPrefab: {fileID: 3988382710727861068, guid: 2bdfc6f5699050b4b8fd895275ee36ac,
       type: 3}
-  - monsterColor: 2
+  - monsterVFXColor: 2
     vfxPrefab: {fileID: 4662686026309371745, guid: 9f208426b7af02a4290706dd79270fe9,
       type: 3}
-  - monsterColor: 3
+  - monsterVFXColor: 3
     vfxPrefab: {fileID: 7548266275715129477, guid: 50891235af7c3d1448c236f3ae35e77b,
       type: 3}
-  - monsterColor: 4
+  - monsterVFXColor: 4
     vfxPrefab: {fileID: 1793616605902376991, guid: d755c2072bc80f646b189e50632ae806,
+      type: 3}
+  - monsterVFXColor: 5
+    vfxPrefab: {fileID: 3988382710727861068, guid: 2bdfc6f5699050b4b8fd895275ee36ac,
       type: 3}
 --- !u!1 &1720418963
 GameObject:

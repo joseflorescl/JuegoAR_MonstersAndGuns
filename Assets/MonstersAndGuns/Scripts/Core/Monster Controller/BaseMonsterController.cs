@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MonsterColor { White, Red, Green, Blue, Yellow }
+public enum MonsterVFXColor { White, Red, Green, Blue, Yellow, BossRed } // Nota: aquí se encuentra útil poder crear los enums usando SO
 public enum MonsterState { Idle, GoUp, Patrol, Attack }
 
 [RequireComponent(typeof(Rigidbody))]
@@ -13,7 +13,7 @@ public abstract class BaseMonsterController : MonoBehaviour
     [SerializeField] protected MonsterData monsterData;
 
     public int Score => monsterData.scorePoints;
-    public MonsterColor CurrentColor => CurrentState == MonsterState.Attack ? monsterData.attackColor : monsterData.initialColor;
+    public MonsterVFXColor CurrentColor => CurrentState == MonsterState.Attack ? monsterData.attackColor : monsterData.initialColor;
     public Vector3 ExplosionPosition => rend.bounds.center; // Por ahora es el centro del mesh renderer, pero se podría elegir otra posicion adhoc
 
     protected MonsterState currentState;
@@ -103,7 +103,6 @@ public abstract class BaseMonsterController : MonoBehaviour
                 RotateTowardsVelocity();
                 break;
             case MonsterData.RotateTowardsMode.None:
-                // Entonces no
                 break;
             default:
                 break;
@@ -152,8 +151,8 @@ public abstract class BaseMonsterController : MonoBehaviour
 
         targetPosition += offset;
 
-        // Nota importante sobre TransformPoint: si el objeto portal tiene valores != 1 en la escala, el valor resultante no será el esperado
-        targetPosition = target.transform.TransformPoint(targetPosition);  // Esta posición ahora se debe orientar c/r al target (portal o player)
+        // Nota importante sobre TransformPoint: si el objeto target tiene valores != 1 en la escala, el valor resultante no será el esperado
+        targetPosition = target.transform.TransformPoint(targetPosition);  // Esta posición ahora se debe orientar c/r al target (portal)
         return targetPosition;
     }
 

@@ -40,6 +40,7 @@ public class SpawnerManager : MonoBehaviour
     {
         yield return new WaitForSeconds(data.delaySpawningBossMonster);
         Instantiate(currentMonstersByLevel.bossMonsterPrefab, GameManager.Instance.Portal.position, GameManager.Instance.Portal.rotation);
+        GameManager.Instance.BossMonsterSpawned();
     }
 
     IEnumerator MonstersSpawningRoutine(Vector3 position, Quaternion rotation)

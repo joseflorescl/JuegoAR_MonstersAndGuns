@@ -7,25 +7,9 @@ public class AudioManager : BaseAudioManager
     [SerializeField] private AudioSource SFXAudioSource;
     [SerializeField] private AudioSource SFXVoiceAudioSource;
 
-    [Header("BGM Sounds")]
-    public AudioClip[] mainMenuMusic;
-    public AudioClip[] battleMusic;
-    public AudioClip[] gameOverMusic;
+    [SerializeField] private AudioManagerData data;
 
-    [Space(10)]
-    [Header("SFX Sounds")]
-    [SerializeField] private AudioClip[] pressStartGame;
-    [SerializeField] private AudioClip[] popSound;
-    [SerializeField] private AudioClip[] monsterExplosions;
-    [SerializeField] private AudioClip[] gunFired;
-    [SerializeField] private AudioClip[] goSound;
-    [SerializeField] private float volumeScaleGunFired = 0.25f;
-    [SerializeField] private AudioClip[] playerDamage;
-    [SerializeField] private float volumeScalePlayerDamage = 1f;
-    [SerializeField] private float delayPlayerDamageSound = 0.2f;
-    [SerializeField] private AudioClip[] playerDead;
-    [SerializeField] private float volumeScalePlayerDead = 1f;
-    [SerializeField] private float delayPlayerDeadSound = 0.2f;
+    
 
     private void OnEnable()
     {
@@ -40,7 +24,13 @@ public class AudioManager : BaseAudioManager
         GameManager.Instance.OnGameOver += GameOverHandler;
         GameManager.Instance.OnMonstersSpawned += MonstersSpawnedHandler;
         GameManager.Instance.OnSpawning += SpawningHandler;
+        GameManager.Instance.OnBossBattle += BossBattleHandler;
+        GameManager.Instance.OnBossMonsterSpawned += BossMonsterSpawnedHandler;
+        GameManager.Instance.OnBossMonsterDamage += BossMonsterDamageHandler;
+        GameManager.Instance.OnBossMonsterDead += BossMonsterDeadHandler;
     }
+
+  
 
     private void OnDisable()
     {
@@ -55,6 +45,30 @@ public class AudioManager : BaseAudioManager
         GameManager.Instance.OnGameOver -= GameOverHandler;
         GameManager.Instance.OnMonstersSpawned -= MonstersSpawnedHandler;
         GameManager.Instance.OnSpawning -= SpawningHandler;
+        GameManager.Instance.OnBossBattle -= BossBattleHandler;
+        GameManager.Instance.OnBossMonsterSpawned -= BossMonsterSpawnedHandler;
+        GameManager.Instance.OnBossMonsterDamage -= BossMonsterDamageHandler;
+        GameManager.Instance.OnBossMonsterDead -= BossMonsterDeadHandler;
+    }
+
+    private void BossMonsterDeadHandler(BaseMonsterController obj)
+    {
+        PlayRandomSound(data.bossMonsterExplosions, SFXAudioSource);
+    }
+
+    private void BossMonsterDamageHandler(BaseMonsterController obj)
+    {
+        PlayRandomSound(data.bossMonsterDamage, SFXAudioSource);
+    }
+
+    private void BossMonsterSpawnedHandler()
+    {
+        PlayRandomSound(data.bossMonsterSpawned, SFXAudioSource);
+    }
+
+    private void BossBattleHandler()
+    {
+        PlayBossBattleMusic();
     }
 
     private void SpawningHandler(int arg1, Vector3 arg2, Quaternion arg3)
@@ -69,7 +83,7 @@ public class AudioManager : BaseAudioManager
 
     private void BattleHandler(List<MonsterController> arg1, int arg2)
     {
-        PlayRandomSound(goSound, SFXAudioSource);
+        PlayRandomSound(data.goSound, SFXAudioSource);
     }
 
     private void GameOverHandler()
@@ -80,27 +94,27 @@ public class AudioManager : BaseAudioManager
     private void PlayerDeadHandler()
     {
         StopGameMusic();
-        PlayRandomSoundWithDelay(playerDead, SFXVoiceAudioSource, delayPlayerDeadSound, randomPitch: false, volumeScale: volumeScalePlayerDead);
+        PlayRandomSoundWithDelay(data.playerDead, SFXVoiceAudioSource, data.delayPlayerDeadSound, randomPitch: false, volumeScale: data.volumeScalePlayerDead);
     }
 
     private void PlayerDamageHandler(float obj)
     {        
-        PlayRandomSoundWithDelay(playerDamage, SFXVoiceAudioSource, delayPlayerDamageSound, randomPitch: true, volumeScale: volumeScalePlayerDamage);
+        PlayRandomSoundWithDelay(data.playerDamage, SFXVoiceAudioSource, data.delayPlayerDamageSound, randomPitch: true, volumeScale: data.volumeScalePlayerDamage);
     }
 
     private void GunFiredHandler(int obj)
     {
-        PlayRandomSound(gunFired, SFXAudioSource, randomPitch: false, volumeScale: volumeScaleGunFired);
+        PlayRandomSound(data.gunFired, SFXAudioSource, randomPitch: false, volumeScale: data.volumeScaleGunFired);
     }
 
     private void MonsterDeadHandler(BaseMonsterController obj)
     {
-        PlayRandomSound(monsterExplosions, SFXAudioSource);
+        PlayRandomSound(data.monsterExplosions, SFXAudioSource);
     }
 
     private void MonsterCreatedHandler()
     {
-        PlayRandomSound(popSound, SFXAudioSource, randomPitch: true);
+        PlayRandomSound(data.monsterSpawned, SFXAudioSource, randomPitch: true);
     }
 
     private void MainMenuHandler()
@@ -113,7 +127,7 @@ public class AudioManager : BaseAudioManager
     {
         BGMAudioSource.Stop();
         SFXAudioSource.Stop();
-        float duration = PlayRandomSound(pressStartGame, SFXAudioSource);
+        float duration = PlayRandomSound(data.pressStartGame, SFXAudioSource);
 
         StopAudioRoutine();
         audioRoutine = StartCoroutine(PlayMainMenuMusicWithDelayRoutine(duration));
@@ -128,21 +142,28 @@ public class AudioManager : BaseAudioManager
 
     private void PlayMainMenuMusic()
     {
-        var clip = GetRandomClip(mainMenuMusic);
+        var clip = GetRandomClip(data.mainMenuMusic);
         PlayBGMMusic(clip, true);
     }
 
     private void PlayBattleMusic()
     {
         StopAudioRoutine();
-        var clip = GetRandomClip(battleMusic);
+        var clip = GetRandomClip(data.battleMusic);
+        PlayBGMMusic(clip, true);
+    }
+
+    private void PlayBossBattleMusic()
+    {
+        StopAudioRoutine();
+        var clip = GetRandomClip(data.bossBattleMusic);
         PlayBGMMusic(clip, true);
     }
 
     private void PlayGameOverMusic()
     {
         StopAudioRoutine();
-        var clip = GetRandomClip(gameOverMusic);
+        var clip = GetRandomClip(data.gameOverMusic);
         PlayBGMMusic(clip, false);
     }
 

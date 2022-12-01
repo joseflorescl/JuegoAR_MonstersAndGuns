@@ -31,8 +31,8 @@ MonoBehaviour:
   minSecondsSameDirection: 8
   maxSecondsSameDirection: 12
   minDistanceToTarget: 0.05
-  attackSpeed: 2.5
+  attackSpeed: 0.25
   secondsToAdjustDirection: 1
-  initialColor: 1
-  attackColor: 1
+  initialColor: 5
+  attackColor: 5
   attackMaterial: {fileID: 2100000, guid: cd7cf496992eceb4f9440011908e65e4, type: 2}

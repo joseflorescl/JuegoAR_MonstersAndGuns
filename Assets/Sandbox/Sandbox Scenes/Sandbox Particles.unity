@@ -190,6 +190,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blue Damage Particle System
       objectReference: {fileID: 0}
+    - target: {fileID: 7548266275715129479, guid: 50891235af7c3d1448c236f3ae35e77b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50891235af7c3d1448c236f3ae35e77b, type: 3}
 --- !u!1001 &472122042
@@ -203,6 +208,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Yellow Damage Particle System
+      objectReference: {fileID: 0}
+    - target: {fileID: 1793616605902376989, guid: d755c2072bc80f646b189e50632ae806,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1793616605902376990, guid: d755c2072bc80f646b189e50632ae806,
         type: 3}
@@ -328,6 +338,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: White Damage Particle System
       objectReference: {fileID: 0}
+    - target: {fileID: 3671871919858223798, guid: 567e062df3c81e446be4287e172c6ffc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 567e062df3c81e446be4287e172c6ffc, type: 3}
 --- !u!1001 &982996955
@@ -396,6 +411,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Green Damage Particle System
+      objectReference: {fileID: 0}
+    - target: {fileID: 4662686026309371747, guid: 9f208426b7af02a4290706dd79270fe9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f208426b7af02a4290706dd79270fe9, type: 3}
@@ -5270,6 +5290,125 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -22.5, z: 0}
+--- !u!1001 &1614718573
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4389850068504539480, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: ColorModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539480, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539480, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539480, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539480, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime1
+      value: 35852
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539480, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.8482957
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.4988017
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539482, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_Name
+      value: TEST White Dead Particle System 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539483, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_UseCustomVertexStreams
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539483, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ae5db56516492cb48bc2d41ede3a332a, type: 2}
+    - target: {fileID: 4389850068504539483, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539483, guid: 451519232461fd64590e885bb256fcb7,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.data[4]
+      value: 9
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 451519232461fd64590e885bb256fcb7, type: 3}
 --- !u!1001 &1722777214
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5589,8 +5728,87 @@ PrefabInstance:
       propertyPath: m_Name
       value: Red Damage Particle System
       objectReference: {fileID: 0}
+    - target: {fileID: 3988382710727861070, guid: 2bdfc6f5699050b4b8fd895275ee36ac,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2bdfc6f5699050b4b8fd895275ee36ac, type: 3}
+--- !u!1001 &894569376926670656
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4389850068504539481, guid: 69ceb006a24bfda4880e8f30aa002ea5,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 69ceb006a24bfda4880e8f30aa002ea5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 69ceb006a24bfda4880e8f30aa002ea5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 69ceb006a24bfda4880e8f30aa002ea5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 69ceb006a24bfda4880e8f30aa002ea5,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 69ceb006a24bfda4880e8f30aa002ea5,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 69ceb006a24bfda4880e8f30aa002ea5,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 69ceb006a24bfda4880e8f30aa002ea5,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 69ceb006a24bfda4880e8f30aa002ea5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 69ceb006a24bfda4880e8f30aa002ea5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539481, guid: 69ceb006a24bfda4880e8f30aa002ea5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539482, guid: 69ceb006a24bfda4880e8f30aa002ea5,
+        type: 3}
+      propertyPath: m_Name
+      value: Boss Red Dead Particle System
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539482, guid: 69ceb006a24bfda4880e8f30aa002ea5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 69ceb006a24bfda4880e8f30aa002ea5, type: 3}
 --- !u!1001 &5404632374368159594
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -18,7 +18,8 @@ public abstract class BaseGameManager : MonoBehaviour
     public event Action<List<MonsterController>, int> OnBattling; // Recibe la lista de monsters creados y el level actual del juego
     public event Action OnMonsterCreated;
     public event Action<BaseMonsterController> OnMonsterDead;
-    public event Action OnMonsterDamage;
+    public event Action<BaseMonsterController> OnBossMonsterDead;
+    public event Action<BaseMonsterController> OnBossMonsterDamage;
     public event Action<float> OnPlayerDamage;
     public event Action OnPlayerDead;
     public event Action<bool> OnStatusPortalChanged; // La idea es que la UI refleje cuando el portal está activo/inactivo con un texto diferente en cada caso
@@ -27,6 +28,7 @@ public abstract class BaseGameManager : MonoBehaviour
     public event Action OnRestart;
     public event Action<int> OnScoreUpdated;
     public event Action OnMonstersSpawned;
+    public event Action OnBossMonsterSpawned;
     public event Action OnBossBattle;
 
     protected void RaiseMainMenuActivating() => OnMainMenuActivating?.Invoke();
@@ -36,7 +38,8 @@ public abstract class BaseGameManager : MonoBehaviour
     protected void RaiseBattling(List<MonsterController> monsters, int level) => OnBattling?.Invoke(monsters, level);
     protected void RaiseMonsterCreated() => OnMonsterCreated?.Invoke();
     protected void RaiseMonsterDead(BaseMonsterController monster) => OnMonsterDead?.Invoke(monster);
-    protected void RaiseMonsterDamage() => OnMonsterDamage?.Invoke();
+    protected void RaiseBossMonsterDead(BaseMonsterController bossMonster) => OnBossMonsterDead?.Invoke(bossMonster);
+    protected void RaiseBossMonsterDamage(BaseMonsterController bossMonster) => OnBossMonsterDamage?.Invoke(bossMonster);
     protected void RaisePlayerDamage(float currentHealthPercentage) => OnPlayerDamage?.Invoke(currentHealthPercentage);
     protected void RaisePlayerDead() => OnPlayerDead?.Invoke();
     protected void RaiseStatusPortalChanged(bool status) => OnStatusPortalChanged.Invoke(status);
@@ -45,6 +48,7 @@ public abstract class BaseGameManager : MonoBehaviour
     protected void RaiseRestart() => OnRestart?.Invoke();
     protected void RaiseScoreUpdated(int score) => OnScoreUpdated?.Invoke(score);
     protected void RaiseMonstersSpawned() => OnMonstersSpawned?.Invoke();
+    protected void RaiseBossMonsterSpawned() => OnBossMonsterSpawned?.Invoke();
     protected void RaiseBossBattle() => OnBossBattle?.Invoke();
 
     protected Transform portal;

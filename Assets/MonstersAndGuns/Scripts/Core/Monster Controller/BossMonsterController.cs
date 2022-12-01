@@ -5,6 +5,14 @@ using UnityEngine;
 public class BossMonsterController : BaseMonsterController
 {
 
+    [SerializeField] private float minSecondsPatrolState = 3f;
+    [SerializeField] private float maxSecondsPatrolState = 5f;
+
+    [SerializeField] private float minSecondsAttackState = 3f;
+    [SerializeField] private float maxSecondsAttackState = 5f;
+
+    [SerializeField] private int firesPerSecond = 1;
+
     private void Start()
     {
         CurrentState = MonsterState.GoUp;
@@ -12,7 +20,7 @@ public class BossMonsterController : BaseMonsterController
 
     protected override void Attack()
     {
-        //TODO
+        StartCoroutine(BossAttackRoutine());
     }
 
     protected override void GoUp()
@@ -22,7 +30,7 @@ public class BossMonsterController : BaseMonsterController
 
     protected override void Idle()
     {
-        //TODO
+        //Nada
     }
 
     protected override void Patrol()
@@ -42,15 +50,17 @@ public class BossMonsterController : BaseMonsterController
     }
 
     IEnumerator BossPatrolRoutine()
-    {
-        coll.enabled = true;
+    {        
         var r = monsterData.spherePatrollingRadius;
         var h = monsterData.spherePatrollingHeight;
-        var d = monsterData.spherePatrollingDistanceToTarget;        
+        var d = monsterData.spherePatrollingDistanceToTarget;
+
+        float secondsInPatrol = Random.Range(minSecondsPatrolState, maxSecondsPatrolState);
+        float maxTimeInPatrol = Time.time + secondsInPatrol;
 
         while (CurrentState == MonsterState.Patrol)
         {
-            var targetPosition = GetRandomPositionInsideSphere(GameManager.Instance.Player, r, h, d);
+            var targetPosition = GetRandomPositionInsideSphere(GameManager.Instance.Portal, r, h, d, behind: true);
             var direction = targetPosition - transform.position;
             kinematicVelocity = direction.normalized * monsterData.patrolSpeed;
 
@@ -58,11 +68,50 @@ public class BossMonsterController : BaseMonsterController
             float secondsSameDirection = Random.Range(monsterData.minSecondsSameDirection, monsterData.maxSecondsSameDirection);
             float maxTimeInSameDirection = Time.time + secondsSameDirection;
 
-            yield return new WaitUntil(() => Time.time > maxTimeInSameDirection || Vector3.Distance(transform.position, targetPosition) < monsterData.minDistanceToTarget);
+            yield return new WaitUntil(() => 
+                   Time.time > maxTimeInSameDirection 
+                || Time.time > maxTimeInPatrol
+                || Vector3.Distance(transform.position, targetPosition) < monsterData.minDistanceToTarget);
 
-            //TODO: pasar random a estado Attack
+            if (Time.time > maxTimeInPatrol)
+                CurrentState = MonsterState.Attack;
         }
 
+    }
 
+
+    IEnumerator BossAttackRoutine()
+    {
+        float secondsInAttack = Random.Range(minSecondsAttackState, maxSecondsAttackState);
+        float maxTimeInAttack = Time.time + secondsInAttack;
+
+        StartCoroutine(FireProjectileRoutine());
+
+        while (CurrentState == MonsterState.Attack)
+        {
+            var direction = GameManager.Instance.PlayerPosition - transform.position;
+            kinematicVelocity = direction.normalized * monsterData.attackSpeed;
+
+            float secondsSameDirection = (monsterData.secondsToAdjustDirection);
+            float maxTimeInSameDirection = Time.time + secondsSameDirection;
+
+            yield return new WaitUntil(() =>
+                 Time.time > maxTimeInSameDirection
+              || Time.time > maxTimeInAttack);
+
+            if (Time.time > maxTimeInAttack)
+                CurrentState = MonsterState.Patrol;
+        }            
+    }
+
+    IEnumerator FireProjectileRoutine()
+    {
+        float fireRate = 1f / firesPerSecond;
+
+        while (CurrentState == MonsterState.Attack)
+        {
+            yield return new WaitForSeconds(fireRate);
+            print("Boss Fire!!");
+        }
     }
 }
