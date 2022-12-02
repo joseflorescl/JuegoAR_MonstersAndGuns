@@ -7,6 +7,7 @@ public enum MonsterState { Idle, GoUp, Patrol, Attack }
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(HealthController))]
 public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
 {
     [SerializeField] protected MonsterData monsterData;
@@ -14,6 +15,7 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
     public int Score => monsterData.scorePoints;
     public VFXColor CurrentColor => CurrentState == MonsterState.Attack ? monsterData.attackColor : monsterData.initialColor;
     public Vector3 ExplosionPosition => rend.bounds.center; // Por ahora es el centro del mesh renderer, pero se podría elegir otra posicion adhoc
+    public float CurrentHealthPercentage => healthController.CurrentHealthPercentage;
 
     protected MonsterState currentState;
 
@@ -47,6 +49,7 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
     protected Animator anim;
     protected Collider coll;
     protected Renderer rend;
+    protected HealthController healthController;
     protected Vector3 kinematicVelocity;
     protected Vector3 firstPointPatrolling;
 
@@ -61,6 +64,7 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
         anim = GetComponent<Animator>();
         coll = GetComponent<Collider>();
         rend = GetComponentInChildren<Renderer>();
+        healthController = GetComponent<HealthController>();
     }
 
     protected void FaceInitialDirection()

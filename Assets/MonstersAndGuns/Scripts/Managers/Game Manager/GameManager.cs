@@ -204,7 +204,7 @@ public class GameManager : BaseGameManager
         if (deadObject.CompareTag("Monster"))
             print("[Monster Damage] - Not implemented yet");
         else if (deadObject.CompareTag("BossMonster"))
-            RaiseBossMonsterDamage(deadObject.GetComponent<BaseMonsterController>());
+            RaiseBossMonsterDamage(deadObject.GetComponent<BossMonsterController>());
         else if (deadObject.CompareTag("Player"))
             RaisePlayerDamage(deadObject.CurrentHealthPercentage);
     }

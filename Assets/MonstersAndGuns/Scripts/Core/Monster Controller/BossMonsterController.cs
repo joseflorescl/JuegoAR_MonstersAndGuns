@@ -23,7 +23,24 @@ public class BossMonsterController : BaseMonsterController
     private void Start()
     {
         CurrentState = MonsterState.GoUp;
-    }    
+    }
+
+    private void OnEnable()
+    {
+        GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
+    }
+
+    
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnPlayerDead -= PlayerDeadHandler;
+    }
+
+    private void PlayerDeadHandler()
+    {
+        CurrentState = MonsterState.Idle;
+    }
 
     protected override void Attack()
     {

@@ -23,9 +23,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject tapToPlacePortalMessage;
     [SerializeField] private GameObject goMessage;
     [SerializeField] private TMP_Text levelText;
-    [SerializeField] private Image healthBarImage;
+    [SerializeField] private Image playerHealthBarImage;
     [SerializeField] private Image splatImage;
     [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private GameObject bossMonsterHealth;
+    [SerializeField] private Image bossMonsterHealthBarImage;
+
 
     [Space(10)]
     [Header("Settings")]
@@ -78,7 +81,9 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnGameOver += GameOverHandler;
         GameManager.Instance.OnScoreUpdated += ScoreUpdatedHandler;
         GameManager.Instance.OnBossBattle += BossBattleHandler;
-
+        GameManager.Instance.OnBossMonsterSpawned += BossMonsterSpawnedHandler;
+        GameManager.Instance.OnBossMonsterDamage += BossMonsterDamageHandler;
+        GameManager.Instance.OnBossMonsterDead += BossMonsterDeadHandler;
 
     }
 
@@ -96,9 +101,26 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnGameOver -= GameOverHandler;
         GameManager.Instance.OnScoreUpdated -= ScoreUpdatedHandler;
         GameManager.Instance.OnBossBattle -= BossBattleHandler;
-
-
+        GameManager.Instance.OnBossMonsterSpawned -= BossMonsterSpawnedHandler;
+        GameManager.Instance.OnBossMonsterDamage -= BossMonsterDamageHandler;
+        GameManager.Instance.OnBossMonsterDead -= BossMonsterDeadHandler;
     }
+
+    private void BossMonsterDeadHandler(BaseMonsterController obj)
+    {
+        bossMonsterHealthBarImage.fillAmount = 0f;
+    }
+
+    private void BossMonsterDamageHandler(BaseMonsterController bossMonster)
+    {
+        bossMonsterHealthBarImage.fillAmount = bossMonster.CurrentHealthPercentage;
+    }
+
+    private void BossMonsterSpawnedHandler()
+    {
+        bossMonsterHealth.SetActive(true);
+    }
+
 
     private void BossBattleHandler()
     {
@@ -140,14 +162,14 @@ public class UIManager : MonoBehaviour
     {
         battlePanel.SetActive(false);
         backgroundPanel.SetActive(true);
-        healthBarImage.fillAmount = 0;
+        playerHealthBarImage.fillAmount = 0;
         ShowSplatBlood();
         FadeGraphic(backgroundImage, 1f, 0.5f, timeToFadeBackground);
     }
 
     private void PlayerDamageHandler(float currentHealthPercentage)
     {
-        healthBarImage.fillAmount = currentHealthPercentage;
+        playerHealthBarImage.fillAmount = currentHealthPercentage;
         ShowSplatBlood();
     }
 
@@ -179,10 +201,11 @@ public class UIManager : MonoBehaviour
     {
         HideAllMessages();
         HUDPanel.SetActive(true);
+        bossMonsterHealth.SetActive(false);
         battlePanel.SetActive(true);
         vfxPanel.SetActive(true);
         levelText.text = level.ToString();
-        healthBarImage.fillAmount = 1f; // Por ahora se asume simplemente que cuando parte un nuevo level la salud está a full
+        playerHealthBarImage.fillAmount = 1f; // Por ahora se asume simplemente que cuando parte un nuevo level la salud está a full
         splatImage.canvasRenderer.SetAlpha(0f);
         goMessage.SetActive(true);
         yield return new WaitForSeconds(secondsToDeactivateGOMessage); // Después de un ratito desactivar el texto de GO!
