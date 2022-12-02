@@ -6,7 +6,7 @@ using UnityEngine;
 public class MissileController : MonoBehaviour, IVFXEntity
 {
     [SerializeField] private float speed = 1f;
-    [field: SerializeField] public VFXColor CurrentColor { get; private set; }
+    [field: SerializeField] public Color CurrentColor { get; private set; }
     public Vector3 ExplosionPosition => transform.position;
 
     protected Rigidbody rb;

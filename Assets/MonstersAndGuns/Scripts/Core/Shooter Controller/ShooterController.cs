@@ -16,10 +16,10 @@ public abstract  class ShooterController : MonoBehaviour
     }
 
 
-    public virtual void FireBullet()
+    public virtual int FireBullet()
     {
-        int gunIndex = bulletFactory.Fire();                
-        GameManager.Instance.GunFired(gunIndex); // TODO: el GM también necesitará saber qué object realizó el disparo (Player, Monster)
+        int gunIndex = bulletFactory.Fire();
+        return gunIndex;
     }
 
     public virtual void DoDamage(GameObject opponent)

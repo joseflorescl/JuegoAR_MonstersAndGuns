@@ -35,7 +35,7 @@ public class MonsterData : ScriptableObject
     [Header("Attack State")]
     public float attackSpeed = 2.5f;
     public float secondsToAdjustDirection = 1f;
-    public VFXColor initialColor = VFXColor.White;
-    public VFXColor attackColor = VFXColor.Red;
+    public Color initialColor = Color.white;
+    public Color attackColor = Color.red;
     public Material attackMaterial;
 }

@@ -7,7 +7,7 @@ public class MonsterShooterController : ShooterController
     public virtual void FireToTarget(Vector3 target)
     {     
         bulletFactory.FireToTarget(target);
-        //TODO: GameManager.Instance.MonsterFired...
+        GameManager.Instance.MonsterFired();
     }
     
 }

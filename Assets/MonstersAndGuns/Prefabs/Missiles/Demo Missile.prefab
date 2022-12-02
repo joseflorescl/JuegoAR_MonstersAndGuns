@@ -81,7 +81,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  <CurrentColor>k__BackingField: 4
+  <CurrentColor>k__BackingField: {r: 1, g: 1, b: 0, a: 1}
 --- !u!114 &4315705678188747500
 MonoBehaviour:
   m_ObjectHideFlags: 0

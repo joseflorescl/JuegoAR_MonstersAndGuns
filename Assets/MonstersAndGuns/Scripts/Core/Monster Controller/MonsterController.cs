@@ -138,6 +138,8 @@ public class MonsterController : BaseMonsterController
         var rend = GetComponentInChildren<Renderer>();
         rend.material = monsterData.attackMaterial;
 
+        GameManager.Instance.MonsterAttacking();
+
         // Cada x seg se va ajustando la dirección hacia el player
         while (true)
         {

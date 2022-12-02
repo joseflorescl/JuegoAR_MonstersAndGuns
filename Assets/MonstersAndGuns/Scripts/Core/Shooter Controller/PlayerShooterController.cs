@@ -37,6 +37,13 @@ public class PlayerShooterController : ShooterController
         bulletFactory.gameObject.SetActive(false);
     }
 
+    public override int FireBullet()
+    {
+        int gunIndex = base.FireBullet();
+        GameManager.Instance.PlayerFired(gunIndex);
+        return gunIndex;
+    }
+
     private IEnumerator BattleRoutine()
     {
         bulletFactory.gameObject.SetActive(true);

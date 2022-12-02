@@ -18,7 +18,7 @@ public class AudioManager : BaseAudioManager
         GameManager.Instance.OnBattling += BattleHandler;
         GameManager.Instance.OnMonsterCreated += MonsterCreatedHandler;        
         GameManager.Instance.OnMonsterDead += MonsterDeadHandler;
-        GameManager.Instance.OnGunFired += GunFiredHandler;
+        GameManager.Instance.OnPlayerFired += PlayerFiredHandler;
         GameManager.Instance.OnPlayerDamage += PlayerDamageHandler;
         GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
         GameManager.Instance.OnGameOver += GameOverHandler;
@@ -28,9 +28,12 @@ public class AudioManager : BaseAudioManager
         GameManager.Instance.OnBossMonsterSpawned += BossMonsterSpawnedHandler;
         GameManager.Instance.OnBossMonsterDamage += BossMonsterDamageHandler;
         GameManager.Instance.OnBossMonsterDead += BossMonsterDeadHandler;
+        GameManager.Instance.OnMonsterFired += MonsterFiredHandler;
+        GameManager.Instance.OnMissileDead += MissileDeadHandler;
+        GameManager.Instance.OnMonsterAttacking += MonsterAttackingHandler;
     }
 
-  
+    
 
     private void OnDisable()
     {
@@ -39,7 +42,7 @@ public class AudioManager : BaseAudioManager
         GameManager.Instance.OnBattling -= BattleHandler;
         GameManager.Instance.OnMonsterCreated -= MonsterCreatedHandler;        
         GameManager.Instance.OnMonsterDead -= MonsterDeadHandler;
-        GameManager.Instance.OnGunFired -= GunFiredHandler;
+        GameManager.Instance.OnPlayerFired -= PlayerFiredHandler;
         GameManager.Instance.OnPlayerDamage -= PlayerDamageHandler;
         GameManager.Instance.OnPlayerDead -= PlayerDeadHandler;
         GameManager.Instance.OnGameOver -= GameOverHandler;
@@ -49,6 +52,24 @@ public class AudioManager : BaseAudioManager
         GameManager.Instance.OnBossMonsterSpawned -= BossMonsterSpawnedHandler;
         GameManager.Instance.OnBossMonsterDamage -= BossMonsterDamageHandler;
         GameManager.Instance.OnBossMonsterDead -= BossMonsterDeadHandler;
+        GameManager.Instance.OnMonsterFired -= MonsterFiredHandler;
+        GameManager.Instance.OnMissileDead -= MissileDeadHandler;
+        GameManager.Instance.OnMonsterAttacking -= MonsterAttackingHandler;
+    }
+
+    private void MonsterAttackingHandler()
+    {
+        PlayRandomSound(data.monsterAttacking, SFXAudioSource);
+    }
+
+    private void MissileDeadHandler(MissileController obj)
+    {
+        PlayRandomSound(data.missileExplosions, SFXAudioSource);
+    }
+
+    private void MonsterFiredHandler()
+    {
+        PlayRandomSound(data.monsterFired, SFXAudioSource);
     }
 
     private void BossMonsterDeadHandler(BaseMonsterController obj)
@@ -102,9 +123,9 @@ public class AudioManager : BaseAudioManager
         PlayRandomSoundWithDelay(data.playerDamage, SFXVoiceAudioSource, data.delayPlayerDamageSound, randomPitch: true, volumeScale: data.volumeScalePlayerDamage);
     }
 
-    private void GunFiredHandler(int obj)
+    private void PlayerFiredHandler(int obj)
     {
-        PlayRandomSound(data.gunFired, SFXAudioSource, randomPitch: false, volumeScale: data.volumeScaleGunFired);
+        PlayRandomSound(data.playerFired, SFXAudioSource, randomPitch: false, volumeScale: data.volumeScalePlayerFired);
     }
 
     private void MonsterDeadHandler(BaseMonsterController obj)

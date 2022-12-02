@@ -32,6 +32,14 @@ MonoBehaviour:
   pressStartGame:
   - {fileID: 8300000, guid: d6525f623a620a443b43071ae785ba1f, type: 3}
   - {fileID: 8300000, guid: 65788c6e93358e44fbf6229851a8c21d, type: 3}
+  goSound:
+  - {fileID: 8300000, guid: 25c87f4cf19299a4d9e6c7980fd607fd, type: 3}
+  playerFired:
+  - {fileID: 8300000, guid: 251fef16b5831af44ac43e7b5ea68a83, type: 3}
+  playerDamage:
+  - {fileID: 8300000, guid: efb7376f2843c404d9b901906ace4ad2, type: 3}
+  playerDead:
+  - {fileID: 8300000, guid: f5e114b528b3a644ebc57f9e2d54aa43, type: 3}
   monsterSpawned:
   - {fileID: 8300000, guid: b7b5e694d3f167f469d93eb254c72ace, type: 3}
   - {fileID: 8300000, guid: 1eec622399352e243a7afc610b1a79ae, type: 3}
@@ -57,16 +65,20 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8c616a432af2a61469212fa569de6ba3, type: 3}
   - {fileID: 8300000, guid: e132457167bb82a4db8a34fb69cb4b96, type: 3}
   - {fileID: 8300000, guid: c4dd06a4f5e7b114e9c4f1bceada6c15, type: 3}
-  gunFired:
-  - {fileID: 8300000, guid: 251fef16b5831af44ac43e7b5ea68a83, type: 3}
-  goSound:
-  - {fileID: 8300000, guid: 25c87f4cf19299a4d9e6c7980fd607fd, type: 3}
-  volumeScaleGunFired: 0.5
-  playerDamage:
-  - {fileID: 8300000, guid: efb7376f2843c404d9b901906ace4ad2, type: 3}
+  monsterFired:
+  - {fileID: 8300000, guid: ccd0ac17ce415cf45bce6f5b898e7231, type: 3}
+  - {fileID: 8300000, guid: c7c4e98e9c80bb74cb484a0e53492233, type: 3}
+  - {fileID: 8300000, guid: 8e8b41e2b6b931d41bef2c1b9a0bd279, type: 3}
+  - {fileID: 8300000, guid: c16463dd60aa976499618b977c738026, type: 3}
+  - {fileID: 8300000, guid: eeda2e009c65ccf4cacfaaba8daa2897, type: 3}
+  missileExplosions:
+  - {fileID: 8300000, guid: 613f162701790ca4a8bee96f68971026, type: 3}
+  - {fileID: 8300000, guid: a059cde09805e714384892a12005d943, type: 3}
+  monsterAttacking:
+  - {fileID: 8300000, guid: 98fe3dd4bdecb7b41841dd6cb3f04f26, type: 3}
+  - {fileID: 8300000, guid: ff42efbfab774fc41bba8923787c2b5f, type: 3}
+  volumeScalePlayerFired: 0.25
   volumeScalePlayerDamage: 1
-  delayPlayerDamageSound: 0.2
-  playerDead:
-  - {fileID: 8300000, guid: f5e114b528b3a644ebc57f9e2d54aa43, type: 3}
   volumeScalePlayerDead: 1
+  delayPlayerDamageSound: 0.2
   delayPlayerDeadSound: 0.2

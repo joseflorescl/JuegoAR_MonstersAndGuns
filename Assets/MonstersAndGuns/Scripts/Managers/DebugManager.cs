@@ -23,7 +23,7 @@ public class DebugManager : MonoBehaviour
     {
         GameManager.Instance.OnMonsterCreated += MonsterCreatedHandler;
         GameManager.Instance.OnMonsterDead += MonsterDeadHandler;
-        GameManager.Instance.OnGunFired += GunFiredHandler;
+        GameManager.Instance.OnPlayerFired += PlayerFiredHandler;
         GameManager.Instance.OnRestart += RestartHandler;
 
     }
@@ -34,7 +34,7 @@ public class DebugManager : MonoBehaviour
     {
         GameManager.Instance.OnMonsterCreated -= MonsterCreatedHandler;
         GameManager.Instance.OnMonsterDead -= MonsterDeadHandler;
-        GameManager.Instance.OnGunFired -= GunFiredHandler;
+        GameManager.Instance.OnPlayerFired -= PlayerFiredHandler;
         GameManager.Instance.OnRestart -= RestartHandler;
     }
 
@@ -48,7 +48,7 @@ public class DebugManager : MonoBehaviour
         UpdateMonsterCount(monsterCount + 1);
     }
 
-    private void GunFiredHandler(int gunIndex)
+    private void PlayerFiredHandler(int gunIndex)
     {
         gunIndexText.text = gunIndex.ToString();
     }   

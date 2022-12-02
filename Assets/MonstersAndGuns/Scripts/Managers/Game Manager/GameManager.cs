@@ -184,6 +184,8 @@ public class GameManager : BaseGameManager
             var bossMonster = deadObject.GetComponent<BossMonsterController>();
             RaiseBossMonsterDead(bossMonster);
             Destroy(deadObject.gameObject);
+
+            //TODO: sumar el score
         }
         else if (deadObject.CompareTag("Player"))
         {
@@ -211,12 +213,18 @@ public class GameManager : BaseGameManager
 
     public void StatusPortal(bool status) => RaiseStatusPortalChanged(status);
 
-    public void GunFired(int gunIndex) => RaiseGunFired(gunIndex);
+    public void PlayerFired(int gunIndex) => RaisePlayerFired(gunIndex);
+    public void MonsterFired() => RaiseMonsterFired();
 
     public void MonsterCreated(MonsterController monster)
     {
         monsters.Add(monster);
         RaiseMonsterCreated();
+    }
+
+    public void MonsterAttacking()
+    {
+        RaiseMonsterAttacking();
     }
 
 }

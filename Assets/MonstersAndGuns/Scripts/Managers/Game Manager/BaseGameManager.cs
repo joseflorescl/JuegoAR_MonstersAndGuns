@@ -18,13 +18,15 @@ public abstract class BaseGameManager : MonoBehaviour
     public event Action<List<MonsterController>, int> OnBattling; // Recibe la lista de monsters creados y el level actual del juego
     public event Action OnMonsterCreated;
     public event Action<BaseMonsterController> OnMonsterDead;
+    public event Action OnMonsterAttacking;
     public event Action<BaseMonsterController> OnBossMonsterDead;
     public event Action<BaseMonsterController> OnBossMonsterDamage;
     public event Action<MissileController> OnMissileDead;
     public event Action<float> OnPlayerDamage;
     public event Action OnPlayerDead;
     public event Action<bool> OnStatusPortalChanged; // La idea es que la UI refleje cuando el portal está activo/inactivo con un texto diferente en cada caso
-    public event Action<int> OnGunFired;
+    public event Action<int> OnPlayerFired;
+    public event Action OnMonsterFired;
     public event Action OnGameOver;
     public event Action OnRestart;
     public event Action<int> OnScoreUpdated;
@@ -39,13 +41,15 @@ public abstract class BaseGameManager : MonoBehaviour
     protected void RaiseBattling(List<MonsterController> monsters, int level) => OnBattling?.Invoke(monsters, level);
     protected void RaiseMonsterCreated() => OnMonsterCreated?.Invoke();
     protected void RaiseMonsterDead(BaseMonsterController monster) => OnMonsterDead?.Invoke(monster);
+    protected void RaiseMonsterAttacking() => OnMonsterAttacking?.Invoke();
     protected void RaiseBossMonsterDead(BaseMonsterController bossMonster) => OnBossMonsterDead?.Invoke(bossMonster);
     protected void RaiseBossMonsterDamage(BaseMonsterController bossMonster) => OnBossMonsterDamage?.Invoke(bossMonster);
     protected void RaiseMissileDead(MissileController missil) => OnMissileDead?.Invoke(missil);
     protected void RaisePlayerDamage(float currentHealthPercentage) => OnPlayerDamage?.Invoke(currentHealthPercentage);
     protected void RaisePlayerDead() => OnPlayerDead?.Invoke();
     protected void RaiseStatusPortalChanged(bool status) => OnStatusPortalChanged.Invoke(status);
-    protected void RaiseGunFired(int gunIndex) => OnGunFired?.Invoke(gunIndex);
+    protected void RaisePlayerFired(int gunIndex) => OnPlayerFired?.Invoke(gunIndex);
+    protected void RaiseMonsterFired() => OnMonsterFired?.Invoke();
     protected void RaiseGameOver() => OnGameOver?.Invoke();
     protected void RaiseRestart() => OnRestart?.Invoke();
     protected void RaiseScoreUpdated(int score) => OnScoreUpdated?.Invoke(score);

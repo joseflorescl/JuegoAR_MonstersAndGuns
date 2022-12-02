@@ -119,6 +119,7 @@ public class UIManager : MonoBehaviour
     private void BossMonsterSpawnedHandler()
     {
         bossMonsterHealth.SetActive(true);
+        bossMonsterHealthBarImage.fillAmount = 1f;
     }
 
 
