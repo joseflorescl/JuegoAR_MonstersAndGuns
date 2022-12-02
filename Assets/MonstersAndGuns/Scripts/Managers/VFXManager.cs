@@ -3,26 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+[System.Serializable]
+public enum VFXColor { White, Red, Green, Blue, Yellow, BossRed } // Nota: aquí se encuentra útil poder crear los enums usando SO
+
 public class VFXManager : MonoBehaviour
 {
     [Serializable]
     public struct ParticleColor
     {
-        public MonsterVFXColor monsterVFXColor;
+        public VFXColor vfxColor;
         public ParticleSystem vfxPrefab;
     }
 
-    [SerializeField] private ParticleColor[] monsterDeadParticleColors;
-    [SerializeField] private ParticleColor[] monsterDamageParticleColors;
+    [SerializeField] private ParticleColor[] deadParticleColors;
+    [SerializeField] private ParticleColor[] damageParticleColors;
 
-    Dictionary<MonsterVFXColor, ParticleSystem> monsterDeadParticleColorsInstances;
-    Dictionary<MonsterVFXColor, ParticleSystem> monsterDamageParticleColorsInstances;
+    Dictionary<VFXColor, ParticleSystem> deadParticleColorsInstances;
+    Dictionary<VFXColor, ParticleSystem> damageParticleColorsInstances;
 
     private void OnEnable()
     {
         GameManager.Instance.OnMonsterDead += MonsterDeadHandler;
         GameManager.Instance.OnBossMonsterDead += MonsterDeadHandler; // Se reutiliza la misma función para monster y boss
         GameManager.Instance.OnBossMonsterDamage += MonsterDamageHandler;
+        GameManager.Instance.OnMissileDead += MissileDeadHandler;
     }
 
     private void OnDisable()
@@ -30,43 +34,46 @@ public class VFXManager : MonoBehaviour
         GameManager.Instance.OnMonsterDead -= MonsterDeadHandler;
         GameManager.Instance.OnBossMonsterDead -= MonsterDeadHandler;
         GameManager.Instance.OnBossMonsterDamage -= MonsterDamageHandler;
+        GameManager.Instance.OnMissileDead -= MissileDeadHandler;
     }
 
     private void Start()
     {
-        monsterDeadParticleColorsInstances = new Dictionary<MonsterVFXColor, ParticleSystem>();
-        monsterDamageParticleColorsInstances = new Dictionary<MonsterVFXColor, ParticleSystem>();
-        InstantiateParticles(monsterDeadParticleColors, monsterDeadParticleColorsInstances);
-        InstantiateParticles(monsterDamageParticleColors, monsterDamageParticleColorsInstances);
+        deadParticleColorsInstances = new Dictionary<VFXColor, ParticleSystem>();
+        damageParticleColorsInstances = new Dictionary<VFXColor, ParticleSystem>();
+        InstantiateParticles(deadParticleColors, deadParticleColorsInstances);
+        InstantiateParticles(damageParticleColors, damageParticleColorsInstances);
     }
 
-    void InstantiateParticles(ParticleColor[] particleColors, Dictionary<MonsterVFXColor, ParticleSystem> particleColorsInstances)
+    void InstantiateParticles(ParticleColor[] particleColors, Dictionary<VFXColor, ParticleSystem> particleColorsInstances)
     {
         for (int i = 0; i < particleColors.Length; i++)
         {
             var pc = particleColors[i];
-            particleColorsInstances[pc.monsterVFXColor] = Instantiate(pc.vfxPrefab);
+            particleColorsInstances[pc.vfxColor] = Instantiate(pc.vfxPrefab);
         }
     }
 
-    private void MonsterDamageHandler(BaseMonsterController monsterDamage)
+    private void MissileDeadHandler(IVFXEntity missil)
     {
-        PlayParticleColorsInstance(monsterDamageParticleColorsInstances, monsterDamage);
+        PlayParticleColorsInstance(damageParticleColorsInstances, missil.CurrentColor, missil.ExplosionPosition);
     }
 
-    private void MonsterDeadHandler(BaseMonsterController monsterDead)
+    private void MonsterDamageHandler(IVFXEntity monsterDamage)
     {
-        PlayParticleColorsInstance(monsterDeadParticleColorsInstances, monsterDead);
+        PlayParticleColorsInstance(damageParticleColorsInstances, monsterDamage.CurrentColor, monsterDamage.ExplosionPosition);
     }
 
-    void PlayParticleColorsInstance(Dictionary<MonsterVFXColor, ParticleSystem> particleColorsInstances, BaseMonsterController monster)
+    private void MonsterDeadHandler(IVFXEntity monsterDead)
     {
-        var monsterColor = monster.CurrentColor;
-        var position = monster.ExplosionPosition;
-        var particles = particleColorsInstances[monsterColor];
+        PlayParticleColorsInstance(deadParticleColorsInstances, monsterDead.CurrentColor, monsterDead.ExplosionPosition);
+    }
+
+    void PlayParticleColorsInstance(Dictionary<VFXColor, ParticleSystem> particleColorsInstances, VFXColor color, Vector3 position)
+    {
+        var particles = particleColorsInstances[color];
         particles.transform.position = position;
         particles.Play();
     }
-
 
 }

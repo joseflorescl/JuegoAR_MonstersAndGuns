@@ -1381,42 +1381,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a69b76c2b7034e4a9ac7a343471cb8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterDeadParticleColors:
-  - monsterVFXColor: 0
+  deadParticleColors:
+  - vfxColor: 0
     vfxPrefab: {fileID: 4389850068504539480, guid: ba47a6f9aba949e47bd2d35f6d274ea8,
       type: 3}
-  - monsterVFXColor: 1
+  - vfxColor: 1
     vfxPrefab: {fileID: 4389850068504539480, guid: 588a24e6cccaa2346848a23e8d936061,
       type: 3}
-  - monsterVFXColor: 2
+  - vfxColor: 2
     vfxPrefab: {fileID: 4389850068504539480, guid: 66dddfc32512e8c41bdf78454a7793f5,
       type: 3}
-  - monsterVFXColor: 3
+  - vfxColor: 3
     vfxPrefab: {fileID: 4389850068504539480, guid: b284a9f45b473084cb0ea87636dd13d4,
       type: 3}
-  - monsterVFXColor: 4
+  - vfxColor: 4
     vfxPrefab: {fileID: 4389850068504539480, guid: fdb621e21ccf1e64cb5733863c441ca5,
       type: 3}
-  - monsterVFXColor: 5
+  - vfxColor: 5
     vfxPrefab: {fileID: 4389850068504539480, guid: 69ceb006a24bfda4880e8f30aa002ea5,
       type: 3}
-  monsterDamageParticleColors:
-  - monsterVFXColor: 0
+  damageParticleColors:
+  - vfxColor: 0
     vfxPrefab: {fileID: 3671871919858223796, guid: 567e062df3c81e446be4287e172c6ffc,
       type: 3}
-  - monsterVFXColor: 1
+  - vfxColor: 1
     vfxPrefab: {fileID: 3988382710727861068, guid: 2bdfc6f5699050b4b8fd895275ee36ac,
       type: 3}
-  - monsterVFXColor: 2
+  - vfxColor: 2
     vfxPrefab: {fileID: 4662686026309371745, guid: 9f208426b7af02a4290706dd79270fe9,
       type: 3}
-  - monsterVFXColor: 3
+  - vfxColor: 3
     vfxPrefab: {fileID: 7548266275715129477, guid: 50891235af7c3d1448c236f3ae35e77b,
       type: 3}
-  - monsterVFXColor: 4
+  - vfxColor: 4
     vfxPrefab: {fileID: 1793616605902376991, guid: d755c2072bc80f646b189e50632ae806,
       type: 3}
-  - monsterVFXColor: 5
+  - vfxColor: 5
     vfxPrefab: {fileID: 3988382710727861068, guid: 2bdfc6f5699050b4b8fd895275ee36ac,
       type: 3}
 --- !u!1 &1720418963

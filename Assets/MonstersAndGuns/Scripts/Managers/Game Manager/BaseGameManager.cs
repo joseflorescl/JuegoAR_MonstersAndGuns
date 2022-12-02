@@ -20,6 +20,7 @@ public abstract class BaseGameManager : MonoBehaviour
     public event Action<BaseMonsterController> OnMonsterDead;
     public event Action<BaseMonsterController> OnBossMonsterDead;
     public event Action<BaseMonsterController> OnBossMonsterDamage;
+    public event Action<MissileController> OnMissileDead;
     public event Action<float> OnPlayerDamage;
     public event Action OnPlayerDead;
     public event Action<bool> OnStatusPortalChanged; // La idea es que la UI refleje cuando el portal está activo/inactivo con un texto diferente en cada caso
@@ -40,6 +41,7 @@ public abstract class BaseGameManager : MonoBehaviour
     protected void RaiseMonsterDead(BaseMonsterController monster) => OnMonsterDead?.Invoke(monster);
     protected void RaiseBossMonsterDead(BaseMonsterController bossMonster) => OnBossMonsterDead?.Invoke(bossMonster);
     protected void RaiseBossMonsterDamage(BaseMonsterController bossMonster) => OnBossMonsterDamage?.Invoke(bossMonster);
+    protected void RaiseMissileDead(MissileController missil) => OnMissileDead?.Invoke(missil);
     protected void RaisePlayerDamage(float currentHealthPercentage) => OnPlayerDamage?.Invoke(currentHealthPercentage);
     protected void RaisePlayerDead() => OnPlayerDead?.Invoke();
     protected void RaiseStatusPortalChanged(bool status) => OnStatusPortalChanged.Invoke(status);

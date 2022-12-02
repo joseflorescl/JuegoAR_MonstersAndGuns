@@ -29,7 +29,6 @@ public abstract  class ShooterController : MonoBehaviour
             damageable.Damage(damage, DamageMode.Shooting);
     }
 
-    // public virtual void FireBulletToTarget() //TODO: este método lo usarían los monsters para dispararle al player
-    // por esto también se necesitaría un método: TargetPosition()
+    
 
 }

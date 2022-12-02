@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BossMonsterController : BaseMonsterController
 {
-
     [SerializeField] private float minSecondsPatrolState = 3f;
     [SerializeField] private float maxSecondsPatrolState = 5f;
 
@@ -13,10 +12,18 @@ public class BossMonsterController : BaseMonsterController
 
     [SerializeField] private int firesPerSecond = 1;
 
+    MonsterShooterController shooterController;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        shooterController = GetComponent<MonsterShooterController>();
+    }
+
     private void Start()
     {
         CurrentState = MonsterState.GoUp;
-    }
+    }    
 
     protected override void Attack()
     {
@@ -111,7 +118,7 @@ public class BossMonsterController : BaseMonsterController
         while (CurrentState == MonsterState.Attack)
         {
             yield return new WaitForSeconds(fireRate);
-            print("Boss Fire!!");
+            shooterController.FireToTarget(GameManager.Instance.PlayerPosition);
         }
     }
 }

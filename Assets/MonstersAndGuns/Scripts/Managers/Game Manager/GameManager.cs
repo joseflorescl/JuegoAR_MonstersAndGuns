@@ -181,7 +181,6 @@ public class GameManager : BaseGameManager
         }
         else if(deadObject.CompareTag("BossMonster"))
         {            
-            print("Boss Muerto");
             var bossMonster = deadObject.GetComponent<BossMonsterController>();
             RaiseBossMonsterDead(bossMonster);
             Destroy(deadObject.gameObject);
@@ -190,6 +189,13 @@ public class GameManager : BaseGameManager
         {
             RaisePlayerDead();
             CurrentState = GameState.GameOver;
+        }
+        else if (deadObject.CompareTag("Missile"))
+        {
+            //TODO: lanzar evento para el sonido de explosión del misil y para el VFX
+            var missil = deadObject.GetComponent<MissileController>();
+            RaiseMissileDead(missil);
+            Destroy(deadObject.gameObject);
         }
     }
 

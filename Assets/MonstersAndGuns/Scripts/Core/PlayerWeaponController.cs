@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Este script se le asocia a cada una de las armas que tengrá el player (ó monster).
-//  y provee un método para disparar
 [RequireComponent(typeof(Animator))]
-public class WeaponController : MonoBehaviour
+public class PlayerWeaponController : MonoBehaviour, IWeaponController
 {
     ParticleSystem vfxBullet;
     Animator anim;
@@ -20,8 +18,9 @@ public class WeaponController : MonoBehaviour
     {
         vfxBullet.Play();
         
-        if (!anim.IsInTransition(0)) // Si ya se está animando, entonces no gatillaremos el trigger nuevamente
+        if (!anim.IsInTransition(0))
             anim.SetTrigger("Fire");
     }
 
+    public void FireToTarget(Vector3 target) { }
 }

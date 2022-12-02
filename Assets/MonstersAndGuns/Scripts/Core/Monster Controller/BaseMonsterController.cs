@@ -2,18 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MonsterVFXColor { White, Red, Green, Blue, Yellow, BossRed } // Nota: aquí se encuentra útil poder crear los enums usando SO
 public enum MonsterState { Idle, GoUp, Patrol, Attack }
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Collider))]
-public abstract class BaseMonsterController : MonoBehaviour
+public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
 {
     [SerializeField] protected MonsterData monsterData;
 
     public int Score => monsterData.scorePoints;
-    public MonsterVFXColor CurrentColor => CurrentState == MonsterState.Attack ? monsterData.attackColor : monsterData.initialColor;
+    public VFXColor CurrentColor => CurrentState == MonsterState.Attack ? monsterData.attackColor : monsterData.initialColor;
     public Vector3 ExplosionPosition => rend.bounds.center; // Por ahora es el centro del mesh renderer, pero se podría elegir otra posicion adhoc
 
     protected MonsterState currentState;
@@ -56,7 +55,7 @@ public abstract class BaseMonsterController : MonoBehaviour
     protected abstract void Patrol();
     protected abstract void Attack();
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
@@ -160,6 +159,5 @@ public abstract class BaseMonsterController : MonoBehaviour
     {
         Gizmos.DrawRay(transform.position, kinematicVelocity);
     }
-
 
 }
