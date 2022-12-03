@@ -1387,6 +1387,8 @@ MonoBehaviour:
     type: 3}
   damageParticleColorsPrefab: {fileID: 3671871919858223796, guid: 83cf7fd64b58c4b4e91f6c9f1ee037ad,
     type: 3}
+  missileExplosionParticleColorsPrefab: {fileID: 3671871919858223796, guid: 178f7707db72ab14393de9445f3bb1de,
+    type: 3}
 --- !u!1 &1720418963
 GameObject:
   m_ObjectHideFlags: 0

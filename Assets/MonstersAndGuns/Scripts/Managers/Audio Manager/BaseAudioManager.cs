@@ -14,6 +14,12 @@ public class BaseAudioManager : MonoBehaviour
 
     protected void LateUpdate() => clipsPlayedThisFrame.Clear();
 
+    protected void PlayRandomMusic(AudioClip[] clips, bool loop)
+    {
+        StopAudioRoutine();
+        var clip = GetRandomClip(clips);
+        PlayBGMMusic(clip, loop);
+    }
 
     protected float PlayRandomSound(AudioClip[] clips, AudioSource audioSource, bool randomPitch = false, float volumeScale = 1f)
     {

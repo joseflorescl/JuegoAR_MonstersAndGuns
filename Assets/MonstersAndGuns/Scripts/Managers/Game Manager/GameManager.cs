@@ -62,7 +62,6 @@ public class GameManager : BaseGameManager
 
     protected override void BossBattle()
     {       
-        print("Se inicia la batalla con el Boss");
         RaiseBossBattle();
     }
 
@@ -73,7 +72,7 @@ public class GameManager : BaseGameManager
 
     protected override void Win()
     {
-        //TODO
+        RaiseWinLevel();
     }
 
     protected override void Exit()
@@ -185,7 +184,10 @@ public class GameManager : BaseGameManager
             RaiseBossMonsterDead(bossMonster);
             Destroy(deadObject.gameObject);
 
-            //TODO: sumar el score
+            if (damageMode == DamageMode.Shooting)
+                Score += bossMonster.Score;
+
+            CurrentState = GameState.Win;
         }
         else if (deadObject.CompareTag("Player"))
         {

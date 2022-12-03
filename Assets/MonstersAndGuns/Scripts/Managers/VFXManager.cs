@@ -8,10 +8,12 @@ public class VFXManager : MonoBehaviour
     [SerializeField] private ParticleSystem monsterDeadParticleColorsPrefab;
     [SerializeField] private ParticleSystem bossDeadParticleColorsPrefab;
     [SerializeField] private ParticleSystem damageParticleColorsPrefab;
+    [SerializeField] private ParticleSystem missileExplosionParticleColorsPrefab;
 
     ParticleSystem monsterDeadParticleColorsInstance;
     ParticleSystem bossDeadParticleColorsInstance;
     ParticleSystem damageParticleColorsInstance;
+    ParticleSystem missileExplosionParticleColorsInstance;
 
     private void OnEnable()
     {
@@ -34,6 +36,7 @@ public class VFXManager : MonoBehaviour
         monsterDeadParticleColorsInstance = Instantiate(monsterDeadParticleColorsPrefab);
         bossDeadParticleColorsInstance = Instantiate(bossDeadParticleColorsPrefab);
         damageParticleColorsInstance = Instantiate(damageParticleColorsPrefab);
+        missileExplosionParticleColorsInstance = Instantiate(missileExplosionParticleColorsPrefab);
     }
 
 
@@ -45,7 +48,7 @@ public class VFXManager : MonoBehaviour
 
     private void MissileDeadHandler(IVFXEntity missil)
     {
-        PlayParticleColorsInstance(damageParticleColorsInstance, missil.CurrentColor, missil.ExplosionPosition);
+        PlayParticleColorsInstance(missileExplosionParticleColorsInstance, missil.CurrentColor, missil.ExplosionPosition);
     }
 
     private void BossMonsterDamageHandler(IVFXEntity monsterDamage)

@@ -10,6 +10,7 @@ public class AudioManagerData : ScriptableObject
     public AudioClip[] battleMusic;
     public AudioClip[] bossBattleMusic;
     public AudioClip[] gameOverMusic;
+    public AudioClip[] winMusic;
 
     [Space(10)]
     [Header("Gameplay SFX Sounds")]

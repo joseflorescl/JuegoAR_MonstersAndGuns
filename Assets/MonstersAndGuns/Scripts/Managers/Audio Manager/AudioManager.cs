@@ -31,9 +31,10 @@ public class AudioManager : BaseAudioManager
         GameManager.Instance.OnMonsterFired += MonsterFiredHandler;
         GameManager.Instance.OnMissileDead += MissileDeadHandler;
         GameManager.Instance.OnMonsterAttacking += MonsterAttackingHandler;
+        GameManager.Instance.OnWinLevel += WinLevelHandler;
     }
 
-    
+   
 
     private void OnDisable()
     {
@@ -55,6 +56,12 @@ public class AudioManager : BaseAudioManager
         GameManager.Instance.OnMonsterFired -= MonsterFiredHandler;
         GameManager.Instance.OnMissileDead -= MissileDeadHandler;
         GameManager.Instance.OnMonsterAttacking -= MonsterAttackingHandler;
+        GameManager.Instance.OnWinLevel -= WinLevelHandler;
+    }
+
+    private void WinLevelHandler()
+    {
+        PlayWinLevelMusic();
     }
 
     private void MonsterAttackingHandler()
@@ -161,31 +168,15 @@ public class AudioManager : BaseAudioManager
         PlayMainMenuMusic();
     }
 
-    private void PlayMainMenuMusic()
-    {
-        var clip = GetRandomClip(data.mainMenuMusic);
-        PlayBGMMusic(clip, true);
-    }
-
-    private void PlayBattleMusic()
-    {
-        StopAudioRoutine();
-        var clip = GetRandomClip(data.battleMusic);
-        PlayBGMMusic(clip, true);
-    }
-
-    private void PlayBossBattleMusic()
-    {
-        StopAudioRoutine();
-        var clip = GetRandomClip(data.bossBattleMusic);
-        PlayBGMMusic(clip, true);
-    }
-
-    private void PlayGameOverMusic()
-    {
-        StopAudioRoutine();
-        var clip = GetRandomClip(data.gameOverMusic);
-        PlayBGMMusic(clip, false);
-    }
+    private void PlayMainMenuMusic() => PlayRandomMusic(data.mainMenuMusic, true);
+    
+    private void PlayBattleMusic() => PlayRandomMusic(data.battleMusic, true);
+    
+    private void PlayBossBattleMusic() => PlayRandomMusic(data.bossBattleMusic, true);
+    
+    private void PlayWinLevelMusic() => PlayRandomMusic(data.winMusic, false);
+    
+    private void PlayGameOverMusic() => PlayRandomMusic(data.gameOverMusic, false);
+    
 
 }

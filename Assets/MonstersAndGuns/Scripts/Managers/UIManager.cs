@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject vfxPanel;
     [SerializeField] private GameObject warningBossBattlePanel;
+    [SerializeField] private GameObject winLevelPanel;
 
     [Space(10)]
     [Header("UI Elements")]
@@ -46,7 +47,7 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        messagesPanelCenter = new GameObject[] { backgroundPanel, mainPanel, portalCreationPanel, HUDPanel, battlePanel, gameOverPanel, vfxPanel, warningBossBattlePanel };
+        messagesPanelCenter = new GameObject[] { backgroundPanel, mainPanel, portalCreationPanel, HUDPanel, battlePanel, gameOverPanel, vfxPanel, warningBossBattlePanel, winLevelPanel };
         HideAllMessages();
     }
 
@@ -84,6 +85,7 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnBossMonsterSpawned += BossMonsterSpawnedHandler;
         GameManager.Instance.OnBossMonsterDamage += BossMonsterDamageHandler;
         GameManager.Instance.OnBossMonsterDead += BossMonsterDeadHandler;
+        GameManager.Instance.OnWinLevel += WinLevelHandler;
 
     }
 
@@ -104,6 +106,19 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnBossMonsterSpawned -= BossMonsterSpawnedHandler;
         GameManager.Instance.OnBossMonsterDamage -= BossMonsterDamageHandler;
         GameManager.Instance.OnBossMonsterDead -= BossMonsterDeadHandler;
+        GameManager.Instance.OnWinLevel -= WinLevelHandler;
+    }
+
+    private void WinLevelHandler()
+    {
+        bossMonsterHealth.SetActive(false);
+        winLevelPanel.SetActive(true);
+
+        backgroundPanel.SetActive(true);
+        FadeGraphic(backgroundImage, 1f, 0.5f, timeToFadeBackground);
+
+        //TODO: esto debería ser una corutina mientras se muestra el incremento del score
+        //  y una vez listo con el score se manda mensaje al GM para que comience con el sgte level
     }
 
     private void BossMonsterDeadHandler(BaseMonsterController obj)
