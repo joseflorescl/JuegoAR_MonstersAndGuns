@@ -196,7 +196,6 @@ public class GameManager : BaseGameManager
         }
         else if (deadObject.CompareTag("Missile"))
         {
-            //TODO: lanzar evento para el sonido de explosión del misil y para el VFX
             var missil = deadObject.GetComponent<MissileController>();
             RaiseMissileDead(missil);
             Destroy(deadObject.gameObject);
@@ -210,7 +209,9 @@ public class GameManager : BaseGameManager
         else if (deadObject.CompareTag("BossMonster"))
             RaiseBossMonsterDamage(deadObject.GetComponent<BossMonsterController>());
         else if (deadObject.CompareTag("Player"))
-            RaisePlayerDamage(deadObject.CurrentHealthPercentage);
+        {
+            RaisePlayerDamage(deadObject.CurrentHealthPercentage);            
+        }
     }
 
     public void StatusPortal(bool status) => RaiseStatusPortalChanged(status);

@@ -22,17 +22,17 @@ MonoBehaviour:
   maxSecondsGoUp: 3
   minDistanceToPlayer: 1
   angleToAwayFromPlayer: 30
-  patrolSpeed: 2.2
+  patrolSpeed: 2
   firstPointMaxAttempts: 3
   firstPointMinDot: 0.5
   spherePatrollingRadius: 5
-  spherePatrollingDistanceToPortal: 0
+  spherePatrollingDistanceToTarget: 1
   spherePatrollingHeight: -1
   minSecondsSameDirection: 8
   maxSecondsSameDirection: 12
   minDistanceToTarget: 0.05
-  attackSpeed: 2.5
+  attackSpeed: 2.1
   secondsToAdjustDirection: 1
-  initialColor: 0
-  attackColor: 1
+  initialColor: {r: 1, g: 1, b: 1, a: 1}
+  attackColor: {r: 1, g: 0, b: 0, a: 1}
   attackMaterial: {fileID: 2100000, guid: cd7cf496992eceb4f9440011908e65e4, type: 2}

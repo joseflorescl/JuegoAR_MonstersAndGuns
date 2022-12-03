@@ -26,9 +26,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text levelText;
     [SerializeField] private Image playerHealthBarImage;
     [SerializeField] private Image splatImage;
-    [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private TMP_Text scoreTextGameOver;
     [SerializeField] private GameObject bossMonsterHealth;
     [SerializeField] private Image bossMonsterHealthBarImage;
+    [SerializeField] private TMP_Text scoreTextWinLevel;
 
 
     [Space(10)]
@@ -40,6 +41,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private int splatImageRandomOffset = 200;
     [SerializeField] private int showWarningBossBattleCount = 4;
     [SerializeField] private float blinkingDelayWarningBossBattle = 0.5f;
+    [SerializeField] private float delayScoreIncrement = 0.1f;
 
 
     GameObject[] messagesPanelCenter;
@@ -111,13 +113,35 @@ public class UIManager : MonoBehaviour
 
     private void WinLevelHandler()
     {
+        StartCoroutine(WinLevelHandlerRoutine());
+    }
+
+    IEnumerator WinLevelHandlerRoutine()
+    {
         bossMonsterHealth.SetActive(false);
         winLevelPanel.SetActive(true);
+        battlePanel.SetActive(false);
 
-        backgroundPanel.SetActive(true);
-        FadeGraphic(backgroundImage, 1f, 0.5f, timeToFadeBackground);
+        // Por ahora se cree que no queda bien al setear el fondo rojo: se pierde la explosión del boss
+        //backgroundPanel.SetActive(true);
+        //FadeGraphic(backgroundImage, 1f, 0.5f, timeToFadeBackground);
 
-        //TODO: esto debería ser una corutina mientras se muestra el incremento del score
+
+        
+        int currentScore = 0; // TODO: el incremento del score debe comenzar con el score del level anterior, no desde cero.
+        while (currentScore <= score)
+        {
+            scoreTextWinLevel.text = currentScore.ToString();
+            currentScore++;//TODO: sumar con clamp para que al incrementar en un valor de 100 no superemos el score real
+            yield return new WaitForSeconds(delayScoreIncrement);
+        }
+
+        //TODO: este loop debe durar a lo más el valor especificado en var:
+        //float maxTimeScoreIncrement = 5f;
+        // Entonces NO sumar de a 1, sino que si ha pasado cierto tiempo se suma de a 10, y luego de a 100
+        
+        
+
         //  y una vez listo con el score se manda mensaje al GM para que comience con el sgte level
     }
 
@@ -171,7 +195,7 @@ public class UIManager : MonoBehaviour
     private void GameOverHandler()
     {                
         gameOverPanel.SetActive(true);
-        scoreText.text = score.ToString();
+        scoreTextGameOver.text = score.ToString();
     }
 
     private void PlayerDeadHandler()

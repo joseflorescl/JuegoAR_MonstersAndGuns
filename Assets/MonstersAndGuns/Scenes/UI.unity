@@ -1328,7 +1328,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &401971627
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1993,9 +1993,10 @@ MonoBehaviour:
   levelText: {fileID: 375735883}
   playerHealthBarImage: {fileID: 334838453}
   splatImage: {fileID: 1524877663}
-  scoreText: {fileID: 1871495487}
+  scoreTextGameOver: {fileID: 1871495487}
   bossMonsterHealth: {fileID: 1403040291}
   bossMonsterHealthBarImage: {fileID: 1303898767}
+  scoreTextWinLevel: {fileID: 1975223023}
   splatSprites:
   - {fileID: 21300000, guid: c7f1daac3d3ddca44a3b344a24839ed5, type: 3}
   - {fileID: 21300000, guid: 4799e0dd618733548b306f6b4dfadf7c, type: 3}
@@ -2006,6 +2007,7 @@ MonoBehaviour:
   splatImageRandomOffset: 200
   showWarningBossBattleCount: 4
   blinkingDelayWarningBossBattle: 0.5
+  delayScoreIncrement: 0.017
 --- !u!4 &631186286
 Transform:
   m_ObjectHideFlags: 0
@@ -5570,7 +5572,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 9999
+  m_text: 1234
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b1e049fc0bbdc0348896f8802e875798, type: 2}
   m_sharedMaterial: {fileID: -5459665768799095828, guid: b1e049fc0bbdc0348896f8802e875798,

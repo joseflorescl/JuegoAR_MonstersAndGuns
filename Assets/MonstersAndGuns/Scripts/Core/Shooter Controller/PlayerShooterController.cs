@@ -13,15 +13,30 @@ public class PlayerShooterController : ShooterController
     {
         GameManager.Instance.OnBattling += BattleHandler;
         GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
-    }    
+        GameManager.Instance.OnWinLevel += WinLevelHandler;
 
+    }
+
+   
     private void OnDisable()
     {
         GameManager.Instance.OnBattling -= BattleHandler;
         GameManager.Instance.OnPlayerDead -= PlayerDeadHandler;
+        GameManager.Instance.OnWinLevel -= WinLevelHandler;
     }
 
+    private void WinLevelHandler()
+    {
+        PutDownGuns();
+    }
+
+
     private void PlayerDeadHandler()
+    {
+        PutDownGuns();
+    }
+
+    void PutDownGuns()
     {
         StopAllCoroutines();
         bulletFactory.gameObject.SetActive(false);
