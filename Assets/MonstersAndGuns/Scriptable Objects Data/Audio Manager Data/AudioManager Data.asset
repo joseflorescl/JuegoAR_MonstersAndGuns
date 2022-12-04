@@ -37,6 +37,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 65788c6e93358e44fbf6229851a8c21d, type: 3}
   goSound:
   - {fileID: 8300000, guid: 25c87f4cf19299a4d9e6c7980fd607fd, type: 3}
+  scoreIncrementSound:
+  - {fileID: 8300000, guid: f5d1300f8734bf548acd44fbe6346a42, type: 3}
   playerFired:
   - {fileID: 8300000, guid: 251fef16b5831af44ac43e7b5ea68a83, type: 3}
   playerDamage:

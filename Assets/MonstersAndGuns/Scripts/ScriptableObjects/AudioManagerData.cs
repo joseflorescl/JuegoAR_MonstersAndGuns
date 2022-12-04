@@ -16,6 +16,7 @@ public class AudioManagerData : ScriptableObject
     [Header("Gameplay SFX Sounds")]
     public AudioClip[] pressStartGame;   
     public AudioClip[] goSound;
+    public AudioClip[] scoreIncrementSound;
 
     [Space(10)]
     [Header("Player SFX Sounds")]

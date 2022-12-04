@@ -34,6 +34,8 @@ public abstract class BaseGameManager : MonoBehaviour
     public event Action OnBossMonsterSpawned;
     public event Action OnBossBattle;
     public event Action OnWinLevel;
+    public event Action OnScoreIncrementing;
+    public event Action OnScoreIncremented;
 
     protected void RaiseMainMenuActivating() => OnMainMenuActivating?.Invoke();
     protected void RaisePortalCreating() => OnPortalCreating?.Invoke();
@@ -58,6 +60,8 @@ public abstract class BaseGameManager : MonoBehaviour
     protected void RaiseBossMonsterSpawned() => OnBossMonsterSpawned?.Invoke();
     protected void RaiseBossBattle() => OnBossBattle?.Invoke();
     protected void RaiseWinLevel() => OnWinLevel?.Invoke();
+    protected void RaiseScoreIncrementing() => OnScoreIncrementing?.Invoke();
+    protected void RaiseScoreIncremented() => OnScoreIncremented?.Invoke();
 
     protected Transform portal;
     protected Camera arCamera;

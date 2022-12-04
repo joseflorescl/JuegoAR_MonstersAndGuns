@@ -21,6 +21,15 @@ public class BaseAudioManager : MonoBehaviour
         PlayBGMMusic(clip, loop);
     }
 
+    protected void PlayRandomSoundWhitLoop(AudioClip[] clips, AudioSource audioSource)
+    {
+        if (clips == null || clips.Length == 0) return; // Programación defensiva nunca está de más
+        var clip = GetRandomClip(clips);
+        audioSource.clip = clip;
+        audioSource.loop = true;
+        audioSource.Play();
+    }
+
     protected float PlayRandomSound(AudioClip[] clips, AudioSource audioSource, bool randomPitch = false, float volumeScale = 1f)
     {
         if (clips == null || clips.Length == 0) return 0f; // Programación defensiva nunca está de más
@@ -50,7 +59,7 @@ public class BaseAudioManager : MonoBehaviour
     {
         if (!clipsPlayedThisFrame.Contains(clip))
         {
-            audioSource.pitch = randomPitch ? GetRandomPitch() : 1f;
+            audioSource.pitch = randomPitch ? GetRandomPitch() : 1f;            
             audioSource.PlayOneShot(clip, volumeScale);
             clipsPlayedThisFrame.Add(clip);
             //print("SFXPlayOneShot " + clip.name + " pitch: " + SFXAudioSource.pitch + " volume: " + volumeScale);
@@ -82,4 +91,6 @@ public class BaseAudioManager : MonoBehaviour
         StopAudioRoutine();
         BGMAudioSource.Stop();
     }
+
+    
 }

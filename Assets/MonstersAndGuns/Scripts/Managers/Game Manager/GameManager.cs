@@ -30,7 +30,7 @@ public class GameManager : BaseGameManager
 
     private void Start()
     {
-        CurrentState = GameState.Initialization;
+        CurrentState = GameState.Initialization;        
     }
 
     protected override void Initialization()
@@ -120,7 +120,8 @@ public class GameManager : BaseGameManager
         arCamera = Camera.main;
         gameplayData = GameDataRepository.GetById(GAMEDATA_KEY);
         RaiseScoreUpdated(gameplayData.Score);
-        CurrentState = GameState.MainMenu;        
+
+        CurrentState = GameState.MainMenu;
     }
 
     public void GameStarted()
@@ -228,6 +229,16 @@ public class GameManager : BaseGameManager
     public void MonsterAttacking()
     {
         RaiseMonsterAttacking();
+    }
+
+    public void InitIncrementScore()
+    {
+        RaiseScoreIncrementing();
+    }
+
+    public void EndIncrementScore()
+    {
+        RaiseScoreIncremented();
     }
 
 }

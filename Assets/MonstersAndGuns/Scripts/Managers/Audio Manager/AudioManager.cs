@@ -32,9 +32,9 @@ public class AudioManager : BaseAudioManager
         GameManager.Instance.OnMissileDead += MissileDeadHandler;
         GameManager.Instance.OnMonsterAttacking += MonsterAttackingHandler;
         GameManager.Instance.OnWinLevel += WinLevelHandler;
-    }
-
-   
+        GameManager.Instance.OnScoreIncrementing += ScoreIncrementingHandler;
+        GameManager.Instance.OnScoreIncremented += ScoreIncrementedHandler;
+    }   
 
     private void OnDisable()
     {
@@ -57,6 +57,20 @@ public class AudioManager : BaseAudioManager
         GameManager.Instance.OnMissileDead -= MissileDeadHandler;
         GameManager.Instance.OnMonsterAttacking -= MonsterAttackingHandler;
         GameManager.Instance.OnWinLevel -= WinLevelHandler;
+        GameManager.Instance.OnScoreIncrementing -= ScoreIncrementingHandler;
+        GameManager.Instance.OnScoreIncremented -= ScoreIncrementedHandler;
+    }
+
+
+    private void ScoreIncrementedHandler()
+    {
+        SFXAudioSource.loop = false;
+        SFXAudioSource.Stop();
+    }
+
+    private void ScoreIncrementingHandler()
+    {
+        PlayRandomSoundWhitLoop(data.scoreIncrementSound, SFXAudioSource);
     }
 
     private void WinLevelHandler()

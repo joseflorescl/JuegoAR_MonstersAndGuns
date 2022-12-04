@@ -42,6 +42,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private int showWarningBossBattleCount = 4;
     [SerializeField] private float blinkingDelayWarningBossBattle = 0.5f;
     [SerializeField] private float delayScoreIncrement = 0.1f;
+    [SerializeField] private float maxTimeScoreIncrement = 5f;
 
 
     GameObject[] messagesPanelCenter;
@@ -121,28 +122,20 @@ public class UIManager : MonoBehaviour
         bossMonsterHealth.SetActive(false);
         winLevelPanel.SetActive(true);
         battlePanel.SetActive(false);
-
-        // Por ahora se cree que no queda bien al setear el fondo rojo: se pierde la explosión del boss
-        //backgroundPanel.SetActive(true);
-        //FadeGraphic(backgroundImage, 1f, 0.5f, timeToFadeBackground);
-
-
         
-        int currentScore = 0; // TODO: el incremento del score debe comenzar con el score del level anterior, no desde cero.
-        while (currentScore <= score)
+        int currentScore = 0; //TODO: este es el score del level anterior, por ahora un 0
+        int deltaScore = score - currentScore;
+        int incrementScore = Mathf.CeilToInt(deltaScore * delayScoreIncrement / maxTimeScoreIncrement);
+        
+        GameManager.Instance.InitIncrementScore();
+        while(currentScore < score)
         {
             scoreTextWinLevel.text = currentScore.ToString();
-            currentScore++;//TODO: sumar con clamp para que al incrementar en un valor de 100 no superemos el score real
+            currentScore += incrementScore;            
             yield return new WaitForSeconds(delayScoreIncrement);
         }
-
-        //TODO: este loop debe durar a lo más el valor especificado en var:
-        //float maxTimeScoreIncrement = 5f;
-        // Entonces NO sumar de a 1, sino que si ha pasado cierto tiempo se suma de a 10, y luego de a 100
-        
-        
-
-        //  y una vez listo con el score se manda mensaje al GM para que comience con el sgte level
+        scoreTextWinLevel.text = score.ToString();
+        GameManager.Instance.EndIncrementScore();
     }
 
     private void BossMonsterDeadHandler(BaseMonsterController obj)
