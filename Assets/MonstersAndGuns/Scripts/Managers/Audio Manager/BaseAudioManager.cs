@@ -14,11 +14,12 @@ public class BaseAudioManager : MonoBehaviour
 
     protected void LateUpdate() => clipsPlayedThisFrame.Clear();
 
-    protected void PlayRandomMusic(AudioClip[] clips, bool loop)
+    protected float PlayRandomMusic(AudioClip[] clips, bool loop)
     {
         StopAudioRoutine();
         var clip = GetRandomClip(clips);
         PlayBGMMusic(clip, loop);
+        return clip.length;
     }
 
     protected void PlayRandomSoundWhitLoop(AudioClip[] clips, AudioSource audioSource)

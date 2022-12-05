@@ -9,6 +9,9 @@ public class GameManager : BaseGameManager
     [SerializeField] private GameManagerData gameManagerData;
     [SerializeField] private GameObject canvasLoading;
 
+    bool isScoreIncrementEnded = false;
+    bool isWinLevelMusicEnded = false;
+
     // Será singleton
     // Y también se configura que su orden de ejecución sea primero que el resto de los scripts que hacen uso de "GameManager.Instance"
     // porque no estoy haciendo uso de lazy instantiation
@@ -52,6 +55,8 @@ public class GameManager : BaseGameManager
 
     protected override void Spawning()
     {
+        isScoreIncrementEnded = false;
+        isWinLevelMusicEnded = false;
         RaiseSpawning(gameplayData.Level, portal.position, portal.rotation);
     }
 
@@ -93,6 +98,15 @@ public class GameManager : BaseGameManager
         RaiseRestart();
 
         CurrentState = GameState.PortalCreation;
+    }
+
+    protected override void NextLevel()
+    {
+        gameplayData.Level++;
+        RaiseOnNextLevel();
+        //TODO: pasar al estado de spawning que sería para el sgte nivel.
+        // Hay que asegurarse que el panel de "Level 2 Ready" se alcance a mostrar unos segundos.
+        //TODO: se debe incrementar la salude del PlayerHealth en este evento
     }
 
     IEnumerator BattleRoutine()
@@ -238,7 +252,25 @@ public class GameManager : BaseGameManager
 
     public void EndIncrementScore()
     {
+        isScoreIncrementEnded = true;
         RaiseScoreIncremented();
+        print("EndIncrementScore");
+        ValidateNextLevel();
     }
+
+    public void EndWinLevelMusic()
+    {                
+        isWinLevelMusicEnded = true;
+        print("EndWinLevelMusic");
+        ValidateNextLevel();
+    }
+
+    void ValidateNextLevel()
+    {
+        if (isWinLevelMusicEnded && isScoreIncrementEnded)
+            CurrentState = GameState.NextLevel;
+    }
+
+    
 
 }

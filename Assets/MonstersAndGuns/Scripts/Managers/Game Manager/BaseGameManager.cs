@@ -6,7 +6,8 @@ using UnityEngine;
 public abstract class BaseGameManager : MonoBehaviour
 {
     protected const string GAMEDATA_KEY = "MonstersAndGunsData";
-    public enum GameState { Initialization, MainMenu, PortalCreation, Spawning, Battle, BossBattle, GameOver, Win, Exit, Restart }
+    public enum GameState { Initialization, MainMenu, PortalCreation, Spawning, Battle, BossBattle, 
+        GameOver, Win, Exit, Restart, NextLevel }
 
     // Nomenclatura de eventos: ejemplo
     //   OnClosing: a close event that is raised before a window is closed
@@ -36,6 +37,7 @@ public abstract class BaseGameManager : MonoBehaviour
     public event Action OnWinLevel;
     public event Action OnScoreIncrementing;
     public event Action OnScoreIncremented;
+    public event Action OnNextLevel;
 
     protected void RaiseMainMenuActivating() => OnMainMenuActivating?.Invoke();
     protected void RaisePortalCreating() => OnPortalCreating?.Invoke();
@@ -62,6 +64,7 @@ public abstract class BaseGameManager : MonoBehaviour
     protected void RaiseWinLevel() => OnWinLevel?.Invoke();
     protected void RaiseScoreIncrementing() => OnScoreIncrementing?.Invoke();
     protected void RaiseScoreIncremented() => OnScoreIncremented?.Invoke();
+    protected void RaiseOnNextLevel() => OnNextLevel?.Invoke();
 
     protected Transform portal;
     protected Camera arCamera;
@@ -126,6 +129,9 @@ public abstract class BaseGameManager : MonoBehaviour
                 case GameState.Restart:
                     Restart();
                     break;
+                case GameState.NextLevel:
+                    NextLevel();
+                    break;
                 default:
                     break;
             }
@@ -142,5 +148,6 @@ public abstract class BaseGameManager : MonoBehaviour
     protected abstract void Win();
     protected abstract void Exit();
     protected abstract void Restart();
+    protected abstract void NextLevel();
 
 }

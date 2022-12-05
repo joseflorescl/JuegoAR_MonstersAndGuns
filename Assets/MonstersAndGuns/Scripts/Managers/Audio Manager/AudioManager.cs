@@ -187,9 +187,21 @@ public class AudioManager : BaseAudioManager
     private void PlayBattleMusic() => PlayRandomMusic(data.battleMusic, true);
     
     private void PlayBossBattleMusic() => PlayRandomMusic(data.bossBattleMusic, true);
-    
-    private void PlayWinLevelMusic() => PlayRandomMusic(data.winMusic, false);
-    
+
+    private void PlayWinLevelMusic()
+    {
+        StartCoroutine(PlayWinLevelMusicRoutine());
+
+    }
+
+    IEnumerator PlayWinLevelMusicRoutine()
+    {
+        float duration = PlayRandomMusic(data.winMusic, false);
+        yield return new WaitForSeconds(duration);
+        GameManager.Instance.EndWinLevelMusic();
+    }
+
+
     private void PlayGameOverMusic() => PlayRandomMusic(data.gameOverMusic, false);
     
 

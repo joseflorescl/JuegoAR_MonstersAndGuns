@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject vfxPanel;
     [SerializeField] private GameObject warningBossBattlePanel;
     [SerializeField] private GameObject winLevelPanel;
+    [SerializeField] private GameObject nextLevelPanel;
 
     [Space(10)]
     [Header("UI Elements")]
@@ -50,7 +51,8 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        messagesPanelCenter = new GameObject[] { backgroundPanel, mainPanel, portalCreationPanel, HUDPanel, battlePanel, gameOverPanel, vfxPanel, warningBossBattlePanel, winLevelPanel };
+        messagesPanelCenter = new GameObject[] { backgroundPanel, mainPanel, portalCreationPanel, HUDPanel, battlePanel, 
+            gameOverPanel, vfxPanel, warningBossBattlePanel, winLevelPanel, nextLevelPanel };
         HideAllMessages();
     }
 
@@ -89,10 +91,11 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnBossMonsterDamage += BossMonsterDamageHandler;
         GameManager.Instance.OnBossMonsterDead += BossMonsterDeadHandler;
         GameManager.Instance.OnWinLevel += WinLevelHandler;
+        GameManager.Instance.OnNextLevel += NextLevelHandler;
 
     }
 
-    
+  
 
     private void OnDisable()
     {
@@ -110,6 +113,14 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnBossMonsterDamage -= BossMonsterDamageHandler;
         GameManager.Instance.OnBossMonsterDead -= BossMonsterDeadHandler;
         GameManager.Instance.OnWinLevel -= WinLevelHandler;
+        GameManager.Instance.OnNextLevel -= NextLevelHandler;
+    }
+
+    private void NextLevelHandler()
+    {
+        //TODO:
+        //Mostrar el panel de Next Level y guardar el score del nivel anterior para usarlo cuando se haga el incremento del score
+        print("UI Next Level");
     }
 
     private void WinLevelHandler()

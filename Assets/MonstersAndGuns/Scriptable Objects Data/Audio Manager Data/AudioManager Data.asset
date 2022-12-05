@@ -30,8 +30,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b79d683de652ae84c8b11c45263bf412, type: 3}
   - {fileID: 8300000, guid: aa4986285cbf7f648bd1e7d7cabee9c6, type: 3}
   winMusic:
-  - {fileID: 8300000, guid: 34f85acc4463fe54fa0b991b94f551bb, type: 3}
-  - {fileID: 8300000, guid: 411bfc5a0dae34f4b80a5c3521bc4790, type: 3}
+  - {fileID: 8300000, guid: 20a4272312a61fc4b8aa51b85115120a, type: 3}
+  - {fileID: 8300000, guid: f915cec5c2ddcd24faac2a4925b2c49d, type: 3}
   pressStartGame:
   - {fileID: 8300000, guid: d6525f623a620a443b43071ae785ba1f, type: 3}
   - {fileID: 8300000, guid: 65788c6e93358e44fbf6229851a8c21d, type: 3}
