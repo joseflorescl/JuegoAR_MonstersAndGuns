@@ -26,14 +26,22 @@ public class PlayerHealthController : MonoBehaviour
         GameManager.Instance.OnBattling += BattleHandler;
         GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
         GameManager.Instance.OnRestart += RestartHandler;
+        GameManager.Instance.OnNextLevel += NextLevelHandler;
 
     }
+    
 
     private void OnDisable()
     {
         GameManager.Instance.OnBattling -= BattleHandler;
         GameManager.Instance.OnPlayerDead -= PlayerDeadHandler;
         GameManager.Instance.OnRestart -= RestartHandler;
+        GameManager.Instance.OnNextLevel -= NextLevelHandler;
+    }
+
+    private void NextLevelHandler(int obj)
+    {
+        healthController.RestoreHealth();
     }
 
     private void RestartHandler()

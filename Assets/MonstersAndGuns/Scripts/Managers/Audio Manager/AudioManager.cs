@@ -9,7 +9,10 @@ public class AudioManager : BaseAudioManager
 
     [SerializeField] private AudioManagerData data;
 
-    
+    // Condición de borde: que el player mate al jefe final, se pase a estado Win y se esté reproduciendo el sonido
+    //  de score increment, pero luego llega un misil y mata al player: debe pasar a reproducir el sonido de Game Over
+    //  y detener el sonido de score increment
+    bool isScoreIncrementing;
 
     private void OnEnable()
     {
@@ -64,12 +67,14 @@ public class AudioManager : BaseAudioManager
 
     private void ScoreIncrementedHandler()
     {
+        isScoreIncrementing = false;
         SFXAudioSource.loop = false;
         SFXAudioSource.Stop();
     }
 
     private void ScoreIncrementingHandler()
     {
+        isScoreIncrementing = true;
         PlayRandomSoundWhitLoop(data.scoreIncrementSound, SFXAudioSource);
     }
 
@@ -95,6 +100,7 @@ public class AudioManager : BaseAudioManager
 
     private void BossMonsterDeadHandler(BaseMonsterController obj)
     {
+        isScoreIncrementing = false;
         PlayRandomSound(data.bossMonsterExplosions, SFXAudioSource);
     }
 
@@ -130,6 +136,9 @@ public class AudioManager : BaseAudioManager
 
     private void GameOverHandler()
     {
+        if (isScoreIncrementing) // Condición de borde: estar reproduciendo el sonido de score increment
+            ScoreIncrementedHandler();
+
         PlayGameOverMusic();
     }
 

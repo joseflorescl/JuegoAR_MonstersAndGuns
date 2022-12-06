@@ -1999,6 +1999,7 @@ MonoBehaviour:
   bossMonsterHealth: {fileID: 1403040291}
   bossMonsterHealthBarImage: {fileID: 1303898767}
   scoreTextWinLevel: {fileID: 1975223023}
+  nextLevelText: {fileID: 1266483190}
   splatSprites:
   - {fileID: 21300000, guid: c7f1daac3d3ddca44a3b344a24839ed5, type: 3}
   - {fileID: 21300000, guid: 4799e0dd618733548b306f6b4dfadf7c, type: 3}
@@ -2011,6 +2012,7 @@ MonoBehaviour:
   blinkingDelayWarningBossBattle: 0.5
   delayScoreIncrement: 0.017
   maxTimeScoreIncrement: 5
+  delayNextLevelPanel: 0.25
 --- !u!4 &631186286
 Transform:
   m_ObjectHideFlags: 0
@@ -3453,7 +3455,7 @@ GameObject:
   - component: {fileID: 1266483191}
   - component: {fileID: 1266483190}
   m_Layer: 5
-  m_Name: Level Value Text
+  m_Name: Next Level Value Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

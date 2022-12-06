@@ -37,7 +37,7 @@ public abstract class BaseGameManager : MonoBehaviour
     public event Action OnWinLevel;
     public event Action OnScoreIncrementing;
     public event Action OnScoreIncremented;
-    public event Action OnNextLevel;
+    public event Action<int> OnNextLevel;
 
     protected void RaiseMainMenuActivating() => OnMainMenuActivating?.Invoke();
     protected void RaisePortalCreating() => OnPortalCreating?.Invoke();
@@ -64,7 +64,7 @@ public abstract class BaseGameManager : MonoBehaviour
     protected void RaiseWinLevel() => OnWinLevel?.Invoke();
     protected void RaiseScoreIncrementing() => OnScoreIncrementing?.Invoke();
     protected void RaiseScoreIncremented() => OnScoreIncremented?.Invoke();
-    protected void RaiseOnNextLevel() => OnNextLevel?.Invoke();
+    protected void RaiseOnNextLevel(int nextLevel) => OnNextLevel?.Invoke(nextLevel);
 
     protected Transform portal;
     protected Camera arCamera;

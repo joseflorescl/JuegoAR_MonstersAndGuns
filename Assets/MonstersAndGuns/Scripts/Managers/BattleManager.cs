@@ -31,7 +31,7 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator BattleRoutine(List<MonsterController> monsters, int currentLevel)
     {
-        var secondsToAttack = secondsToAttackLevel1 / currentLevel; // TODO: esto se podría controlar por una curva de animación y agregar algo de random
+        var secondsToAttack = secondsToAttackLevel1 / currentLevel; //Esto se podría controlar por una curva de animación y agregar algo de random
 
         while (monsters.Count > 0)
         {
@@ -46,11 +46,7 @@ public class BattleManager : MonoBehaviour
                     break;
                 }
             }
-        }
-
-        // TODO: aquí se podría mandar una señal al GM:
-        //  GameManager.Instance.BattleEnded()
-        
+        }        
     }
 
 }

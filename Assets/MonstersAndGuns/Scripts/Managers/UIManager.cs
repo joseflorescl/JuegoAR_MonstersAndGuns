@@ -6,6 +6,8 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
+    private const string LEVEL_TEXT = "Level";
+
     [Header("UI Game Panels")]
     [SerializeField] private GameObject backgroundPanel;
     [SerializeField] private GameObject mainPanel;
@@ -31,6 +33,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject bossMonsterHealth;
     [SerializeField] private Image bossMonsterHealthBarImage;
     [SerializeField] private TMP_Text scoreTextWinLevel;
+    [SerializeField] private TMP_Text nextLevelText;
 
 
     [Space(10)]
@@ -44,10 +47,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float blinkingDelayWarningBossBattle = 0.5f;
     [SerializeField] private float delayScoreIncrement = 0.1f;
     [SerializeField] private float maxTimeScoreIncrement = 5f;
+    [SerializeField] private float delayNextLevelPanel = 0.2f;
+    [SerializeField] private float minAlphaBackground = 0.5f;
 
 
     GameObject[] messagesPanelCenter;
     int score;
+    int scorePreviousLevel;
 
     private void Awake()
     {
@@ -59,10 +65,7 @@ public class UIManager : MonoBehaviour
 
     public void Close() // Llamada por Botón
     {
-        Application.Quit();
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
+        GameManager.Instance.Close();
     }
 
     public void StartGame()
@@ -92,10 +95,9 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnBossMonsterDead += BossMonsterDeadHandler;
         GameManager.Instance.OnWinLevel += WinLevelHandler;
         GameManager.Instance.OnNextLevel += NextLevelHandler;
+        GameManager.Instance.OnRestart += RestartHandler;
 
-    }
-
-  
+    }    
 
     private void OnDisable()
     {
@@ -114,13 +116,27 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnBossMonsterDead -= BossMonsterDeadHandler;
         GameManager.Instance.OnWinLevel -= WinLevelHandler;
         GameManager.Instance.OnNextLevel -= NextLevelHandler;
+        GameManager.Instance.OnRestart -= RestartHandler;
     }
 
-    private void NextLevelHandler()
+    private void RestartHandler()
     {
-        //TODO:
-        //Mostrar el panel de Next Level y guardar el score del nivel anterior para usarlo cuando se haga el incremento del score
-        print("UI Next Level");
+        scorePreviousLevel = 0;
+    }
+
+    private void NextLevelHandler(int nextLevel)
+    {
+        StartCoroutine(NextLevelHandlerRoutine(nextLevel));
+    }
+
+    IEnumerator NextLevelHandlerRoutine(int nextLevel)
+    {        
+        scorePreviousLevel = score;
+        winLevelPanel.SetActive(false);
+        yield return new WaitForSeconds(delayNextLevelPanel);
+        nextLevelPanel.SetActive(true);
+        nextLevelText.text = LEVEL_TEXT + " " + nextLevel.ToString();
+        levelText.text = nextLevel.ToString();
     }
 
     private void WinLevelHandler()
@@ -133,8 +149,8 @@ public class UIManager : MonoBehaviour
         bossMonsterHealth.SetActive(false);
         winLevelPanel.SetActive(true);
         battlePanel.SetActive(false);
-        
-        int currentScore = 0; //TODO: este es el score del level anterior, por ahora un 0
+
+        int currentScore = scorePreviousLevel;
         int deltaScore = score - currentScore;
         int incrementScore = Mathf.CeilToInt(deltaScore * delayScoreIncrement / maxTimeScoreIncrement);
         
@@ -176,7 +192,7 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(blinkingDelayWarningBossBattle); // Se espera un poquito para esperar la explosión del último monstruo
 
         backgroundPanel.SetActive(true);
-        FadeGraphic(backgroundImage, 1f, 0.5f, timeToFadeBackground);
+        FadeGraphic(backgroundImage, 1f, minAlphaBackground, timeToFadeBackground);
 
         bool state = true;
         for (int i = 0; i < showWarningBossBattleCount*2; i++)
@@ -197,7 +213,11 @@ public class UIManager : MonoBehaviour
     }
 
     private void GameOverHandler()
-    {                
+    {        
+        HideAllMessages();
+        backgroundPanel.SetActive(true); 
+        backgroundImage.canvasRenderer.SetAlpha(minAlphaBackground);
+        HUDPanel.SetActive(true);
         gameOverPanel.SetActive(true);
         scoreTextGameOver.text = score.ToString();
     }
@@ -208,7 +228,7 @@ public class UIManager : MonoBehaviour
         backgroundPanel.SetActive(true);
         playerHealthBarImage.fillAmount = 0;
         ShowSplatBlood();
-        FadeGraphic(backgroundImage, 1f, 0.5f, timeToFadeBackground);
+        FadeGraphic(backgroundImage, 1f, minAlphaBackground, timeToFadeBackground);
     }
 
     private void PlayerDamageHandler(float currentHealthPercentage)

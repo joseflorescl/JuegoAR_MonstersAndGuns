@@ -82,11 +82,14 @@ public class GameManager : BaseGameManager
 
     protected override void Exit()
     {
-        //TODO
+        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 
     protected override void Restart()
-    {
+    {                
         for (int i = 0; i < monsters.Count; i++)
             Destroy(monsters[i].gameObject);
 
@@ -103,10 +106,8 @@ public class GameManager : BaseGameManager
     protected override void NextLevel()
     {
         gameplayData.Level++;
-        RaiseOnNextLevel();
-        //TODO: pasar al estado de spawning que sería para el sgte nivel.
-        // Hay que asegurarse que el panel de "Level 2 Ready" se alcance a mostrar unos segundos.
-        //TODO: se debe incrementar la salude del PlayerHealth en este evento
+        RaiseOnNextLevel(gameplayData.Level);
+        CurrentState = GameState.Spawning;        
     }
 
     IEnumerator BattleRoutine()
@@ -247,21 +248,25 @@ public class GameManager : BaseGameManager
 
     public void InitIncrementScore()
     {
+        if (CurrentState != GameState.Win) return;
+        
         RaiseScoreIncrementing();
     }
 
     public void EndIncrementScore()
     {
+        if (CurrentState != GameState.Win) return;
+
         isScoreIncrementEnded = true;
-        RaiseScoreIncremented();
-        print("EndIncrementScore");
+        RaiseScoreIncremented();        
         ValidateNextLevel();
     }
 
     public void EndWinLevelMusic()
-    {                
-        isWinLevelMusicEnded = true;
-        print("EndWinLevelMusic");
+    {
+        if (CurrentState != GameState.Win) return;
+
+        isWinLevelMusicEnded = true;        
         ValidateNextLevel();
     }
 
@@ -271,6 +276,11 @@ public class GameManager : BaseGameManager
             CurrentState = GameState.NextLevel;
     }
 
-    
+    public void Close()
+    {
+        CurrentState = GameState.Exit;
+    }
+
+
 
 }
