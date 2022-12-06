@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UIControllerNoAR : MonoBehaviour
 {
+
     private void OnEnable()
     {
         GameManager.Instance.OnPortalCreating += PortalCreatingHandler;

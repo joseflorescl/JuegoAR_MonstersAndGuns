@@ -9,11 +9,13 @@ public class VFXManager : MonoBehaviour
     [SerializeField] private ParticleSystem bossDeadParticleColorsPrefab;
     [SerializeField] private ParticleSystem damageParticleColorsPrefab;
     [SerializeField] private ParticleSystem missileExplosionParticleColorsPrefab;
+    [SerializeField] private ParticleSystem attackParticleColorsPrefab;
 
     ParticleSystem monsterDeadParticleColorsInstance;
     ParticleSystem bossDeadParticleColorsInstance;
     ParticleSystem damageParticleColorsInstance;
     ParticleSystem missileExplosionParticleColorsInstance;
+    ParticleSystem attackParticleColorsInstance;
 
     private void OnEnable()
     {
@@ -21,7 +23,8 @@ public class VFXManager : MonoBehaviour
         GameManager.Instance.OnBossMonsterDead += BossMonsterDeadHandler;
         GameManager.Instance.OnBossMonsterDamage += BossMonsterDamageHandler;
         GameManager.Instance.OnMissileDead += MissileDeadHandler;
-    }
+        GameManager.Instance.OnMonsterAttacking += MonsterAttackingHandler;
+    }    
 
     private void OnDisable()
     {
@@ -29,6 +32,7 @@ public class VFXManager : MonoBehaviour
         GameManager.Instance.OnBossMonsterDead -= BossMonsterDeadHandler;
         GameManager.Instance.OnBossMonsterDamage -= BossMonsterDamageHandler;
         GameManager.Instance.OnMissileDead -= MissileDeadHandler;
+        GameManager.Instance.OnMonsterAttacking -= MonsterAttackingHandler;
     }
 
     private void Start()
@@ -37,8 +41,13 @@ public class VFXManager : MonoBehaviour
         bossDeadParticleColorsInstance = Instantiate(bossDeadParticleColorsPrefab);
         damageParticleColorsInstance = Instantiate(damageParticleColorsPrefab);
         missileExplosionParticleColorsInstance = Instantiate(missileExplosionParticleColorsPrefab);
+        attackParticleColorsInstance = Instantiate(attackParticleColorsPrefab);
     }
 
+    private void MonsterAttackingHandler(BaseMonsterController monster)
+    {
+        PlayParticleColorsInstance(attackParticleColorsInstance, monster.CurrentColor, monster.ExplosionPosition);
+    }
 
     private void BossMonsterDeadHandler(IVFXEntity bossMonster)
     {

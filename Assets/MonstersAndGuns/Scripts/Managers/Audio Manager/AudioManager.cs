@@ -83,7 +83,7 @@ public class AudioManager : BaseAudioManager
         PlayWinLevelMusic();
     }
 
-    private void MonsterAttackingHandler()
+    private void MonsterAttackingHandler(BaseMonsterController monster)
     {
         PlayRandomSound(data.monsterAttacking, SFXAudioSource);
     }

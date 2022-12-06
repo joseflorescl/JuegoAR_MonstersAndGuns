@@ -9,13 +9,33 @@ public class MissileController : MonoBehaviour, IVFXEntity
     [field: SerializeField] public Color CurrentColor { get; private set; }
     public Vector3 ExplosionPosition => transform.position;
 
-    protected Rigidbody rb;
-
+    Rigidbody rb;
     Vector3 kinematicVelocity;
+    HealthController healthController;
 
-    private void Awake() => rb = GetComponent<Rigidbody>();
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        healthController = GetComponent<HealthController>();
+    }
     
+
+    private void OnEnable()
+    {
+        GameManager.Instance.OnBossMonsterDead += BossMonsterDeadHandler;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnBossMonsterDead -= BossMonsterDeadHandler;
+    }
+
     private void Start() => kinematicVelocity = transform.forward * speed;
     
     private void FixedUpdate() => rb.MovePosition(transform.position + kinematicVelocity * Time.deltaTime);
+
+    private void BossMonsterDeadHandler(BaseMonsterController obj)
+    {
+        healthController.Damage(healthController.Health, DamageMode.Collision);
+    }
 }

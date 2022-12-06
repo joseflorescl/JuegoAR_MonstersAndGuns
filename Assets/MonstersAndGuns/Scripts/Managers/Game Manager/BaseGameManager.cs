@@ -19,7 +19,7 @@ public abstract class BaseGameManager : MonoBehaviour
     public event Action<List<MonsterController>, int> OnBattling; // Recibe la lista de monsters creados y el level actual del juego
     public event Action OnMonsterCreated;
     public event Action<BaseMonsterController> OnMonsterDead;
-    public event Action OnMonsterAttacking;
+    public event Action<BaseMonsterController> OnMonsterAttacking;
     public event Action<BaseMonsterController> OnBossMonsterDead;
     public event Action<BaseMonsterController> OnBossMonsterDamage;
     public event Action<MissileController> OnMissileDead;
@@ -46,7 +46,7 @@ public abstract class BaseGameManager : MonoBehaviour
     protected void RaiseBattling(List<MonsterController> monsters, int level) => OnBattling?.Invoke(monsters, level);
     protected void RaiseMonsterCreated() => OnMonsterCreated?.Invoke();
     protected void RaiseMonsterDead(BaseMonsterController monster) => OnMonsterDead?.Invoke(monster);
-    protected void RaiseMonsterAttacking() => OnMonsterAttacking?.Invoke();
+    protected void RaiseMonsterAttacking(BaseMonsterController monster) => OnMonsterAttacking?.Invoke(monster);
     protected void RaiseBossMonsterDead(BaseMonsterController bossMonster) => OnBossMonsterDead?.Invoke(bossMonster);
     protected void RaiseBossMonsterDamage(BaseMonsterController bossMonster) => OnBossMonsterDamage?.Invoke(bossMonster);
     protected void RaiseMissileDead(MissileController missil) => OnMissileDead?.Invoke(missil);

@@ -17,7 +17,7 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
     public Vector3 ExplosionPosition => rend.bounds.center; // Por ahora es el centro del mesh renderer, pero se podría elegir otra posicion adhoc
     public float CurrentHealthPercentage => healthController.CurrentHealthPercentage;
 
-    protected MonsterState currentState;
+    private MonsterState currentState;
 
     public MonsterState CurrentState
     {
@@ -38,7 +38,7 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
                 case MonsterState.Patrol:
                     Patrol();
                     break;
-                case MonsterState.Attack:
+                case MonsterState.Attack:                    
                     Attack();
                     break;                
             }

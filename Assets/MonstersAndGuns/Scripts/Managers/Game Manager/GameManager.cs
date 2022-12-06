@@ -216,6 +216,11 @@ public class GameManager : BaseGameManager
             RaiseMissileDead(missil);
             Destroy(deadObject.gameObject);
         }
+        else if (deadObject.CompareTag("UIMonster"))
+        {
+            var monster = deadObject.GetComponent<BaseMonsterController>();            
+            RaiseMonsterDead(monster);
+        }
     }
 
     public void DamageNotification(HealthController deadObject)
@@ -241,9 +246,9 @@ public class GameManager : BaseGameManager
         RaiseMonsterCreated();
     }
 
-    public void MonsterAttacking()
+    public void MonsterAttacking(BaseMonsterController monster)
     {
-        RaiseMonsterAttacking();
+        RaiseMonsterAttacking(monster);
     }
 
     public void InitIncrementScore()
