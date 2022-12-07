@@ -7,7 +7,6 @@ TagManager:
   - Monster
   - BossMonster
   - Missile
-  - UIMonster
   layers:
   - Default
   - TransparentFX

@@ -57,6 +57,7 @@ public class VFXManager : MonoBehaviour
 
     private void MissileDeadHandler(IVFXEntity missil)
     {
+        print("MissileDeadHandler");
         PlayParticleColorsInstance(missileExplosionParticleColorsInstance, missil.CurrentColor, missil.ExplosionPosition);
     }
 

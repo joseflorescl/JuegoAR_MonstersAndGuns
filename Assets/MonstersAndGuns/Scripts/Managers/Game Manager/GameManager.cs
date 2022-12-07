@@ -216,11 +216,7 @@ public class GameManager : BaseGameManager
             RaiseMissileDead(missil);
             Destroy(deadObject.gameObject);
         }
-        else if (deadObject.CompareTag("UIMonster"))
-        {
-            var monster = deadObject.GetComponent<BaseMonsterController>();            
-            RaiseMonsterDead(monster);
-        }
+        
     }
 
     public void DamageNotification(HealthController deadObject)

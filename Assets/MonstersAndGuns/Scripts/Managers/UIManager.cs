@@ -44,9 +44,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float timeToFadeSplat = 1f;
     [SerializeField] private int splatImageRandomOffset = 200;
     [SerializeField] private int showWarningBossBattleCount = 4;
-    [SerializeField] private float blinkingDelayWarningBossBattle = 0.5f;
-    [SerializeField] private float delayScoreIncrement = 0.1f;
-    [SerializeField] private float maxTimeScoreIncrement = 5f;
+    [SerializeField] private float blinkingDelayWarningBossBattle = 0.5f;    
+    [SerializeField] private float durationScoreIncrement = 5f;
     [SerializeField] private float delayNextLevelPanel = 0.2f;
     [SerializeField] private float minAlphaBackground = 0.5f;
 
@@ -149,21 +148,29 @@ public class UIManager : MonoBehaviour
         bossMonsterHealth.SetActive(false);
         winLevelPanel.SetActive(true);
         battlePanel.SetActive(false);
-
-        int currentScore = scorePreviousLevel;
-        int deltaScore = score - currentScore;
-        int incrementScore = Mathf.CeilToInt(deltaScore * delayScoreIncrement / maxTimeScoreIncrement);
         
         GameManager.Instance.InitIncrementScore();
-        while(currentScore < score)
-        {
-            scoreTextWinLevel.text = currentScore.ToString();
-            currentScore += incrementScore;            
-            yield return new WaitForSeconds(delayScoreIncrement);
-        }
-        scoreTextWinLevel.text = score.ToString();
+
+        yield return StartCoroutine(TweenRoutine(scorePreviousLevel, score, durationScoreIncrement,
+            tween: (value) => scoreTextWinLevel.text = Mathf.CeilToInt(value).ToString(), 
+            postTween: () => scoreTextWinLevel.text = score.ToString()));
+
         GameManager.Instance.EndIncrementScore();
     }
+
+    IEnumerator TweenRoutine(float startValue, float targetValue, float duration, System.Action<float> tween, System.Action postTween)
+    {
+        // Notar que esta función es genérica para hacer cualquier tipo de tween.
+        float timeElapsed = 0;        
+        while (timeElapsed < duration)
+        {
+            float value = Mathf.Lerp(startValue, targetValue, timeElapsed / duration);
+            tween(value);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+        postTween();
+    }   
 
     private void BossMonsterDeadHandler(BaseMonsterController obj)
     {

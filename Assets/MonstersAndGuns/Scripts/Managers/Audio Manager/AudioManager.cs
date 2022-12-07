@@ -179,7 +179,6 @@ public class AudioManager : BaseAudioManager
         BGMAudioSource.Stop();
         SFXAudioSource.Stop();
         float duration = PlayRandomSound(data.pressStartGame, SFXAudioSource);
-
         StopAudioRoutine();
         audioRoutine = StartCoroutine(PlayMainMenuMusicWithDelayRoutine(duration));
 
