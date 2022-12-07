@@ -71,8 +71,8 @@ public class GameManager : BaseGameManager
     }
 
     protected override void GameOver()
-    {
-        StartCoroutine(GameOverRoutine(gameManagerData.waitBeforeGameOver));
+    {                    
+        RaiseGameOver(gameManagerData.waitBeforeShowGameOver);        
     }
 
     protected override void Win()
@@ -114,13 +114,7 @@ public class GameManager : BaseGameManager
     {        
         yield return new WaitForSeconds(gameManagerData.waitBeforeInitBattle); // Se les da tiempo a los monsters de moverse un poco antes de dispararles
         RaiseBattling(monsters, gameplayData.Level);
-    }
-
-    IEnumerator GameOverRoutine(float delayGameOver)
-    {
-        yield return new WaitForSeconds(delayGameOver);
-        RaiseGameOver();
-    }
+    }    
 
     IEnumerator InitializationRoutine()
     {
@@ -180,8 +174,17 @@ public class GameManager : BaseGameManager
 
     public void DeadNotification(HealthController deadObject, DamageMode damageMode)
     {
-        if (deadObject.CompareTag("Monster"))
+        if (deadObject.CompareTag("Player")) 
         {
+            print(Time.frameCount + " Player Dead");
+
+            RaisePlayerDead();
+            CurrentState = GameState.GameOver;
+        }
+        else if (deadObject.CompareTag("Monster"))
+        {
+            print(Time.frameCount + " Monster Dead");
+
             var monster = deadObject.GetComponent<MonsterController>();
 
             if (damageMode == DamageMode.Shooting)
@@ -191,7 +194,7 @@ public class GameManager : BaseGameManager
             RaiseMonsterDead(monster);
             Destroy(deadObject.gameObject);
 
-            if (monsters.Count == 0)
+            if (monsters.Count == 0 && CurrentState == GameState.Battle)
                 CurrentState = GameState.BossBattle;
         }
         else if(deadObject.CompareTag("BossMonster"))
@@ -204,12 +207,7 @@ public class GameManager : BaseGameManager
                 Score += bossMonster.Score;
 
             CurrentState = GameState.Win;
-        }
-        else if (deadObject.CompareTag("Player"))
-        {
-            RaisePlayerDead();
-            CurrentState = GameState.GameOver;
-        }
+        }        
         else if (deadObject.CompareTag("Missile"))
         {
             var missil = deadObject.GetComponent<MissileController>();

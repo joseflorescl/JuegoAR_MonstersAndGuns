@@ -9,6 +9,8 @@ public class DoDamage : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        print("Causa Damage: " + name);
+
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
         if (damageable != null)
         {

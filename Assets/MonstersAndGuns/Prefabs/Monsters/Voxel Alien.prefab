@@ -85,8 +85,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1.1, z: 1}
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Size: {x: 0.45, y: 0.5, z: 0.45}
+  m_Center: {x: 0, y: 0.15, z: 0}
 --- !u!114 &326801172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,21 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0798c8c1129b92049b35f6ea2086f8bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDeviationRandomVectorUp: 0.5
-  speed: 5
-  turnSpeed: 720
-  faceInitialDirection: 1
-  minSecondsGoUp: 1
-  maxSecondsGoUp: 3
-  maxAngleRotationForward: 45
-  minSecondsSameDirection: 3
-  maxSecondsSameDirection: 5
-  radiusSpherePatroling: 20
-  minHeightPatroling: 0.5
-  minDistanceToTarget: 0.1
-  initialColor: 0
-  attackColor: 1
-  attackMaterial: {fileID: 2100000, guid: e7978060f31b65b4ca64d70066865494, type: 2}
+  monsterData: {fileID: 11400000, guid: 94359acc2a1094047aa4d8b3c06905ba, type: 2}
 --- !u!114 &7387550851784182697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,7 +152,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5936868825163822977}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.05, y: 0, z: 0.05}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

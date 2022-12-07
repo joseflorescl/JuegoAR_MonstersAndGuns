@@ -1437,6 +1437,8 @@ MonoBehaviour:
     type: 3}
   attackParticleColorsPrefab: {fileID: 7090319100349355273, guid: 47a32223258c052498d7ddb06942e8bd,
     type: 3}
+  portalParticleColorsPrefab: {fileID: 4148940111179020686, guid: 45b6fc70d0d91dc429fffcc572cdb241,
+    type: 3}
 --- !u!1 &1720418963
 GameObject:
   m_ObjectHideFlags: 0

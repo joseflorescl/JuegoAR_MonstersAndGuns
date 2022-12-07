@@ -67,6 +67,21 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
         healthController = GetComponent<HealthController>();
     }
 
+    private void OnEnable()
+    {
+        GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnPlayerDead -= PlayerDeadHandler;
+    }
+
+    protected virtual void PlayerDeadHandler()
+    {
+        CurrentState = MonsterState.Patrol;
+    }
+
     protected void FaceInitialDirection()
     {
         if (monsterData.faceInitialDirection)

@@ -53,6 +53,7 @@ public class UIManager : MonoBehaviour
     GameObject[] messagesPanelCenter;
     int score;
     int scorePreviousLevel;
+    Coroutine uiRoutine;
 
     private void Awake()
     {
@@ -125,7 +126,7 @@ public class UIManager : MonoBehaviour
 
     private void NextLevelHandler(int nextLevel)
     {
-        StartCoroutine(NextLevelHandlerRoutine(nextLevel));
+        uiRoutine = StartCoroutine(NextLevelHandlerRoutine(nextLevel));
     }
 
     IEnumerator NextLevelHandlerRoutine(int nextLevel)
@@ -140,7 +141,7 @@ public class UIManager : MonoBehaviour
 
     private void WinLevelHandler()
     {
-        StartCoroutine(WinLevelHandlerRoutine());
+        uiRoutine = StartCoroutine(WinLevelHandlerRoutine());
     }
 
     IEnumerator WinLevelHandlerRoutine()
@@ -191,7 +192,7 @@ public class UIManager : MonoBehaviour
 
     private void BossBattleHandler()
     {
-        StartCoroutine(BossBattleHandlerRoutine());
+        uiRoutine = StartCoroutine(BossBattleHandlerRoutine());
     }
 
     IEnumerator BossBattleHandlerRoutine()
@@ -219,10 +220,17 @@ public class UIManager : MonoBehaviour
         this.score = score;
     }
 
-    private void GameOverHandler()
-    {        
+    private void GameOverHandler(float delay)
+    {
+        StopCoroutine(uiRoutine);
+        uiRoutine = StartCoroutine(GameOverHandlerRoutine(delay));
+    }
+
+    IEnumerator GameOverHandlerRoutine(float delay)
+    {
+        yield return new WaitForSeconds(delay);
         HideAllMessages();
-        backgroundPanel.SetActive(true); 
+        backgroundPanel.SetActive(true);
         backgroundImage.canvasRenderer.SetAlpha(minAlphaBackground);
         HUDPanel.SetActive(true);
         gameOverPanel.SetActive(true);
@@ -265,7 +273,7 @@ public class UIManager : MonoBehaviour
 
     private void BattlingHandler(List<MonsterController> monsters, int level)
     {
-        StartCoroutine(BattlingRoutine(level));
+        uiRoutine = StartCoroutine(BattlingRoutine(level));
     }
 
     IEnumerator BattlingRoutine(int level)

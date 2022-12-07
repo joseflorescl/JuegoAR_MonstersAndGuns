@@ -12,8 +12,7 @@ public class ARPortalCreator : MonoBehaviour
     ARPlaneManager arPlaneManager;
 
     List<ARRaycastHit> hits;
-    GameObject portal;
-    bool isCreatingPortal;
+    GameObject portal;    
 
 
     private void Awake()
@@ -44,7 +43,8 @@ public class ARPortalCreator : MonoBehaviour
     private void RestartHandler()
     {
         portal.SetActive(false);
-        InitPortalCreation(false);
+        SetActiveARSession(true);
+        
     }
 
     private void PortalCreationHandler()
@@ -55,13 +55,14 @@ public class ARPortalCreator : MonoBehaviour
 
     IEnumerator PortalCreationRoutine()
     {
-        InitPortalCreation(true);
+        SetActiveARSession(true);
+        bool isPortalCreating = true;
 
         var arCamera = GameManager.Instance.ARCamera;
 
         Vector2 middleScreenPoint = arCamera.ViewportToScreenPoint(new Vector2(0.5f, 0.5f));
 
-        while (isCreatingPortal)
+        while (isPortalCreating)
         {
             if (arRaycastManager.Raycast(middleScreenPoint, hits, TrackableType.Planes))
             {
@@ -71,7 +72,7 @@ public class ARPortalCreator : MonoBehaviour
                 SetStatusPortal(true);
 
                 if (InputARController.IsTapping())
-                    isCreatingPortal = false;
+                    isPortalCreating = false;
             }
             else
             {
@@ -83,15 +84,14 @@ public class ARPortalCreator : MonoBehaviour
             if (InputARController.IsTapping()) 
             {
                 SetStatusPortal(true);
-                isCreatingPortal = false;
+                isPortalCreating = false;
             }
 #endif
 
             yield return null;
         }
-
-        arPlaneManager.enabled = false;
-        arRaycastManager.enabled = false;
+        
+        SetActiveARSession(false);
 
         GameManager.Instance.PortalCreated(portal.transform);
     }
@@ -102,11 +102,10 @@ public class ARPortalCreator : MonoBehaviour
         GameManager.Instance.StatusPortal(status);
     }
 
-    void InitPortalCreation(bool value)
+    void SetActiveARSession(bool value)
     {
         arPlaneManager.enabled = value;
-        arRaycastManager.enabled = value;
-        isCreatingPortal = value;
+        arRaycastManager.enabled = value;        
     }
 
 }

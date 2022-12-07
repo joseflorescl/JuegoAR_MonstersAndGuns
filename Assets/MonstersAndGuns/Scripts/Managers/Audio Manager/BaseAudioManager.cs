@@ -22,6 +22,19 @@ public class BaseAudioManager : MonoBehaviour
         return clip.length;
     }
 
+    protected Coroutine PlayRandomMusicWithDelay(AudioClip[] clips, bool loop, float delay)
+    {
+        var routine = StartCoroutine(PlayRandomMusicWithDelayRoutine(clips, loop, delay));
+        return routine;
+    }
+
+    IEnumerator PlayRandomMusicWithDelayRoutine(AudioClip[] clips, bool loop, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        PlayRandomMusic(clips, loop);
+    }
+
+
     protected void PlayRandomSoundWhitLoop(AudioClip[] clips, AudioSource audioSource)
     {
         if (clips == null || clips.Length == 0) return; // Programación defensiva nunca está de más

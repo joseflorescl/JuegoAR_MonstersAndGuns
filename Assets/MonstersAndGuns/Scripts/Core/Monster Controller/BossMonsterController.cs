@@ -25,19 +25,7 @@ public class BossMonsterController : BaseMonsterController
         CurrentState = MonsterState.GoUp;
     }
 
-    private void OnEnable()
-    {
-        GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
-    }
-
-    
-
-    private void OnDisable()
-    {
-        GameManager.Instance.OnPlayerDead -= PlayerDeadHandler;
-    }
-
-    private void PlayerDeadHandler()
+    protected override void PlayerDeadHandler()
     {
         CurrentState = MonsterState.Idle;
     }

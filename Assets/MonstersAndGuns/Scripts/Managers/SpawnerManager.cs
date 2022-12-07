@@ -16,12 +16,20 @@ public class SpawnerManager : MonoBehaviour
     {
         GameManager.Instance.OnSpawning += SpawningHandler;
         GameManager.Instance.OnBossBattle += BossBattleHandler;
-    }    
+        GameManager.Instance.OnGameOver += GameOverHandler;
+    }
 
+    
     private void OnDisable()
     {
         GameManager.Instance.OnSpawning -= SpawningHandler;
         GameManager.Instance.OnBossBattle -= BossBattleHandler;
+        GameManager.Instance.OnGameOver -= GameOverHandler;
+    }
+
+    private void GameOverHandler(float delay)
+    {
+        StopAllCoroutines();
     }
 
 

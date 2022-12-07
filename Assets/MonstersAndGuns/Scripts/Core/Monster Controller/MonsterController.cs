@@ -136,7 +136,9 @@ public class MonsterController : BaseMonsterController
         anim.SetTrigger("Pursue");
 
         var rend = GetComponentInChildren<Renderer>();
-        rend.material = monsterData.attackMaterial;
+
+        if (monsterData.attackMaterial != null)
+            rend.material = monsterData.attackMaterial;
 
         GameManager.Instance.MonsterAttacking(this);
 

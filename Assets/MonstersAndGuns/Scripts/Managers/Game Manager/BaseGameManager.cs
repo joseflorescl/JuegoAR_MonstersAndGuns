@@ -28,7 +28,7 @@ public abstract class BaseGameManager : MonoBehaviour
     public event Action<bool> OnStatusPortalChanged; // La idea es que la UI refleje cuando el portal está activo/inactivo con un texto diferente en cada caso
     public event Action<int> OnPlayerFired;
     public event Action OnMonsterFired;
-    public event Action OnGameOver;
+    public event Action<float> OnGameOver; // El parámetro es el delay para que los efectos de sonido/UI esperen un poco antes de activarse
     public event Action OnRestart;
     public event Action<int> OnScoreUpdated;
     public event Action OnMonstersSpawned;
@@ -55,7 +55,7 @@ public abstract class BaseGameManager : MonoBehaviour
     protected void RaiseStatusPortalChanged(bool status) => OnStatusPortalChanged.Invoke(status);
     protected void RaisePlayerFired(int gunIndex) => OnPlayerFired?.Invoke(gunIndex);
     protected void RaiseMonsterFired() => OnMonsterFired?.Invoke();
-    protected void RaiseGameOver() => OnGameOver?.Invoke();
+    protected void RaiseGameOver(float delay) => OnGameOver?.Invoke(delay);
     protected void RaiseRestart() => OnRestart?.Invoke();
     protected void RaiseScoreUpdated(int score) => OnScoreUpdated?.Invoke(score);
     protected void RaiseMonstersSpawned() => OnMonstersSpawned?.Invoke();

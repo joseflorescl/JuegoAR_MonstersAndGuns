@@ -10,12 +10,15 @@ public class VFXManager : MonoBehaviour
     [SerializeField] private ParticleSystem damageParticleColorsPrefab;
     [SerializeField] private ParticleSystem missileExplosionParticleColorsPrefab;
     [SerializeField] private ParticleSystem attackParticleColorsPrefab;
+    [SerializeField] private ParticleSystem portalParticleColorsPrefab;
 
     ParticleSystem monsterDeadParticleColorsInstance;
     ParticleSystem bossDeadParticleColorsInstance;
     ParticleSystem damageParticleColorsInstance;
     ParticleSystem missileExplosionParticleColorsInstance;
     ParticleSystem attackParticleColorsInstance;
+    ParticleSystem portalParticleColorsInstance;
+
 
     private void OnEnable()
     {
@@ -24,7 +27,12 @@ public class VFXManager : MonoBehaviour
         GameManager.Instance.OnBossMonsterDamage += BossMonsterDamageHandler;
         GameManager.Instance.OnMissileDead += MissileDeadHandler;
         GameManager.Instance.OnMonsterAttacking += MonsterAttackingHandler;
-    }    
+        GameManager.Instance.OnPortalCreated += PortalCreatedHandler;
+        GameManager.Instance.OnRestart += RestartHandler;
+
+    }
+
+    
 
     private void OnDisable()
     {
@@ -33,6 +41,8 @@ public class VFXManager : MonoBehaviour
         GameManager.Instance.OnBossMonsterDamage -= BossMonsterDamageHandler;
         GameManager.Instance.OnMissileDead -= MissileDeadHandler;
         GameManager.Instance.OnMonsterAttacking -= MonsterAttackingHandler;
+        GameManager.Instance.OnPortalCreated -= PortalCreatedHandler;
+        GameManager.Instance.OnRestart -= RestartHandler;
     }
 
     private void Start()
@@ -42,6 +52,19 @@ public class VFXManager : MonoBehaviour
         damageParticleColorsInstance = Instantiate(damageParticleColorsPrefab);
         missileExplosionParticleColorsInstance = Instantiate(missileExplosionParticleColorsPrefab);
         attackParticleColorsInstance = Instantiate(attackParticleColorsPrefab);
+        portalParticleColorsInstance = Instantiate(portalParticleColorsPrefab);
+    }
+
+    private void RestartHandler()
+    {
+        portalParticleColorsInstance.Stop();
+    }
+
+    private void PortalCreatedHandler()
+    {
+        var position = GameManager.Instance.Portal.transform.position;
+        portalParticleColorsInstance.transform.position = position;
+        portalParticleColorsInstance.Play();
     }
 
     private void MonsterAttackingHandler(BaseMonsterController monster)

@@ -16,9 +16,10 @@ MonoBehaviour:
   delaySpawningBossMonster: 4
   monstersByLevels:
   - initialMonsters:
-    - monsterPrefab: {fileID: 2268778889781743133, guid: 7677672e2a503cb4788daa031dc8a6f5,
-        type: 3}
-      count: 1
+    - monsterPrefab: {fileID: 326801172, guid: 00fb1bb10fe79504b8fa75564caac587, type: 3}
+      count: 5
+    - monsterPrefab: {fileID: 326801172, guid: 00fb1bb10fe79504b8fa75564caac587, type: 3}
+      count: 5
     bossMonsterPrefab: {fileID: 1400900077538849546, guid: 73a479f191587d84783694e8b40856c5,
       type: 3}
   - initialMonsters:

@@ -134,12 +134,12 @@ public class AudioManager : BaseAudioManager
         PlayRandomSound(data.goSound, SFXAudioSource);
     }
 
-    private void GameOverHandler()
+    private void GameOverHandler(float delay)
     {
         if (isScoreIncrementing) // Condición de borde: estar reproduciendo el sonido de score increment
             ScoreIncrementedHandler();
 
-        PlayGameOverMusic();
+        audioRoutine = PlayRandomMusicWithDelay(data.gameOverMusic, false, delay);        
     }
 
     private void PlayerDeadHandler()
@@ -179,16 +179,9 @@ public class AudioManager : BaseAudioManager
         BGMAudioSource.Stop();
         SFXAudioSource.Stop();
         float duration = PlayRandomSound(data.pressStartGame, SFXAudioSource);
-        StopAudioRoutine();
-        audioRoutine = StartCoroutine(PlayMainMenuMusicWithDelayRoutine(duration));
-
-    }
-
-    private IEnumerator PlayMainMenuMusicWithDelayRoutine(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        PlayMainMenuMusic();
-    }
+        StopAudioRoutine();       
+        audioRoutine = PlayRandomMusicWithDelay(data.mainMenuMusic, true, duration);            
+    }   
 
     private void PlayMainMenuMusic() => PlayRandomMusic(data.mainMenuMusic, true);
     
@@ -207,10 +200,6 @@ public class AudioManager : BaseAudioManager
         float duration = PlayRandomMusic(data.winMusic, false);
         yield return new WaitForSeconds(duration);
         GameManager.Instance.EndWinLevelMusic();
-    }
-
-
-    private void PlayGameOverMusic() => PlayRandomMusic(data.gameOverMusic, false);
-    
+    }        
 
 }
