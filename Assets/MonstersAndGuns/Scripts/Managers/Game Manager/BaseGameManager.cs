@@ -22,6 +22,7 @@ public abstract class BaseGameManager : MonoBehaviour
     public event Action<BaseMonsterController> OnMonsterAttacking;
     public event Action<BaseMonsterController> OnBossMonsterDead;
     public event Action<BaseMonsterController> OnBossMonsterDamage;
+    public event Action<BaseMonsterController> OnMonsterDamage;
     public event Action<MissileController> OnMissileDead;
     public event Action<float> OnPlayerDamage;
     public event Action OnPlayerDead;
@@ -49,6 +50,7 @@ public abstract class BaseGameManager : MonoBehaviour
     protected void RaiseMonsterAttacking(BaseMonsterController monster) => OnMonsterAttacking?.Invoke(monster);
     protected void RaiseBossMonsterDead(BaseMonsterController bossMonster) => OnBossMonsterDead?.Invoke(bossMonster);
     protected void RaiseBossMonsterDamage(BaseMonsterController bossMonster) => OnBossMonsterDamage?.Invoke(bossMonster);
+    protected void RaiseMonsterDamage(BaseMonsterController monster) => OnMonsterDamage?.Invoke(monster);
     protected void RaiseMissileDead(MissileController missil) => OnMissileDead?.Invoke(missil);
     protected void RaisePlayerDamage(float currentHealthPercentage) => OnPlayerDamage?.Invoke(currentHealthPercentage);
     protected void RaisePlayerDead() => OnPlayerDead?.Invoke();

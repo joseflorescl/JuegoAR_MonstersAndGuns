@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterController : BaseMonsterController
-{    
-    private void Start()
+{
+    protected override void Start()
     {
+        base.Start();
         GameManager.Instance.MonsterCreated(this);
 
         if (monsterData.goUpSpeed == 0)
@@ -138,7 +139,7 @@ public class MonsterController : BaseMonsterController
         var rend = GetComponentInChildren<Renderer>();
 
         if (monsterData.attackMaterial != null)
-            rend.material = monsterData.attackMaterial;
+            UseAttackMaterial();
 
         GameManager.Instance.MonsterAttacking(this);
 
@@ -148,6 +149,15 @@ public class MonsterController : BaseMonsterController
             var direction = GameManager.Instance.PlayerPosition - transform.position;
             kinematicVelocity = direction.normalized * monsterData.attackSpeed;
             yield return new WaitForSeconds(monsterData.secondsToAdjustDirection);
+        }
+    }
+
+    void UseAttackMaterial()
+    {
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            var rend = renderers[i];
+            rend.material = monsterData.attackMaterial;
         }
     }
 

@@ -10,14 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78faa53e6a7bf32499ec7e9d09a18b92, type: 3}
-  m_Name: Enemy B Monster Data
+  m_Name: Boss Enemy D Monster Data
   m_EditorClassIdentifier: 
-  turnSpeed: 90
-  scorePoints: 100
-  rotateTowardsMode: 1
-  speedAnimation: 2
-  goUpSpeed: 2
-  faceInitialDirection: 1
+  turnSpeed: 360
+  scorePoints: 1000
+  rotateTowardsMode: 0
+  goUpSpeed: 0.5
+  faceInitialDirection: 0
   maxDeviationRandomVectorUp: 0.5
   minSecondsGoUp: 1
   maxSecondsGoUp: 3
@@ -32,8 +31,8 @@ MonoBehaviour:
   minSecondsSameDirection: 8
   maxSecondsSameDirection: 12
   minDistanceToTarget: 0.05
-  attackSpeed: 2.1
+  attackSpeed: 0.25
   secondsToAdjustDirection: 1
-  initialColor: {r: 0.95294124, g: 0.41176474, b: 1, a: 1}
-  attackColor: {r: 0.18039216, g: 0.3529412, b: 0.29803923, a: 1}
-  attackMaterial: {fileID: 2100000, guid: a8145984785158c4b9676a4dc349aec1, type: 2}
+  initialColor: {r: 1, g: 0, b: 0, a: 1}
+  attackColor: {r: 1, g: 0, b: 0, a: 1}
+  attackMaterial: {fileID: 2100000, guid: cd7cf496992eceb4f9440011908e65e4, type: 2}

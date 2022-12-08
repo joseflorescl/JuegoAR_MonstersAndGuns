@@ -25,6 +25,7 @@ public class VFXManager : MonoBehaviour
         GameManager.Instance.OnMonsterDead += MonsterDeadHandler;
         GameManager.Instance.OnBossMonsterDead += BossMonsterDeadHandler;
         GameManager.Instance.OnBossMonsterDamage += BossMonsterDamageHandler;
+        GameManager.Instance.OnMonsterDamage += MonsterDamageHandler;
         GameManager.Instance.OnMissileDead += MissileDeadHandler;
         GameManager.Instance.OnMonsterAttacking += MonsterAttackingHandler;
         GameManager.Instance.OnPortalCreated += PortalCreatedHandler;
@@ -39,6 +40,7 @@ public class VFXManager : MonoBehaviour
         GameManager.Instance.OnMonsterDead -= MonsterDeadHandler;
         GameManager.Instance.OnBossMonsterDead -= BossMonsterDeadHandler;
         GameManager.Instance.OnBossMonsterDamage -= BossMonsterDamageHandler;
+        GameManager.Instance.OnMonsterDamage -= MonsterDamageHandler;
         GameManager.Instance.OnMissileDead -= MissileDeadHandler;
         GameManager.Instance.OnMonsterAttacking -= MonsterAttackingHandler;
         GameManager.Instance.OnPortalCreated -= PortalCreatedHandler;
@@ -70,6 +72,11 @@ public class VFXManager : MonoBehaviour
     private void MonsterAttackingHandler(BaseMonsterController monster)
     {
         PlayParticleColorsInstance(attackParticleColorsInstance, monster.CurrentColor, monster.ExplosionPosition);
+    }
+
+    private void MonsterDamageHandler(BaseMonsterController monster)
+    {
+        PlayParticleColorsInstance(damageParticleColorsInstance, monster.CurrentColor, monster.ExplosionPosition);
     }
 
     private void BossMonsterDeadHandler(IVFXEntity bossMonster)

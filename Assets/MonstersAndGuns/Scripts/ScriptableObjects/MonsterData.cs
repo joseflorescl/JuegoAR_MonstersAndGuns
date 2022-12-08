@@ -10,6 +10,7 @@ public class MonsterData : ScriptableObject
     public float turnSpeed = 90f;
     public int scorePoints = 100;
     public RotateTowardsMode rotateTowardsMode = RotateTowardsMode.Velocity;
+    public float speedAnimation = 1;
 
     [Header("Go Up State")]
     public float goUpSpeed = 2f;

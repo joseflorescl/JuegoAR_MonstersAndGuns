@@ -20,8 +20,9 @@ public class BossMonsterController : BaseMonsterController
         shooterController = GetComponent<MonsterShooterController>();
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         CurrentState = MonsterState.GoUp;
     }
 

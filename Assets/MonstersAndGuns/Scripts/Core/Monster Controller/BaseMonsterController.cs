@@ -14,7 +14,7 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
 
     public int Score => monsterData.scorePoints;
     public Color CurrentColor => CurrentState == MonsterState.Attack ? monsterData.attackColor : monsterData.initialColor;
-    public Vector3 ExplosionPosition => rend.bounds.center; // Por ahora es el centro del mesh renderer, pero se podría elegir otra posicion adhoc
+    public Vector3 ExplosionPosition => renderers[0].bounds.center; // Por ahora es el centro del mesh renderer, pero se podría elegir otra posicion adhoc
     public float CurrentHealthPercentage => healthController.CurrentHealthPercentage;
 
     private MonsterState currentState;
@@ -48,7 +48,7 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
     protected Rigidbody rb;
     protected Animator anim;
     protected Collider coll;
-    protected Renderer rend;
+    protected Renderer[] renderers;
     protected HealthController healthController;
     protected Vector3 kinematicVelocity;
     protected Vector3 firstPointPatrolling;
@@ -63,8 +63,13 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         coll = GetComponent<Collider>();
-        rend = GetComponentInChildren<Renderer>();
+        renderers = GetComponentsInChildren<Renderer>();
         healthController = GetComponent<HealthController>();
+    }
+
+    protected virtual void Start()
+    {
+        anim.speed = monsterData.speedAnimation;
     }
 
     private void OnEnable()

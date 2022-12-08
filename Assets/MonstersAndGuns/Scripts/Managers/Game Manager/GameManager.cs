@@ -220,7 +220,7 @@ public class GameManager : BaseGameManager
     public void DamageNotification(HealthController deadObject)
     {
         if (deadObject.CompareTag("Monster"))
-            print("[Monster Damage] - Not implemented yet");
+            RaiseMonsterDamage(deadObject.GetComponent<BaseMonsterController>());
         else if (deadObject.CompareTag("BossMonster"))
             RaiseBossMonsterDamage(deadObject.GetComponent<BossMonsterController>());
         else if (deadObject.CompareTag("Player"))
