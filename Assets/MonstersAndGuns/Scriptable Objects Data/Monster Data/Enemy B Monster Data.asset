@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78faa53e6a7bf32499ec7e9d09a18b92, type: 3}
-  m_Name: Enemy A Monster Data
+  m_Name: Enemy B Monster Data
   m_EditorClassIdentifier: 
   turnSpeed: 90
   scorePoints: 100
@@ -33,6 +33,6 @@ MonoBehaviour:
   minDistanceToTarget: 0.05
   attackSpeed: 2.1
   secondsToAdjustDirection: 1
-  initialColor: {r: 0.45098042, g: 1, b: 1, a: 1}
-  attackColor: {r: 0.3137255, g: 0.23137257, b: 0.69803923, a: 1}
-  attackMaterial: {fileID: 2100000, guid: b5f042e09836d6d4eb0ad756a12f9aaf, type: 2}
+  initialColor: {r: 0.95294124, g: 0.41176474, b: 1, a: 1}
+  attackColor: {r: 0.18039216, g: 0.3529412, b: 0.29803923, a: 1}
+  attackMaterial: {fileID: 2100000, guid: a8145984785158c4b9676a4dc349aec1, type: 2}
