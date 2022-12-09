@@ -76,10 +76,23 @@ public class BossMonsterController : BaseMonsterController
 
         anim.SetBool("IsAttacking", false);
 
+        Vector3 direction = new Vector3();
+        Vector3 targetPosition = new Vector3();
+
         while (CurrentState == MonsterState.Patrol)
         {
-            var targetPosition = GetRandomPositionInsideSphere(GameManager.Instance.Portal, r, h, d, behind: true);
-            var direction = targetPosition - transform.position;
+            //jflores: probando que el boss monster no se de un cabezazo con el player
+            if (DistanceToPlayer < monsterData.minDistanceToPlayer)
+            {
+                direction = transform.position - GameManager.Instance.PlayerPosition;
+                targetPosition = transform.position + direction;                
+            }
+            else
+            {
+                targetPosition = GetRandomPositionInsideSphere(GameManager.Instance.Portal, r, h, d, behind: true);
+                direction = targetPosition - transform.position;
+            }
+
             kinematicVelocity = direction.normalized * monsterData.patrolSpeed;
 
             // Ahora se espera: hasta llegar a este punto o haya pasado un tiempo máximo
@@ -89,7 +102,8 @@ public class BossMonsterController : BaseMonsterController
             yield return new WaitUntil(() => 
                    Time.time > maxTimeInSameDirection 
                 || Time.time > maxTimeInPatrol
-                || Vector3.Distance(transform.position, targetPosition) < monsterData.minDistanceToTarget);
+                || Vector3.Distance(transform.position, targetPosition) < monsterData.minDistanceToTarget
+                || DistanceToPlayer < monsterData.minDistanceToPlayer);
 
             if (Time.time > maxTimeInPatrol)
                 CurrentState = MonsterState.Attack;
@@ -119,10 +133,12 @@ public class BossMonsterController : BaseMonsterController
 
             yield return new WaitUntil(() =>
                  Time.time > maxTimeInSameDirection
-              || Time.time > maxTimeInAttack);
+              || Time.time > maxTimeInAttack
+              || DistanceToPlayer < monsterData.minDistanceToPlayer);
 
-            if (Time.time > maxTimeInAttack)
+            if (Time.time > maxTimeInAttack || Time.time < maxTimeInSameDirection)
                 CurrentState = MonsterState.Patrol;
+            
         }            
     }
 
@@ -135,5 +151,5 @@ public class BossMonsterController : BaseMonsterController
             yield return new WaitForSeconds(fireRate);
             shooterController.FireToTarget(GameManager.Instance.PlayerPosition);
         }
-    }
+    }  
 }

@@ -176,15 +176,11 @@ public class GameManager : BaseGameManager
     {
         if (deadObject.CompareTag("Player")) 
         {
-            print(Time.frameCount + " Player Dead");
-
             RaisePlayerDead();
             CurrentState = GameState.GameOver;
         }
         else if (deadObject.CompareTag("Monster"))
         {
-            print(Time.frameCount + " Monster Dead");
-
             var monster = deadObject.GetComponent<MonsterController>();
 
             if (damageMode == DamageMode.Shooting)

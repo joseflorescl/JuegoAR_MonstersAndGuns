@@ -51,7 +51,7 @@ public class MonsterController : BaseMonsterController
         float maxTime = Time.time + secondsGoUp;
 
         yield return new WaitWhile(() => (Time.time < maxTime) 
-                                      && (Vector3.Distance(transform.position, GameManager.Instance.PlayerPosition) > monsterData.minDistanceToPlayer));
+                                      && (DistanceToPlayer > monsterData.minDistanceToPlayer));
 
         if (Time.time < maxTime) // Entonces el yield anterior terminó porque el monstruo está muy cerca del player
         {

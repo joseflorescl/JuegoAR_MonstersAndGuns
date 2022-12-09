@@ -11,6 +11,7 @@ public class MonsterData : ScriptableObject
     public int scorePoints = 100;
     public RotateTowardsMode rotateTowardsMode = RotateTowardsMode.Velocity;
     public float speedAnimation = 1;
+    public float minDistanceToPlayer = 1f;
 
     [Header("Go Up State")]
     public float goUpSpeed = 2f;
@@ -18,7 +19,6 @@ public class MonsterData : ScriptableObject
     public float maxDeviationRandomVectorUp = 0.5f;
     public float minSecondsGoUp = 1f;
     public float maxSecondsGoUp = 3f;
-    public float minDistanceToPlayer = 1f; // Si al ir subiendo el player está muy cerca, el ghost cambiará de dirección
     public float angleToAwayFromPlayer = 30f; // Para tener algo de random en el mov
 
     [Header("Patrol State")]

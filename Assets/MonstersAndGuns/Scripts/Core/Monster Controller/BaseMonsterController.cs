@@ -50,6 +50,8 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
         }
     }
 
+    protected float DistanceToPlayer => Vector3.Distance(transform.position, GameManager.Instance.PlayerPosition);
+
     protected Rigidbody rb;
     protected Animator anim;
     protected Collider coll;
@@ -118,7 +120,7 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, deltaRotation);
     }
 
-    protected void Update()
+    protected virtual void Update()
     {
         if (CurrentState == MonsterState.Idle) return;
 
