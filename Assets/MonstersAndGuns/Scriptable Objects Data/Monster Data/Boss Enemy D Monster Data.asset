@@ -15,6 +15,7 @@ MonoBehaviour:
   turnSpeed: 360
   scorePoints: 1000
   rotateTowardsMode: 0
+  speedAnimation: 1
   goUpSpeed: 0.5
   faceInitialDirection: 0
   maxDeviationRandomVectorUp: 0.5
@@ -33,6 +34,8 @@ MonoBehaviour:
   minDistanceToTarget: 0.05
   attackSpeed: 0.25
   secondsToAdjustDirection: 1
-  initialColor: {r: 1, g: 0, b: 0, a: 1}
-  attackColor: {r: 1, g: 0, b: 0, a: 1}
-  attackMaterial: {fileID: 2100000, guid: cd7cf496992eceb4f9440011908e65e4, type: 2}
+  initialColor: {r: 1, g: 0.29803923, b: 0.20392159, a: 1}
+  attackColor: {r: 1, g: 0.29803923, b: 0.20392157, a: 1}
+  attackMaterial: {fileID: 0}
+  damageMaterial: {fileID: 2100000, guid: 388c21dd3415d2741b68048c3755d2db, type: 2}
+  normalMaterial: {fileID: 2100000, guid: 4d8215369ad2c9a47a74206a883a73c2, type: 2}

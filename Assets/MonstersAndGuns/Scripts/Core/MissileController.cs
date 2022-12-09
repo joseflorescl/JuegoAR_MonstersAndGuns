@@ -8,6 +8,10 @@ public class MissileController : MonoBehaviour, IVFXEntity
     [SerializeField] private float speed = 1f;
     [field: SerializeField] public Color CurrentColor { get; private set; }
     public Vector3 ExplosionPosition => transform.position;
+    public Material DamageMaterial => null;
+    public Material AttackMaterial => null;
+    public Material NormalMaterial => null;
+    public Renderer[] Renderers => null;
 
     Rigidbody rb;
     Vector3 kinematicVelocity;

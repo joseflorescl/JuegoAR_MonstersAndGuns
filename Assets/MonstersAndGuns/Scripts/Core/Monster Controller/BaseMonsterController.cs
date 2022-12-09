@@ -15,6 +15,11 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
     public int Score => monsterData.scorePoints;
     public Color CurrentColor => CurrentState == MonsterState.Attack ? monsterData.attackColor : monsterData.initialColor;
     public Vector3 ExplosionPosition => renderers[0].bounds.center; // Por ahora es el centro del mesh renderer, pero se podría elegir otra posicion adhoc
+    public Material DamageMaterial => monsterData.damageMaterial;
+    public Material AttackMaterial => monsterData.attackMaterial;
+    public Material NormalMaterial => monsterData.normalMaterial;
+    public Renderer[] Renderers => renderers;
+
     public float CurrentHealthPercentage => healthController.CurrentHealthPercentage;
 
     private MonsterState currentState;

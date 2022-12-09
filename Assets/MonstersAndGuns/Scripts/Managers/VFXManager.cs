@@ -11,6 +11,7 @@ public class VFXManager : MonoBehaviour
     [SerializeField] private ParticleSystem missileExplosionParticleColorsPrefab;
     [SerializeField] private ParticleSystem attackParticleColorsPrefab;
     [SerializeField] private ParticleSystem portalParticleColorsPrefab;
+    [SerializeField] private float delayDamageMaterial = 0.1f;
 
     ParticleSystem monsterDeadParticleColorsInstance;
     ParticleSystem bossDeadParticleColorsInstance;
@@ -69,12 +70,16 @@ public class VFXManager : MonoBehaviour
         portalParticleColorsInstance.Play();
     }
 
-    private void MonsterAttackingHandler(BaseMonsterController monster)
+    private void MonsterAttackingHandler(IVFXEntity monster)
     {
         PlayParticleColorsInstance(attackParticleColorsInstance, monster.CurrentColor, monster.ExplosionPosition);
+        
+        if (monster.AttackMaterial)
+            UseMaterialOnVFXEntity(monster.AttackMaterial, monster);
+        
     }
 
-    private void MonsterDamageHandler(BaseMonsterController monster)
+    private void MonsterDamageHandler(IVFXEntity monster)
     {
         PlayParticleColorsInstance(damageParticleColorsInstance, monster.CurrentColor, monster.ExplosionPosition);
     }
@@ -87,13 +92,22 @@ public class VFXManager : MonoBehaviour
 
     private void MissileDeadHandler(IVFXEntity missil)
     {
-        print("MissileDeadHandler");
         PlayParticleColorsInstance(missileExplosionParticleColorsInstance, missil.CurrentColor, missil.ExplosionPosition);
     }
 
     private void BossMonsterDamageHandler(IVFXEntity monsterDamage)
     {
         PlayParticleColorsInstance(damageParticleColorsInstance, monsterDamage.CurrentColor, monsterDamage.ExplosionPosition);
+
+        if (monsterDamage.DamageMaterial)
+            StartCoroutine(UseMaterialOnVFXEntityAndRevertRoutine(monsterDamage.DamageMaterial, monsterDamage, delayDamageMaterial));
+    }
+
+    IEnumerator UseMaterialOnVFXEntityAndRevertRoutine(Material material, IVFXEntity vfxEntity, float delay)
+    {        
+        UseMaterialOnVFXEntity(material, vfxEntity);
+        yield return new WaitForSeconds(delay);
+        UseMaterialOnVFXEntity(vfxEntity.NormalMaterial, vfxEntity);
     }
 
     private void MonsterDeadHandler(IVFXEntity monsterDead)
@@ -110,6 +124,15 @@ public class VFXManager : MonoBehaviour
 
         particleColorsInstance.transform.position = position;
         particleColorsInstance.Play();
+    }
+
+    void UseMaterialOnVFXEntity(Material material, IVFXEntity vfxEntity)
+    {
+        for (int i = 0; i < vfxEntity.Renderers.Length; i++)
+        {
+            var rend = vfxEntity.Renderers[i];
+            rend.material = material;
+        }
     }
 
 }

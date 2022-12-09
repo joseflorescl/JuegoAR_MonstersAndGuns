@@ -39,4 +39,6 @@ public class MonsterData : ScriptableObject
     public Color initialColor = Color.white;
     public Color attackColor = Color.red;
     public Material attackMaterial;
+    public Material damageMaterial;
+    public Material normalMaterial;
 }

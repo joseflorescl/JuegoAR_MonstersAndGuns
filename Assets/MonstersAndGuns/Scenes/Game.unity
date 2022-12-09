@@ -743,7 +743,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b2514ca4c68a040aa4c45eda76c332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsToAttackLevel1: 3
+  secondsToAttackLevel1: 5
 --- !u!1 &982369420
 GameObject:
   m_ObjectHideFlags: 0
@@ -1439,6 +1439,7 @@ MonoBehaviour:
     type: 3}
   portalParticleColorsPrefab: {fileID: 4148940111179020686, guid: 45b6fc70d0d91dc429fffcc572cdb241,
     type: 3}
+  delayDamageMaterial: 0.2
 --- !u!1 &1720418963
 GameObject:
   m_ObjectHideFlags: 0

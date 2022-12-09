@@ -26,6 +26,9 @@ public class BossMonsterController : BaseMonsterController
         CurrentState = MonsterState.GoUp;
     }
 
+
+
+
     protected override void PlayerDeadHandler()
     {
         CurrentState = MonsterState.Idle;
@@ -71,6 +74,8 @@ public class BossMonsterController : BaseMonsterController
         float secondsInPatrol = Random.Range(minSecondsPatrolState, maxSecondsPatrolState);
         float maxTimeInPatrol = Time.time + secondsInPatrol;
 
+        anim.SetBool("IsAttacking", false);
+
         while (CurrentState == MonsterState.Patrol)
         {
             var targetPosition = GetRandomPositionInsideSphere(GameManager.Instance.Portal, r, h, d, behind: true);
@@ -99,6 +104,10 @@ public class BossMonsterController : BaseMonsterController
         float maxTimeInAttack = Time.time + secondsInAttack;
 
         StartCoroutine(FireProjectileRoutine());
+
+        anim.SetBool("IsAttacking", true);
+
+        GameManager.Instance.MonsterAttacking(this); // Por ahora no es necesario diferenciar el ataque de un monstruo normal del boss monster
 
         while (CurrentState == MonsterState.Attack)
         {

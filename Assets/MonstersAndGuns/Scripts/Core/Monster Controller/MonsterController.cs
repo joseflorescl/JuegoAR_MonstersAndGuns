@@ -138,8 +138,9 @@ public class MonsterController : BaseMonsterController
 
         var rend = GetComponentInChildren<Renderer>();
 
-        if (monsterData.attackMaterial != null)
-            UseAttackMaterial();
+        //TODO: borrar este codigo comentado
+        //if (monsterData.attackMaterial != null)
+        //    UseAttackMaterial();
 
         GameManager.Instance.MonsterAttacking(this);
 
@@ -150,18 +151,6 @@ public class MonsterController : BaseMonsterController
             kinematicVelocity = direction.normalized * monsterData.attackSpeed;
             yield return new WaitForSeconds(monsterData.secondsToAdjustDirection);
         }
-    }
-
-    void UseAttackMaterial()
-    {
-        for (int i = 0; i < renderers.Length; i++)
-        {
-            var rend = renderers[i];
-            rend.material = monsterData.attackMaterial;
-        }
-    }
-
-    
-   
+    }           
 
 }
