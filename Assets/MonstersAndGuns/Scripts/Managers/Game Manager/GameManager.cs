@@ -33,6 +33,9 @@ public class GameManager : BaseGameManager
 
     private void Start()
     {
+#if UNITY_EDITOR
+        Application.targetFrameRate = 30;
+#endif
         CurrentState = GameState.Initialization;        
     }
 

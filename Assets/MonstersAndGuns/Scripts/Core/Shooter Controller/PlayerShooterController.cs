@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class PlayerShooterController : ShooterController
 {
-    [SerializeField] private int firesPerSecond = 20;
-    [SerializeField] private float waitToRaycast = 0.1f;
+    [SerializeField] private int firesPerSecond = 20;    
     [SerializeField] private float maxBulletDistance = 100f; // Usada para el raycast
     [SerializeField] private LayerMask damageableLayerMask; // por ahora solo se puede disparar a los monsters    
 
@@ -69,15 +68,11 @@ public class PlayerShooterController : ShooterController
 
         while (true)
         {
-            if (InputARController.IsTapping() && Time.time > nextFire)
+            if (InputARController.IsTapping() && Time.time > nextFire)            
             {
                 nextFire = Time.time + fireRate;
-                FireBullet();             
-                
-                // Ahora hay que validar si hay un monster en el medio de la pantalla, en tal caso causarle daño.
-                //  Pero como el disparo se demora unos ms en llegar al centro de la pantalla, esperamos ese poquito
-                yield return new WaitForSeconds(waitToRaycast);
-                
+                FireBullet();
+
                 Vector2 middleScreenPoint = arCamera.ViewportToScreenPoint(new Vector2(0.5f, 0.5f));
                 Ray ray = arCamera.ScreenPointToRay(middleScreenPoint);
 

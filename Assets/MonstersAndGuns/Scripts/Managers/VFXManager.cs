@@ -107,7 +107,9 @@ public class VFXManager : MonoBehaviour
     {        
         UseMaterialOnVFXEntity(material, vfxEntity);
         yield return new WaitForSeconds(delay);
-        UseMaterialOnVFXEntity(vfxEntity.NormalMaterial, vfxEntity);
+        // Condición de borde: validar que el objeto siga activo antes de volver a setear su material
+        if (vfxEntity.Renderers[0] != null)
+            UseMaterialOnVFXEntity(vfxEntity.NormalMaterial, vfxEntity);               
     }
 
     private void MonsterDeadHandler(IVFXEntity monsterDead)

@@ -9,6 +9,7 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private TMP_Text monsterCountText;
     [SerializeField] private TMP_Text gunIndexText;
     [SerializeField] private TMP_Text monsterDistanceText;
+    [SerializeField] private TMP_Text fpsText;
 
     int monsterCount;
 
@@ -18,6 +19,11 @@ public class DebugManager : MonoBehaviour
         monsterCountText.text = "NoData";
     }
 
+
+    private void Start()
+    {
+        StartCoroutine(FPSRoutine());
+    }
 
     private void OnEnable()
     {
@@ -70,6 +76,18 @@ public class DebugManager : MonoBehaviour
     {
         var pos = GameManager.Instance.PlayerPosition;
         playerPositionText.text = pos.ToString();
+
+        
+    }
+
+    IEnumerator FPSRoutine()
+    {
+        while (true)
+        {
+            float fps = 1f / Time.smoothDeltaTime;
+            fpsText.text = Mathf.Round(fps).ToString();
+            yield return new WaitForSeconds(0.25f);
+        }
     }
 
     public void SetMonsterDistance(float distance)

@@ -10,29 +10,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78faa53e6a7bf32499ec7e9d09a18b92, type: 3}
-  m_Name: Enemy A Monster Data
+  m_Name: 03 Skull Monster Data
   m_EditorClassIdentifier: 
-  turnSpeed: 90
-  scorePoints: 100
+  turnSpeed: 360
+  scorePoints: 200
   rotateTowardsMode: 1
+  speedAnimation: 2
+  minDistanceToPlayer: 1
   goUpSpeed: 2
   faceInitialDirection: 1
   maxDeviationRandomVectorUp: 0.5
   minSecondsGoUp: 1
   maxSecondsGoUp: 3
-  minDistanceToPlayer: 1
   angleToAwayFromPlayer: 30
-  patrolSpeed: 2
+  patrolSpeed: 2.5
   firstPointMaxAttempts: 3
   firstPointMinDot: 0.5
-  spherePatrollingRadius: 5
+  spherePatrollingRadius: 3
   spherePatrollingDistanceToTarget: 1
   spherePatrollingHeight: -1
-  minSecondsSameDirection: 8
-  maxSecondsSameDirection: 12
-  minDistanceToTarget: 0.05
+  minSecondsSameDirection: 4
+  maxSecondsSameDirection: 8
+  minDistanceToTarget: 0.1
   attackSpeed: 2.1
   secondsToAdjustDirection: 1
-  initialColor: {r: 0.45098042, g: 1, b: 1, a: 1}
-  attackColor: {r: 0.3137255, g: 0.23137257, b: 0.69803923, a: 1}
-  attackMaterial: {fileID: 2100000, guid: b5f042e09836d6d4eb0ad756a12f9aaf, type: 2}
+  initialColor: {r: 0.6313726, g: 0.69411767, b: 0.7490196, a: 1}
+  attackColor: {r: 0, g: 0, b: 0, a: 1}
+  attackMaterial: {fileID: 2100000, guid: 454707bfe72c2e749bd9f0c76154de0d, type: 2}
+  damageMaterial: {fileID: 0}
+  normalMaterial: {fileID: 0}

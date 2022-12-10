@@ -10,29 +10,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78faa53e6a7bf32499ec7e9d09a18b92, type: 3}
-  m_Name: Voxel Alien Monster Data
+  m_Name: 02 Ghost Monster Data
   m_EditorClassIdentifier: 
-  turnSpeed: 90
-  scorePoints: 100
+  turnSpeed: 180
+  scorePoints: 150
   rotateTowardsMode: 1
-  goUpSpeed: 2
+  speedAnimation: 0.5
+  minDistanceToPlayer: 1
+  goUpSpeed: 1.5
   faceInitialDirection: 1
   maxDeviationRandomVectorUp: 0.5
   minSecondsGoUp: 1
-  maxSecondsGoUp: 3
-  minDistanceToPlayer: 1
+  maxSecondsGoUp: 2
   angleToAwayFromPlayer: 30
-  patrolSpeed: 2
+  patrolSpeed: 1
   firstPointMaxAttempts: 3
   firstPointMinDot: 0.5
   spherePatrollingRadius: 5
-  spherePatrollingDistanceToTarget: 1
+  spherePatrollingDistanceToTarget: 0
   spherePatrollingHeight: -1
-  minSecondsSameDirection: 8
-  maxSecondsSameDirection: 12
+  minSecondsSameDirection: 4
+  maxSecondsSameDirection: 8
   minDistanceToTarget: 0.05
   attackSpeed: 2.1
   secondsToAdjustDirection: 1
-  initialColor: {r: 1, g: 1, b: 1, a: 1}
-  attackColor: {r: 1, g: 0, b: 0, a: 1}
-  attackMaterial: {fileID: 2100000, guid: e7978060f31b65b4ca64d70066865494, type: 2}
+  initialColor: {r: 0.59607846, g: 0.8784314, b: 0.2, a: 1}
+  attackColor: {r: 1, g: 0.69803923, b: 0.11764707, a: 1}
+  attackMaterial: {fileID: 2100000, guid: f5725c9bda0115d49992103475bbf3dc, type: 2}
+  damageMaterial: {fileID: 0}
+  normalMaterial: {fileID: 0}

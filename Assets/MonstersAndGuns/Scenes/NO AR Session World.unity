@@ -878,8 +878,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  firesPerSecond: 10
-  waitToRaycast: 0.1
+  firesPerSecond: 15
   maxBulletDistance: 100
   damageableLayerMask:
     serializedVersion: 2

@@ -37,6 +37,8 @@ public class VibrationManager : MonoBehaviour
     IEnumerator VibrateCoroutine()
     {
         yield return new WaitForSeconds(delayVibration);
+#if !UNITY_EDITOR
         Handheld.Vibrate();
+#endif
     }
 }

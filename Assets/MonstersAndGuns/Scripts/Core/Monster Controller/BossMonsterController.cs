@@ -84,6 +84,7 @@ public class BossMonsterController : BaseMonsterController
             //jflores: probando que el boss monster no se de un cabezazo con el player
             if (DistanceToPlayer < monsterData.minDistanceToPlayer)
             {
+                print("DistanceToPlayer evitando cabezazo!!!");
                 direction = transform.position - GameManager.Instance.PlayerPosition;
                 targetPosition = transform.position + direction;                
             }
@@ -126,6 +127,12 @@ public class BossMonsterController : BaseMonsterController
         while (CurrentState == MonsterState.Attack)
         {
             var direction = GameManager.Instance.PlayerPosition - transform.position;
+
+            //Para que el monster no se mueva en linea recta, sino que un poco hacia un lado:
+            int randomSign = Random.value > 0.5f ? 1 : -1;
+            direction.Normalize();
+            direction += transform.right * randomSign;
+
             kinematicVelocity = direction.normalized * monsterData.attackSpeed;
 
             float secondsSameDirection = (monsterData.secondsToAdjustDirection);
