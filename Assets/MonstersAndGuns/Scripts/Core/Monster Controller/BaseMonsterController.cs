@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum MonsterState { Idle, GoUp, Patrol, Attack }
+public enum PatrolMode { OnSphere, InsideSphere }
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
@@ -191,4 +192,28 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
         Gizmos.DrawRay(transform.position, kinematicVelocity);
     }
 
+
+    protected void GetDirectionAndTargetPositionPatrolling(out Vector3 direction, out Vector3 targetPosition, bool behind)
+    {
+        var r = monsterData.spherePatrollingRadius;
+        var h = monsterData.spherePatrollingHeight;
+        var d = monsterData.spherePatrollingDistanceToTarget;
+
+        if (DistanceToPlayer < monsterData.minDistanceToPlayer)
+        {
+            print("DistanceToPlayer evitando cabezazo!!!");
+            direction = transform.position - GameManager.Instance.PlayerPosition;
+            targetPosition = transform.position + direction;
+        }
+        else
+        {
+            if (monsterData.patrolMode == PatrolMode.InsideSphere)
+                targetPosition = GetRandomPositionInsideSphere(GameManager.Instance.Portal, r, h, d, behind: behind);
+            else
+                targetPosition = GetRandomPositionOnSphere(GameManager.Instance.Portal, r, h, d, behind: behind);
+
+            direction = targetPosition - transform.position;
+        }
+    }
+    
 }

@@ -67,10 +67,6 @@ public class BossMonsterController : BaseMonsterController
 
     IEnumerator BossPatrolRoutine()
     {        
-        var r = monsterData.spherePatrollingRadius;
-        var h = monsterData.spherePatrollingHeight;
-        var d = monsterData.spherePatrollingDistanceToTarget;
-
         float secondsInPatrol = Random.Range(minSecondsPatrolState, maxSecondsPatrolState);
         float maxTimeInPatrol = Time.time + secondsInPatrol;
 
@@ -81,18 +77,7 @@ public class BossMonsterController : BaseMonsterController
 
         while (CurrentState == MonsterState.Patrol)
         {
-            //jflores: probando que el boss monster no se de un cabezazo con el player
-            if (DistanceToPlayer < monsterData.minDistanceToPlayer)
-            {
-                print("DistanceToPlayer evitando cabezazo!!!");
-                direction = transform.position - GameManager.Instance.PlayerPosition;
-                targetPosition = transform.position + direction;                
-            }
-            else
-            {
-                targetPosition = GetRandomPositionInsideSphere(GameManager.Instance.Portal, r, h, d, behind: true);
-                direction = targetPosition - transform.position;
-            }
+            GetDirectionAndTargetPositionPatrolling(out direction, out targetPosition, monsterData.randomPositionBehindCenter);
 
             kinematicVelocity = direction.normalized * monsterData.patrolSpeed;
 

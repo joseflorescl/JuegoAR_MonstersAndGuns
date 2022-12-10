@@ -23,6 +23,8 @@ MonoBehaviour:
   minSecondsGoUp: 1
   maxSecondsGoUp: 3
   angleToAwayFromPlayer: 30
+  patrolMode: 1
+  randomPositionBehindCenter: 1
   patrolSpeed: 2
   firstPointMaxAttempts: 3
   firstPointMinDot: 0.5

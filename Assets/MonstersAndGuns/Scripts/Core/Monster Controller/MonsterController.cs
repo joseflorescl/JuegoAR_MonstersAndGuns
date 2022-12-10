@@ -80,26 +80,26 @@ public class MonsterController : BaseMonsterController
     IEnumerator PatrolRoutine()
     {
         coll.enabled = true;
-        var r = monsterData.spherePatrollingRadius;
-        var h = monsterData.spherePatrollingHeight;
-        var d = monsterData.spherePatrollingDistanceToTarget;
 
         yield return StartCoroutine(FirstPointPatrolling());
 
         var targetPosition = firstPointPatrolling;
+        var direction = targetPosition - transform.position;
+        kinematicVelocity = direction.normalized * monsterData.patrolSpeed;
 
         while (CurrentState == MonsterState.Patrol)
         {
-            var direction = targetPosition - transform.position;
-            kinematicVelocity = direction.normalized * monsterData.patrolSpeed;
-
             // Ahora se espera: hasta llegar a este punto o haya pasado un tiempo máximo
             float secondsSameDirection = Random.Range(monsterData.minSecondsSameDirection, monsterData.maxSecondsSameDirection);
             float maxTimeInSameDirection = Time.time + secondsSameDirection;
             
-            yield return new WaitUntil(() => Time.time > maxTimeInSameDirection || Vector3.Distance(transform.position, targetPosition) < monsterData.minDistanceToTarget);
+            yield return new WaitUntil(() => 
+                   Time.time > maxTimeInSameDirection 
+                || Vector3.Distance(transform.position, targetPosition) < monsterData.minDistanceToTarget
+                || DistanceToPlayer < monsterData.minDistanceToPlayer);
 
-            targetPosition = GetRandomPositionOnSphere(GameManager.Instance.Portal, r, h, d);
+            GetDirectionAndTargetPositionPatrolling(out direction, out targetPosition, monsterData.randomPositionBehindCenter);
+            kinematicVelocity = direction.normalized * monsterData.patrolSpeed;
         }
         
     }
@@ -114,7 +114,11 @@ public class MonsterController : BaseMonsterController
 
         for (int i = 0; i < monsterData.firstPointMaxAttempts; i++)
         {
-            firstPointPatrolling = GetRandomPositionOnSphere(GameManager.Instance.Portal, r, h, d);
+            if (monsterData.patrolMode == PatrolMode.InsideSphere)
+                firstPointPatrolling = GetRandomPositionInsideSphere(GameManager.Instance.Portal, r, h, d);
+            else
+                firstPointPatrolling = GetRandomPositionOnSphere(GameManager.Instance.Portal, r, h, d);
+
             Vector3 a = GameManager.Instance.PlayerForward;
             Vector3 b = firstPointPatrolling - GameManager.Instance.PlayerPosition;
             a.Normalize();
@@ -135,12 +139,6 @@ public class MonsterController : BaseMonsterController
     IEnumerator AttackRoutine()
     {
         anim.SetTrigger("Pursue");
-
-        var rend = GetComponentInChildren<Renderer>();
-
-        //TODO: borrar este codigo comentado
-        //if (monsterData.attackMaterial != null)
-        //    UseAttackMaterial();
 
         GameManager.Instance.MonsterAttacking(this);
 

@@ -23,6 +23,8 @@ public class MonsterData : ScriptableObject
 
     [Header("Patrol State")]
     //[Space(10)]
+    public PatrolMode patrolMode = PatrolMode.OnSphere;
+    public bool randomPositionBehindCenter = false;
     public float patrolSpeed = 2f;
     public int firstPointMaxAttempts = 3;
     public float firstPointMinDot = 0.5f;

@@ -23,11 +23,13 @@ MonoBehaviour:
   minSecondsGoUp: 0.5
   maxSecondsGoUp: 1.5
   angleToAwayFromPlayer: 30
+  patrolMode: 1
+  randomPositionBehindCenter: 0
   patrolSpeed: 1.5
   firstPointMaxAttempts: 3
   firstPointMinDot: 0.5
   spherePatrollingRadius: 4
-  spherePatrollingDistanceToTarget: -1
+  spherePatrollingDistanceToTarget: 0
   spherePatrollingHeight: -1
   minSecondsSameDirection: 4
   maxSecondsSameDirection: 8
