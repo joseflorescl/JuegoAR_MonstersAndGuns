@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 public abstract class BaseGameManager : MonoBehaviour
@@ -75,6 +75,8 @@ public abstract class BaseGameManager : MonoBehaviour
     protected GameplayData gameplayData;
     protected SceneController sceneController;
 
+    //NO VA: public List<MonsterController> Monsters => monsters; //TODO: cambiar el tipo de dato por un enumerable de solo lectura
+    public ReadOnlyCollection<MonsterController> Monsters => monsters.AsReadOnly();
     public Transform Player => player;
     public Transform Portal => portal;
     public Camera ARCamera => arCamera;
