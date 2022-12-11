@@ -14,6 +14,8 @@ public class BossMonsterController : BaseMonsterController
 
     MonsterShooterController shooterController;
 
+    int RandomSign => Random.value > 0.5f ? 1 : -1;
+
     protected override void Awake()
     {
         base.Awake();
@@ -110,13 +112,13 @@ public class BossMonsterController : BaseMonsterController
         GameManager.Instance.MonsterAttacking(this); // Por ahora no es necesario diferenciar el ataque de un monstruo normal del boss monster
 
         while (CurrentState == MonsterState.Attack)
-        {
+        {            
             var direction = GameManager.Instance.PlayerPosition - transform.position;
+            direction *= RandomSign;
 
-            //Para que el monster no se mueva en linea recta, sino que un poco hacia un lado:
-            int randomSign = Random.value > 0.5f ? 1 : -1;
+            //Para que el monster no se mueva en linea recta, sino que un poco hacia un lado:            
             direction.Normalize();
-            direction += transform.right * randomSign;
+            direction += transform.right * RandomSign;
 
             kinematicVelocity = direction.normalized * monsterData.attackSpeed;
 

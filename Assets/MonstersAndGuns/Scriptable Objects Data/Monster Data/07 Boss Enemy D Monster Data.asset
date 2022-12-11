@@ -10,31 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78faa53e6a7bf32499ec7e9d09a18b92, type: 3}
-  m_Name: Boss Enemy D Monster Data
+  m_Name: 07 Boss Enemy D Monster Data
   m_EditorClassIdentifier: 
-  turnSpeed: 360
+  turnSpeed: 540
   scorePoints: 1000
   rotateTowardsMode: 0
   speedAnimation: 1
-  minDistanceToPlayer: 1
+  minDistanceToPlayer: 1.25
   goUpSpeed: 0.5
   faceInitialDirection: 0
   maxDeviationRandomVectorUp: 0.5
-  minSecondsGoUp: 1
+  minSecondsGoUp: 2
   maxSecondsGoUp: 3
   angleToAwayFromPlayer: 30
   patrolMode: 1
   randomPositionBehindCenter: 1
-  patrolSpeed: 2
+  patrolSpeed: 2.25
   firstPointMaxAttempts: 3
   firstPointMinDot: 0.5
   spherePatrollingRadius: 5
-  spherePatrollingDistanceToTarget: 1
+  spherePatrollingDistanceToTarget: 0
   spherePatrollingHeight: -1
-  minSecondsSameDirection: 8
-  maxSecondsSameDirection: 12
-  minDistanceToTarget: 0.05
-  attackSpeed: 0.5
+  minSecondsSameDirection: 5
+  maxSecondsSameDirection: 8
+  minDistanceToTarget: 0.075
+  attackSpeed: 1
   secondsToAdjustDirection: 1
   initialColor: {r: 1, g: 0.29803923, b: 0.20392159, a: 1}
   attackColor: {r: 1, g: 0.29803923, b: 0.20392157, a: 1}

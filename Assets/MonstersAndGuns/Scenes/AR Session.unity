@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a193758fb0dcd91458ade2373a849853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 5
 --- !u!114 &89227449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -459,6 +459,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portalPrefab: {fileID: 1554541131529452, guid: 3f85cafacb6779543b77bcf7c34d631d,
     type: 3}
+  delayBeforeARRaycast: 0.25
 --- !u!4 &1286602748
 Transform:
   m_ObjectHideFlags: 0

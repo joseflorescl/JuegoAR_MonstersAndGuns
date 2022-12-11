@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e3058b93e7774a488f34ff53ee40184, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 2
   <CurrentColor>k__BackingField: {r: 0.9921569, g: 0.7254902, b: 0.078431375, a: 1}
 --- !u!114 &4315705678188747500
 MonoBehaviour:

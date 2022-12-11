@@ -203,13 +203,13 @@ public class UIManager : MonoBehaviour
         FadeGraphic(backgroundImage, 1f, minAlphaBackground, timeToFadeBackground);
 
         bool state = true;
-        for (int i = 0; i < showWarningBossBattleCount*2; i++)
+        for (int i = 0; i < showWarningBossBattleCount*2 - 1; i++)
         {
             warningBossBattlePanel.SetActive(state);
             yield return new WaitForSeconds(blinkingDelayWarningBossBattle);
             state = !state;
         }
-
+        warningBossBattlePanel.SetActive(false);
         backgroundPanel.SetActive(false);
 
     }

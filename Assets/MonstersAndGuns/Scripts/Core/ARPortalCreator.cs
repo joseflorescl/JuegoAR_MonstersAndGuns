@@ -7,6 +7,7 @@ using UnityEngine.XR.ARSubsystems;
 public class ARPortalCreator : MonoBehaviour
 {
     [SerializeField] private GameObject portalPrefab;
+    [SerializeField] private float delayBeforeARRaycast = 0.5f;
 
     ARRaycastManager arRaycastManager;
     ARPlaneManager arPlaneManager;
@@ -61,6 +62,10 @@ public class ARPortalCreator : MonoBehaviour
         var arCamera = GameManager.Instance.ARCamera;
 
         Vector2 middleScreenPoint = arCamera.ViewportToScreenPoint(new Vector2(0.5f, 0.5f));
+
+        // Condición de borde: si el framerate es bajo cuando se le da al boton Start
+        //  a veces ese mismo input pasa como el tap para colocar el portal, por eso se espera un poco        
+        yield return new WaitForSeconds(delayBeforeARRaycast);
 
         while (isPortalCreating)
         {
