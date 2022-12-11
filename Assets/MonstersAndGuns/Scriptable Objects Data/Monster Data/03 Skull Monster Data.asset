@@ -15,7 +15,7 @@ MonoBehaviour:
   turnSpeed: 360
   scorePoints: 200
   rotateTowardsMode: 1
-  speedAnimation: 2
+  speedAnimation: 1.5
   minDistanceToPlayer: 1
   goUpSpeed: 2
   faceInitialDirection: 1
@@ -23,11 +23,13 @@ MonoBehaviour:
   minSecondsGoUp: 1
   maxSecondsGoUp: 3
   angleToAwayFromPlayer: 30
-  patrolSpeed: 2.5
+  patrolMode: 0
+  randomPositionBehindCenter: 0
+  patrolSpeed: 2
   firstPointMaxAttempts: 3
   firstPointMinDot: 0.5
-  spherePatrollingRadius: 3
-  spherePatrollingDistanceToTarget: 1
+  spherePatrollingRadius: 4
+  spherePatrollingDistanceToTarget: 0.5
   spherePatrollingHeight: -1
   minSecondsSameDirection: 4
   maxSecondsSameDirection: 8

@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : BaseGameManager
 {
+    // TODO: borrar los colliders de los objetos que no lo necesiten
+    // TODO: cambiar el skybox por un gradiente de colores tipo espacio abierto (una plaza)
+
     [SerializeField] private GameManagerData gameManagerData;
     [SerializeField] private GameObject canvasLoading;
 
@@ -29,7 +32,7 @@ public class GameManager : BaseGameManager
         sceneController = FindObjectOfType<SceneController>();
     }
 
-    // TODO: borrar los colliders de los objetos que no lo necesiten
+    
 
     private void Start()
     {

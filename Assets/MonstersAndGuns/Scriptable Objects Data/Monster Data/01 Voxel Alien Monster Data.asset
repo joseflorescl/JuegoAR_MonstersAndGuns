@@ -20,13 +20,15 @@ MonoBehaviour:
   goUpSpeed: 2
   faceInitialDirection: 1
   maxDeviationRandomVectorUp: 0.5
-  minSecondsGoUp: 0.5
-  maxSecondsGoUp: 1.5
+  minSecondsGoUp: 1
+  maxSecondsGoUp: 2.5
   angleToAwayFromPlayer: 30
+  patrolMode: 0
+  randomPositionBehindCenter: 0
   patrolSpeed: 1.5
   firstPointMaxAttempts: 3
   firstPointMinDot: 0.5
-  spherePatrollingRadius: 4
+  spherePatrollingRadius: 5
   spherePatrollingDistanceToTarget: 0
   spherePatrollingHeight: -1
   minSecondsSameDirection: 4
