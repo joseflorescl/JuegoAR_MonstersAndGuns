@@ -6,22 +6,22 @@ using UnityEngine.UI;
 public class MinimapController : MonoBehaviour
 {
     [SerializeField] private Image circle;
-    [SerializeField] private GameObject monsterMinimapPrefab;
+    [SerializeField] private RectTransform monsterMinimapPrefab;
     [SerializeField] private int maxMonstersMinimap = 50;
     [SerializeField] private float delayUpdateMinimap = 0.1f;
     [SerializeField] private float worldRadiusDimension = 5f;
 
-    GameObject[] monstersMinimap;
+    RectTransform[] monstersMinimap;
     WaitForSeconds waitUpdateMinimap;
 
     private void Awake()
     {
-        monstersMinimap = new GameObject[maxMonstersMinimap];
+        monstersMinimap = new RectTransform[maxMonstersMinimap];
 
         for (int i = 0; i < monstersMinimap.Length; i++)
         {
             var m = Instantiate(monsterMinimapPrefab, circle.transform);
-            m.SetActive(false);
+            m.gameObject.SetActive(false);
             monstersMinimap[i] = m;
         }
 
@@ -42,12 +42,8 @@ public class MinimapController : MonoBehaviour
 
     private void BattlingHanlder(List<MonsterController> arg1, int arg2)
     {        
-        
-
-        //TODO: la corutina debería empezar en un evento de GM, y detenerse en otro evento del GM, ahora esto es solo TEST
         StartCoroutine(MinimapRoutine());
-
-        //TODO: falta el StopCoroutine
+        // Notar que el minimap nunca más se desactivará de la UI, por eso no es necesario llamar al StopAllCoroutine.
     }
 
     IEnumerator MinimapRoutine()
@@ -58,6 +54,7 @@ public class MinimapController : MonoBehaviour
 
         var monsters = GameManager.Instance.Monsters;
         var player = GameManager.Instance.Player;
+
         while (true)
         {
             DeactivateMinimapMonsters();
@@ -67,29 +64,29 @@ public class MinimapController : MonoBehaviour
                 var monster = monsters[i];
                 var monsterPositionWorldSpace = monster.transform.position;
 
-
                 //Ahora hay que transformar esa posición de mundo, c/r al player:
-                var positionRelativeToPlayer = player.InverseTransformPoint(monsterPositionWorldSpace);
-                positionRelativeToPlayer.y = 0;
+                var monsterPositionRelativeToPlayer = player.InverseTransformPoint(monsterPositionWorldSpace);
+                monsterPositionRelativeToPlayer.y = 0;
 
                 //TODO: falta validar que si la posición de mundo está muy fuera del radio max, se debe hacer un clamp
                 //  para que igual se dibuje el monster, pero en el borde del minimap
 
-                var minimapPosition = positionRelativeToPlayer * scaleRatio;
+                var minimapPosition = monsterPositionRelativeToPlayer * scaleRatio;
                 minimapPosition.y = minimapPosition.z;
                 minimapPosition.z = 0;
 
 
-                //print("Posición de ui minimap = " + minimapPosition);
-
                 //TODO: cambiar el tipo de dato de la var para no tener que hacer el GetComponent
-                monstersMinimap[i].GetComponent<RectTransform>().anchoredPosition = minimapPosition;
-                monstersMinimap[i].SetActive(true);
+                monstersMinimap[i].anchoredPosition = minimapPosition;
+                monstersMinimap[i].gameObject.SetActive(true);
 
                 //TODO: setear el color del monsterminimap al color del monster, al menos si esta en patrol o en attack
 
                 
             }
+
+            //TODO: también hay que usar un ícono de minimap para el boss monster
+            //TODO: usar otra imagen de circle con el borde más delgado
 
             yield return waitUpdateMinimap;
         }
@@ -99,7 +96,7 @@ public class MinimapController : MonoBehaviour
     {
         for (int i = 0; i < monstersMinimap.Length; i++)
         {
-            monstersMinimap[i].SetActive(false);
+            monstersMinimap[i].gameObject.SetActive(false);
         }
     }
 

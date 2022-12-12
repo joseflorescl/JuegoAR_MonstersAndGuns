@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject warningBossBattlePanel;
     [SerializeField] private GameObject winLevelPanel;
     [SerializeField] private GameObject nextLevelPanel;
+    [SerializeField] private GameObject minimapPanel;
 
     [Space(10)]
     [Header("UI Elements")]
@@ -58,11 +59,10 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         messagesPanelCenter = new GameObject[] { backgroundPanel, mainPanel, portalCreationPanel, HUDPanel, battlePanel, 
-            gameOverPanel, vfxPanel, warningBossBattlePanel, winLevelPanel, nextLevelPanel };
+            gameOverPanel, vfxPanel, warningBossBattlePanel, winLevelPanel, nextLevelPanel, minimapPanel };
         HideAllMessages();
     }
-
-
+    
     public void Close() // Llamada por Botón
     {
         GameManager.Instance.Close();
@@ -132,9 +132,10 @@ public class UIManager : MonoBehaviour
     IEnumerator NextLevelHandlerRoutine(int nextLevel)
     {        
         scorePreviousLevel = score;
-        winLevelPanel.SetActive(false);
+        DeactivatePanels(winLevelPanel);
         yield return new WaitForSeconds(delayNextLevelPanel);
-        nextLevelPanel.SetActive(true);
+
+        ActivatePanels(nextLevelPanel);
         nextLevelText.text = LEVEL_TEXT + " " + nextLevel.ToString();
         levelText.text = nextLevel.ToString();
     }
@@ -145,10 +146,9 @@ public class UIManager : MonoBehaviour
     }
 
     IEnumerator WinLevelHandlerRoutine()
-    {
-        bossMonsterHealth.SetActive(false);
-        winLevelPanel.SetActive(true);
-        battlePanel.SetActive(false);
+    {       
+        DeactivatePanels(bossMonsterHealth, battlePanel);
+        ActivatePanels(winLevelPanel);
         
         GameManager.Instance.InitIncrementScore();
 
@@ -185,7 +185,7 @@ public class UIManager : MonoBehaviour
 
     private void BossMonsterSpawnedHandler()
     {
-        bossMonsterHealth.SetActive(true);
+        ActivatePanels(bossMonsterHealth);        
         bossMonsterHealthBarImage.fillAmount = 1f;
     }
 
@@ -198,8 +198,8 @@ public class UIManager : MonoBehaviour
     IEnumerator BossBattleHandlerRoutine()
     {                
         yield return new WaitForSeconds(blinkingDelayWarningBossBattle); // Se espera un poquito para esperar la explosión del último monstruo
-
-        backgroundPanel.SetActive(true);
+        
+        ActivatePanels(backgroundPanel);
         FadeGraphic(backgroundImage, 1f, minAlphaBackground, timeToFadeBackground);
 
         bool state = true;
@@ -209,9 +209,8 @@ public class UIManager : MonoBehaviour
             yield return new WaitForSeconds(blinkingDelayWarningBossBattle);
             state = !state;
         }
-        warningBossBattlePanel.SetActive(false);
-        backgroundPanel.SetActive(false);
 
+        DeactivatePanels(warningBossBattlePanel, backgroundPanel);        
     }
 
 
@@ -229,18 +228,16 @@ public class UIManager : MonoBehaviour
     IEnumerator GameOverHandlerRoutine(float delay)
     {
         yield return new WaitForSeconds(delay);
-        HideAllMessages();
-        backgroundPanel.SetActive(true);
+        HideAllMessages();        
+        ActivatePanels(minimapPanel, backgroundPanel, HUDPanel, gameOverPanel);
         backgroundImage.canvasRenderer.SetAlpha(minAlphaBackground);
-        HUDPanel.SetActive(true);
-        gameOverPanel.SetActive(true);
         scoreTextGameOver.text = score.ToString();
     }
 
     private void PlayerDeadHandler()
-    {
-        battlePanel.SetActive(false);
-        backgroundPanel.SetActive(true);
+    {        
+        DeactivatePanels(battlePanel);
+        ActivatePanels(backgroundPanel);
         playerHealthBarImage.fillAmount = 0;
         ShowSplatBlood();
         FadeGraphic(backgroundImage, 1f, minAlphaBackground, timeToFadeBackground);
@@ -279,16 +276,14 @@ public class UIManager : MonoBehaviour
     IEnumerator BattlingRoutine(int level)
     {
         HideAllMessages();
-        HUDPanel.SetActive(true);
         bossMonsterHealth.SetActive(false);
-        battlePanel.SetActive(true);
-        vfxPanel.SetActive(true);
+        ActivatePanels(minimapPanel, HUDPanel, battlePanel, vfxPanel, goMessage);
         levelText.text = level.ToString();
         playerHealthBarImage.fillAmount = 1f; // Por ahora se asume simplemente que cuando parte un nuevo level la salud está a full
         splatImage.canvasRenderer.SetAlpha(0f);
-        goMessage.SetActive(true);
+        
         yield return new WaitForSeconds(secondsToDeactivateGOMessage); // Después de un ratito desactivar el texto de GO!
-        goMessage.SetActive(false);
+        DeactivatePanels(goMessage);        
     }
 
     private void PortalCreatedHandler()
@@ -303,17 +298,16 @@ public class UIManager : MonoBehaviour
     }
 
     private void MainMenuHandler()
-    {
+    {        
         HideAllMessages();
-        backgroundPanel.SetActive(true);
-        mainPanel.SetActive(true);
+        ActivatePanels(backgroundPanel, mainPanel);
         FadeGraphic(backgroundImage, 1f, 0f, timeToFadeBackground);
     }
 
     private void PortalCreatingHandler()
-    {
+    {        
         HideAllMessages();
-        portalCreationPanel.SetActive(true);
+        ActivatePanels(portalCreationPanel);        
     }   
 
     void HideAllMessages()
@@ -322,6 +316,24 @@ public class UIManager : MonoBehaviour
         {
             messagesPanelCenter[i].SetActive(false);
         }
+    }
+
+    void ActivatePanels(params GameObject[] panels)
+    {
+        for (int i = 0; i < panels.Length; i++)
+        {
+            panels[i].SetActive(true);
+        }
+
+    }
+
+    void DeactivatePanels(params GameObject[] panels)
+    {
+        for (int i = 0; i < panels.Length; i++)
+        {
+            panels[i].SetActive(false);
+        }
+
     }
 
 }
