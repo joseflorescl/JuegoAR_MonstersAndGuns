@@ -6,13 +6,14 @@ public class BossMonsterController : BaseMonsterController
 {
     [SerializeField] private float minSecondsPatrolState = 3f;
     [SerializeField] private float maxSecondsPatrolState = 5f;
-
     [SerializeField] private float minSecondsAttackState = 3f;
     [SerializeField] private float maxSecondsAttackState = 5f;
-
     [SerializeField] private int firesPerSecond = 1;
+    [Tooltip("Angular speed in radians per sec.")]
+    [SerializeField] private float angularSpeedVelocity = Mathf.PI * 2f;
 
     MonsterShooterController shooterController;
+    Vector3 targetKinematicVelocity;
 
     int RandomSign => Random.value > 0.5f ? 1 : -1;
 
@@ -25,6 +26,7 @@ public class BossMonsterController : BaseMonsterController
     protected override void Start()
     {
         base.Start();
+        GameManager.Instance.BossMonsterCreated(this);
         CurrentState = MonsterState.GoUp;
     }
 
@@ -56,10 +58,17 @@ public class BossMonsterController : BaseMonsterController
         StartCoroutine(BossPatrolRoutine());
     }
 
+    protected override void FixedUpdate()
+    {        
+        float singleStep = angularSpeedVelocity * Time.deltaTime;
+        kinematicVelocity = Vector3.RotateTowards(kinematicVelocity, targetKinematicVelocity, singleStep, monsterData.patrolSpeed);
+        base.FixedUpdate();
+    }
+
 
     IEnumerator BossGoUpCoroutine()
     {
-        kinematicVelocity = GetRandomVectorUp(monsterData.maxDeviationRandomVectorUp) * monsterData.goUpSpeed;
+        targetKinematicVelocity = kinematicVelocity = GetRandomVectorUp(monsterData.maxDeviationRandomVectorUp) * monsterData.goUpSpeed;
         FaceInitialDirection();
 
         float secondsGoUp = Random.Range(monsterData.minSecondsGoUp, monsterData.maxSecondsGoUp);
@@ -75,13 +84,14 @@ public class BossMonsterController : BaseMonsterController
         anim.SetBool("IsAttacking", false);
 
         Vector3 direction = new Vector3();
-        Vector3 targetPosition = new Vector3();
 
         while (CurrentState == MonsterState.Patrol)
         {
             GetDirectionAndTargetPositionPatrolling(out direction, out targetPosition, monsterData.randomPositionBehindCenter);
 
-            kinematicVelocity = direction.normalized * monsterData.patrolSpeed;
+            
+            // TODO: revisar este cambio
+            targetKinematicVelocity = direction.normalized * monsterData.patrolSpeed;
 
             // Ahora se espera: hasta llegar a este punto o haya pasado un tiempo máximo
             float secondsSameDirection = Random.Range(monsterData.minSecondsSameDirection, monsterData.maxSecondsSameDirection);
@@ -120,7 +130,8 @@ public class BossMonsterController : BaseMonsterController
             direction.Normalize();
             direction += transform.right * RandomSign;
 
-            kinematicVelocity = direction.normalized * monsterData.attackSpeed;
+            // TODO: revisar este cambio
+            targetKinematicVelocity = direction.normalized * monsterData.attackSpeed;
 
             float secondsSameDirection = (monsterData.secondsToAdjustDirection);
             float maxTimeInSameDirection = Time.time + secondsSameDirection;
@@ -145,5 +156,5 @@ public class BossMonsterController : BaseMonsterController
             yield return new WaitForSeconds(fireRate);
             shooterController.FireToTarget(GameManager.Instance.PlayerPosition);
         }
-    }  
+    }    
 }

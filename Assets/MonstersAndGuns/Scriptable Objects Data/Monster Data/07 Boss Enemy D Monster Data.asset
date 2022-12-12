@@ -16,7 +16,7 @@ MonoBehaviour:
   scorePoints: 1000
   rotateTowardsMode: 0
   speedAnimation: 1
-  minDistanceToPlayer: 1.25
+  minDistanceToPlayer: 2
   goUpSpeed: 0.5
   faceInitialDirection: 0
   maxDeviationRandomVectorUp: 0.5
@@ -30,10 +30,10 @@ MonoBehaviour:
   firstPointMinDot: 0.5
   spherePatrollingRadius: 5
   spherePatrollingDistanceToTarget: 0
-  spherePatrollingHeight: -1
+  spherePatrollingHeight: 0
   minSecondsSameDirection: 5
   maxSecondsSameDirection: 8
-  minDistanceToTarget: 0.075
+  minDistanceToTarget: 0.5
   attackSpeed: 1
   secondsToAdjustDirection: 1
   initialColor: {r: 1, g: 0.29803923, b: 0.20392159, a: 1}

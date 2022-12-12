@@ -60,6 +60,7 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
     protected HealthController healthController;
     protected Vector3 kinematicVelocity;
     protected Vector3 firstPointPatrolling;
+    protected Vector3 targetPosition;
 
     protected abstract void Idle();
     protected abstract void GoUp();
@@ -140,7 +141,7 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
         }
     }
 
-    protected void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (CurrentState == MonsterState.Idle) return;
 
@@ -190,6 +191,9 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
     protected void OnDrawGizmos()
     {
         Gizmos.DrawRay(transform.position, kinematicVelocity);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(targetPosition, 0.25f);
+
     }
 
 
@@ -201,7 +205,6 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
 
         if (DistanceToPlayer < monsterData.minDistanceToPlayer)
         {
-            print("DistanceToPlayer evitando cabezazo!!!");
             direction = transform.position - GameManager.Instance.PlayerPosition;
             targetPosition = transform.position + direction;
         }

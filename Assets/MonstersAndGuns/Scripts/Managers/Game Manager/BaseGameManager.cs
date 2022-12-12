@@ -72,11 +72,13 @@ public abstract class BaseGameManager : MonoBehaviour
     protected Camera arCamera;
     protected Transform player;
     protected List<MonsterController> monsters;
+    protected BossMonsterController bossMonster;
     protected GameplayData gameplayData;
     protected SceneController sceneController;
 
     //NO VA: public List<MonsterController> Monsters => monsters; //TODO: cambiar el tipo de dato por un enumerable de solo lectura
     public ReadOnlyCollection<MonsterController> Monsters => monsters.AsReadOnly();
+    public BossMonsterController BossMonster => bossMonster;
     public Transform Player => player;
     public Transform Portal => portal;
     public Camera ARCamera => arCamera;

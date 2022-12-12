@@ -17,7 +17,7 @@ MonoBehaviour:
   monstersByLevels:
   - initialMonsters:
     - monsterPrefab: {fileID: 326801172, guid: ef100fe30ca01d94c8c3291c43270037, type: 3}
-      count: 15
+      count: 1
     - monsterPrefab: {fileID: 326801172, guid: 00fb1bb10fe79504b8fa75564caac587, type: 3}
       count: 0
     bossMonsterPrefab: {fileID: 1400900077538849546, guid: 16d495c58307c954e9ef60df986bcdd0,

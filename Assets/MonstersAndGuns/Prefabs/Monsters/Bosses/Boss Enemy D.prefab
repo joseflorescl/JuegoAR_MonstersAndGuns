@@ -109,6 +109,7 @@ MonoBehaviour:
   minSecondsAttackState: 3
   maxSecondsAttackState: 5
   firesPerSecond: 1
+  angularSpeedVelocity: 9
 --- !u!114 &-5299866767569053286
 MonoBehaviour:
   m_ObjectHideFlags: 0

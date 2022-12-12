@@ -83,7 +83,7 @@ public class MonsterController : BaseMonsterController
 
         yield return StartCoroutine(FirstPointPatrolling());
 
-        var targetPosition = firstPointPatrolling;
+        targetPosition = firstPointPatrolling;
         var direction = targetPosition - transform.position;
         kinematicVelocity = direction.normalized * monsterData.patrolSpeed;
 

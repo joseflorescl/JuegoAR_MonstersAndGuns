@@ -2200,6 +2200,8 @@ MonoBehaviour:
   circle: {fileID: 390839494}
   monsterMinimapPrefab: {fileID: 1583555698115844433, guid: 507fbd9978bc27e4ba485d2a58bdec36,
     type: 3}
+  bossMonsterMinimapPrefab: {fileID: 8972329702652942177, guid: 74f359056e70367449a90bcf5609b6bf,
+    type: 3}
   maxMonstersMinimap: 50
   delayUpdateMinimap: 0.05
   worldRadiusDimension: 6.5
