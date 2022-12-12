@@ -120,17 +120,22 @@ public class BossMonsterController : BaseMonsterController
         anim.SetBool("IsAttacking", true);
 
         GameManager.Instance.MonsterAttacking(this); // Por ahora no es necesario diferenciar el ataque de un monstruo normal del boss monster
+        Vector3 direction = new Vector3();
 
         while (CurrentState == MonsterState.Attack)
-        {            
-            var direction = GameManager.Instance.PlayerPosition - transform.position;
-            direction *= RandomSign;
+        {
+            if (DistanceToPlayer < monsterData.minDistanceToPlayer)
+            {
+                direction = transform.position - GameManager.Instance.PlayerPosition;                
+            }
+            else
+            {
+                direction = GameManager.Instance.PlayerPosition - transform.position;
+                direction *= RandomSign;
+                direction.Normalize();
+                direction += transform.right * RandomSign;//Para que el monster no se mueva en linea recta, sino que un poco hacia un lado:            
+            }
 
-            //Para que el monster no se mueva en linea recta, sino que un poco hacia un lado:            
-            direction.Normalize();
-            direction += transform.right * RandomSign;
-
-            // TODO: revisar este cambio
             targetKinematicVelocity = direction.normalized * monsterData.attackSpeed;
 
             float secondsSameDirection = (monsterData.secondsToAdjustDirection);
@@ -141,9 +146,8 @@ public class BossMonsterController : BaseMonsterController
               || Time.time > maxTimeInAttack
               || DistanceToPlayer < monsterData.minDistanceToPlayer);
 
-            if (Time.time > maxTimeInAttack || Time.time < maxTimeInSameDirection)
+            if (Time.time > maxTimeInAttack)
                 CurrentState = MonsterState.Patrol;
-            
         }            
     }
 
