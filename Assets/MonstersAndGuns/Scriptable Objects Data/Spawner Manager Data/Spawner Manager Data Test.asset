@@ -10,38 +10,38 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b6f8dc72d31b5ed469875ab6fc3d392f, type: 3}
-  m_Name: Spawner Manager Data
+  m_Name: Spawner Manager Data Test
   m_EditorClassIdentifier: 
   spawnTimeBetweenMonsters: 0.2
   delaySpawningBossMonster: 5
   monstersByLevels:
   - initialMonsters:
     - monsterPrefab: {fileID: 326801172, guid: ef100fe30ca01d94c8c3291c43270037, type: 3}
-      count: 10
+      count: 1
     - monsterPrefab: {fileID: 326801172, guid: 00fb1bb10fe79504b8fa75564caac587, type: 3}
-      count: 5
+      count: 1
     bossMonsterPrefab: {fileID: 1400900077538849546, guid: 16d495c58307c954e9ef60df986bcdd0,
       type: 3}
   - initialMonsters:
     - monsterPrefab: {fileID: 326801172, guid: b8dbe86d41b32f743b142a0f267f0cc2, type: 3}
-      count: 10
+      count: 1
     - monsterPrefab: {fileID: 326801172, guid: 5c2b148e392674847b80ef0706b6b01c, type: 3}
-      count: 5
+      count: 1
     bossMonsterPrefab: {fileID: 1400900077538849546, guid: 16d495c58307c954e9ef60df986bcdd0,
       type: 3}
   - initialMonsters:
     - monsterPrefab: {fileID: 326801172, guid: 213dfecde1e4af143b1e056b7d1bce36, type: 3}
-      count: 10
+      count: 1
     - monsterPrefab: {fileID: 326801172, guid: 9be061e7ea9179b4581b159b3e110c8e, type: 3}
-      count: 5
+      count: 1
     bossMonsterPrefab: {fileID: 1400900077538849546, guid: 16d495c58307c954e9ef60df986bcdd0,
       type: 3}
   - initialMonsters:
     - monsterPrefab: {fileID: 326801172, guid: 00fb1bb10fe79504b8fa75564caac587, type: 3}
-      count: 5
+      count: 1
     - monsterPrefab: {fileID: 326801172, guid: 5c2b148e392674847b80ef0706b6b01c, type: 3}
-      count: 5
+      count: 1
     - monsterPrefab: {fileID: 326801172, guid: 9be061e7ea9179b4581b159b3e110c8e, type: 3}
-      count: 5
+      count: 1
     bossMonsterPrefab: {fileID: 1400900077538849546, guid: 16d495c58307c954e9ef60df986bcdd0,
       type: 3}

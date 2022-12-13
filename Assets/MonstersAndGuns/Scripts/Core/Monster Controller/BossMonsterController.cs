@@ -90,7 +90,6 @@ public class BossMonsterController : BaseMonsterController
             GetDirectionAndTargetPositionPatrolling(out direction, out targetPosition, 
                 monsterData.randomPositionBehindCenter, useDistanceOnPlaneXZ: true);
             
-            // TODO: revisar este cambio
             targetKinematicVelocity = direction.normalized * monsterData.patrolSpeed;
 
             // Ahora se espera: hasta llegar a este punto o haya pasado un tiempo máximo

@@ -6,9 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : BaseGameManager
 {
-    // TODO: borrar los colliders de los objetos que no lo necesiten
+    // TODO: revisar materiales mobile unlit
     // TODO: cambiar el skybox por un gradiente de colores tipo espacio abierto (una plaza)
-    // TODO: seteo de los levels
     // TODO: revisar el tema de la performance de las partículas en mobile
 
     [SerializeField] private GameManagerData gameManagerData;

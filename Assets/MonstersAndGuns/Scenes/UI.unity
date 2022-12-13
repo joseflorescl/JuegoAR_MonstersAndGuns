@@ -1451,7 +1451,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a1d8c916f360f9d45b88906dc1ffd5b5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 99d654f72b814c44ba32c9ce36fd12c2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2218,6 +2218,7 @@ MonoBehaviour:
   missileMinimapPrefab: {fileID: 936184120142963243, guid: 47dff1dd84e6be54c997d700e4b02380,
     type: 3}
   maxMonstersMinimap: 50
+  maxMissilesMinimap: 5
   delayUpdateMinimap: 0.05
   worldRadiusDimension: 6.5
 --- !u!1 &680016651

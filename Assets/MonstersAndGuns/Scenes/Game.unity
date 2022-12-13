@@ -744,6 +744,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   secondsToAttackLevel1: 5
+  substractSecondsToAttackNewLevel: 0.5
+  minSecondsToAttack: 1
 --- !u!1 &982369420
 GameObject:
   m_ObjectHideFlags: 0
@@ -1307,7 +1309,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 305a5309c1245b34c8c8b8f0ee1057fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 135eef91764207b4d846956a7ef64fb2, type: 2}
+  data: {fileID: 11400000, guid: 725564ec722f8ce428c9e5002d043358, type: 2}
+  monstersPrefabs:
+  - {fileID: 326801172, guid: 00fb1bb10fe79504b8fa75564caac587, type: 3}
+  - {fileID: 326801172, guid: 5c2b148e392674847b80ef0706b6b01c, type: 3}
+  - {fileID: 326801172, guid: 9be061e7ea9179b4581b159b3e110c8e, type: 3}
+  - {fileID: 326801172, guid: b8dbe86d41b32f743b142a0f267f0cc2, type: 3}
+  - {fileID: 326801172, guid: 213dfecde1e4af143b1e056b7d1bce36, type: 3}
+  - {fileID: 326801172, guid: ef100fe30ca01d94c8c3291c43270037, type: 3}
+  bossMonstersPrefabs:
+  - {fileID: 1012622325747599302, guid: 16d495c58307c954e9ef60df986bcdd0, type: 3}
+  incrementMonstersCountByNewLevel: 5
 --- !u!1 &1591751907
 GameObject:
   m_ObjectHideFlags: 0

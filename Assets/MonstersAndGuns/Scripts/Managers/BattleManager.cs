@@ -5,6 +5,8 @@ using UnityEngine;
 public class BattleManager : MonoBehaviour
 {
     [SerializeField] private float secondsToAttackLevel1 = 10f;
+    [SerializeField] private float substractSecondsToAttackNewLevel = 0.5f;
+    [SerializeField] private float minSecondsToAttack = 1f;
 
     private void OnEnable()
     {
@@ -31,7 +33,9 @@ public class BattleManager : MonoBehaviour
 
     IEnumerator BattleRoutine(List<MonsterController> monsters, int currentLevel)
     {
-        var secondsToAttack = secondsToAttackLevel1 / currentLevel; //Esto se podría controlar por una curva de animación y agregar algo de random
+        //Esto se podría controlar por una curva de animación y agregar algo de random
+        var secondsToAttack = secondsToAttackLevel1 - (currentLevel - 1) * substractSecondsToAttackNewLevel;
+        secondsToAttack = Mathf.Clamp(secondsToAttack, minSecondsToAttack, secondsToAttack);
 
         while (monsters.Count > 0)
         {

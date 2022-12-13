@@ -90,7 +90,6 @@ public class MinimapController : MonoBehaviour
                 ShowMinimapIconFromWorldPosition(bossMonster.transform, bossMonsterMinimap, bossMonster.CurrentColor);
             }
 
-            //TODO: usar otra imagen de circle con el borde más delgado
             yield return waitUpdateMinimap;
         }
     }

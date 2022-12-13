@@ -1,14 +1,16 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class SpawnerManager : MonoBehaviour
 {
     [SerializeField] private SpawnerManagerData data;
+    [SerializeField] private MonsterController[] monstersPrefabs;
+    [SerializeField] private BossMonsterController[] bossMonstersPrefabs;
+    [SerializeField] private int incrementMonstersCountByNewLevel = 5;
 
     int currentLevel;
     MonstersByLevel currentMonstersByLevel;
+    int monstersCount;
 
 
 
@@ -54,19 +56,37 @@ public class SpawnerManager : MonoBehaviour
     IEnumerator MonstersSpawningRoutine(Vector3 position, Quaternion rotation)
     {
         WaitForSeconds waitBetweenMonsters = new WaitForSeconds(data.spawnTimeBetweenMonsters);
-        currentLevel = Mathf.Clamp(currentLevel, 1, data.monstersByLevels.Length);
-        currentMonstersByLevel = data.monstersByLevels[currentLevel - 1];
 
-        var initialMonsters = currentMonstersByLevel.initialMonsters;
-
-        for (int i = 0; i < initialMonsters.Length; i++)
+        if (currentLevel <= data.monstersByLevels.Length)
         {
-            var monsterPrefab = initialMonsters[i].monsterPrefab;
-            var count = initialMonsters[i].count;
+            //currentLevel = Mathf.Clamp(currentLevel, 1, data.monstersByLevels.Length);
+            currentMonstersByLevel = data.monstersByLevels[currentLevel - 1];
 
-            for (int j = 0; j < count; j++)
-            {               
-                Instantiate(monsterPrefab, position, rotation);                
+            var initialMonsters = currentMonstersByLevel.initialMonsters;
+
+            monstersCount = 0;
+            for (int i = 0; i < initialMonsters.Length; i++)
+            {
+                var monsterPrefab = initialMonsters[i].monsterPrefab;
+                var count = initialMonsters[i].count;
+
+                for (int j = 0; j < count; j++)
+                {
+                    monstersCount++;
+                    Instantiate(monsterPrefab, position, rotation);
+                    yield return waitBetweenMonsters;
+                }
+            }
+        }
+        else
+        {
+            // Este nivel no está configurado en el Spawner Data, por lo que se creará aleatoriamente
+            monstersCount += incrementMonstersCountByNewLevel;
+            for (int i = 0; i < monstersCount; i++)
+            {
+                int idx = Random.Range(0, monstersPrefabs.Length - 1);
+                var monsterPrefab = monstersPrefabs[idx];
+                Instantiate(monsterPrefab, position, rotation);
                 yield return waitBetweenMonsters;
             }
         }
