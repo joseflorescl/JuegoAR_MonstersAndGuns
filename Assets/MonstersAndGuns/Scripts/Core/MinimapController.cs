@@ -8,30 +8,39 @@ public class MinimapController : MonoBehaviour
     [SerializeField] private Image circle;
     [SerializeField] private RectTransform monsterMinimapPrefab;
     [SerializeField] private RectTransform bossMonsterMinimapPrefab;
+    [SerializeField] private RectTransform missileMinimapPrefab;
     [SerializeField] private int maxMonstersMinimap = 50;
+    [SerializeField] private int maxMissilesMinimap = 5;
     [SerializeField] private float delayUpdateMinimap = 0.1f;
     [SerializeField] private float worldRadiusDimension = 5f;
 
     RectTransform[] monstersMinimap;
     RectTransform bossMonsterMinimap;
+    RectTransform[] missilesMinimap;
     WaitForSeconds waitUpdateMinimap;
     Transform player;
 
     private void Awake()
     {
         monstersMinimap = new RectTransform[maxMonstersMinimap];
-
-        for (int i = 0; i < monstersMinimap.Length; i++)
-        {
-            var m = Instantiate(monsterMinimapPrefab, circle.transform);
-            m.gameObject.SetActive(false);
-            monstersMinimap[i] = m;
-        }
+        missilesMinimap = new RectTransform[maxMissilesMinimap];
 
         bossMonsterMinimap = Instantiate(bossMonsterMinimapPrefab, circle.transform);
         bossMonsterMinimap.gameObject.SetActive(false);
+        InstantiateMinimapIcons(monstersMinimap, monsterMinimapPrefab);
+        InstantiateMinimapIcons(missilesMinimap, missileMinimapPrefab);
 
         waitUpdateMinimap = new WaitForSeconds(delayUpdateMinimap);
+    }
+
+    void InstantiateMinimapIcons(RectTransform[] minimapIcons, RectTransform prefab)
+    {
+        for (int i = 0; i < minimapIcons.Length; i++)
+        {
+            var m = Instantiate(prefab, circle.transform);
+            m.gameObject.SetActive(false);
+            minimapIcons[i] = m;
+        }
     }
 
     private void OnEnable()
@@ -52,11 +61,12 @@ public class MinimapController : MonoBehaviour
         // Notar que el minimap nunca más se desactivará de la UI, por eso no es necesario llamar al StopAllCoroutine.
     }
 
+
     IEnumerator MinimapRoutine()
     {
         var monsters = GameManager.Instance.Monsters;
+        var missiles = GameManager.Instance.Missiles;
         player = GameManager.Instance.Player;
-        
 
         while (true)
         {
@@ -64,30 +74,43 @@ public class MinimapController : MonoBehaviour
             
             for (int i = 0; i < monsters.Count; i++)
             {
-                var monster = monsters[i];
-                var monsterPositionWorldSpace = monster.transform.position;
+                var monster = monsters[i];                
+                ShowMinimapIconFromWorldPosition(monster.transform, monstersMinimap[i], monster.CurrentColor);                
+            }
 
-                var monsterPositionRelativeToPlayer = GetPositionRelativeToPlayer(monsterPositionWorldSpace, worldRadiusDimension);
-                var minimapPosition = GetMinimapPosition(monsterPositionRelativeToPlayer);
-                ActivateMinimapIcon(monstersMinimap[i], minimapPosition, monster.CurrentColor);                
-                // La rotación de la imagen c/r a la rotación del monster es imperceptible, por lo que no vale la pena hacerlo
+            for (int i = 0; i < missiles.Count; i++)
+            {
+                var missile = missiles[i];                
+                ShowMinimapIconFromWorldPosition(missile.transform, missilesMinimap[i], missile.CurrentColor, true);                
             }
 
             var bossMonster = GameManager.Instance.BossMonster;
             if (bossMonster)
             {
-                var bossMonsterPositionWorldSpace = bossMonster.transform.position;
-                var bossMonsterPositionRelativeToPlayer = GetPositionRelativeToPlayer(bossMonsterPositionWorldSpace, worldRadiusDimension);
-                var minimapPosition = GetMinimapPosition(bossMonsterPositionRelativeToPlayer);
-                ActivateMinimapIcon(bossMonsterMinimap, minimapPosition, bossMonster.CurrentColor);
+                ShowMinimapIconFromWorldPosition(bossMonster.transform, bossMonsterMinimap, bossMonster.CurrentColor);
             }
 
-            // y para los misiles también!
             //TODO: usar otra imagen de circle con el borde más delgado
-
-
             yield return waitUpdateMinimap;
         }
+    }
+
+    void ShowMinimapIconFromWorldPosition(Transform entity, RectTransform icon, Color color, bool rotate = false)
+    {
+        Vector3 position = entity.position;
+        var positionRelativeToPlayer = GetPositionRelativeToPlayer(position, worldRadiusDimension);
+        var minimapPosition = GetMinimapPosition(positionRelativeToPlayer);
+        ActivateMinimapIcon(icon, minimapPosition, color);
+
+        if (rotate)
+        {
+            var forward = entity.forward;
+            forward.y = 0;
+            var direction = player.InverseTransformDirection(forward);
+            float angle = Vector3.SignedAngle(direction, Vector3.forward, Vector3.up);
+            icon.rotation = Quaternion.Euler(0f, 0f, angle);
+        }
+
     }
 
     void DeactivateMinimapIcons()
@@ -98,6 +121,11 @@ public class MinimapController : MonoBehaviour
         }
 
         bossMonsterMinimap.gameObject.SetActive(false);
+
+        for (int i = 0; i < missilesMinimap.Length; i++)
+        {
+            missilesMinimap[i].gameObject.SetActive(false);
+        }
     }
 
     Vector3 GetPositionRelativeToPlayer(Vector3 position, float maxLength)

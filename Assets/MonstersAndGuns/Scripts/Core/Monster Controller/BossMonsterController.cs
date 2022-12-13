@@ -87,8 +87,8 @@ public class BossMonsterController : BaseMonsterController
 
         while (CurrentState == MonsterState.Patrol)
         {
-            GetDirectionAndTargetPositionPatrolling(out direction, out targetPosition, monsterData.randomPositionBehindCenter);
-
+            GetDirectionAndTargetPositionPatrolling(out direction, out targetPosition, 
+                monsterData.randomPositionBehindCenter, useDistanceOnPlaneXZ: true);
             
             // TODO: revisar este cambio
             targetKinematicVelocity = direction.normalized * monsterData.patrolSpeed;
@@ -101,7 +101,7 @@ public class BossMonsterController : BaseMonsterController
                    Time.time > maxTimeInSameDirection 
                 || Time.time > maxTimeInPatrol
                 || Vector3.Distance(transform.position, targetPosition) < monsterData.minDistanceToTarget
-                || DistanceToPlayer < monsterData.minDistanceToPlayer);
+                || DistanceToPlayerOnPlaneXZ() < monsterData.minDistanceToPlayer);
 
             if (Time.time > maxTimeInPatrol)
                 CurrentState = MonsterState.Attack;
@@ -124,7 +124,7 @@ public class BossMonsterController : BaseMonsterController
 
         while (CurrentState == MonsterState.Attack)
         {
-            if (DistanceToPlayer < monsterData.minDistanceToPlayer)
+            if (DistanceToPlayerOnPlaneXZ() < monsterData.minDistanceToPlayer)
             {
                 direction = transform.position - GameManager.Instance.PlayerPosition;                
             }
@@ -144,7 +144,7 @@ public class BossMonsterController : BaseMonsterController
             yield return new WaitUntil(() =>
                  Time.time > maxTimeInSameDirection
               || Time.time > maxTimeInAttack
-              || DistanceToPlayer < monsterData.minDistanceToPlayer);
+              || DistanceToPlayerOnPlaneXZ() < monsterData.minDistanceToPlayer);
 
             if (Time.time > maxTimeInAttack)
                 CurrentState = MonsterState.Patrol;

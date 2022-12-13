@@ -52,6 +52,14 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
     }
 
     protected float DistanceToPlayer => Vector3.Distance(transform.position, GameManager.Instance.PlayerPosition);
+    protected float DistanceToPlayerOnPlaneXZ()
+    {
+        var position = transform.position;
+        position.y = 0;
+        var playerPosition = GameManager.Instance.PlayerPosition;
+        playerPosition.y = 0;
+        return Vector3.Distance(position, playerPosition);
+    }
 
     protected Rigidbody rb;
     protected Animator anim;
@@ -197,13 +205,16 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
     }
 
 
-    protected void GetDirectionAndTargetPositionPatrolling(out Vector3 direction, out Vector3 targetPosition, bool behind)
+    protected void GetDirectionAndTargetPositionPatrolling(out Vector3 direction, out Vector3 targetPosition, bool behind, 
+        bool useDistanceOnPlaneXZ = false)
     {
         var r = monsterData.spherePatrollingRadius;
         var h = monsterData.spherePatrollingHeight;
         var d = monsterData.spherePatrollingDistanceToTarget;
 
-        if (DistanceToPlayer < monsterData.minDistanceToPlayer)
+        var distance = useDistanceOnPlaneXZ ? DistanceToPlayerOnPlaneXZ() : DistanceToPlayer;
+
+        if (distance < monsterData.minDistanceToPlayer)
         {
             direction = transform.position - GameManager.Instance.PlayerPosition;
             targetPosition = transform.position + direction;

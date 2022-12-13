@@ -2215,6 +2215,8 @@ MonoBehaviour:
     type: 3}
   bossMonsterMinimapPrefab: {fileID: 8972329702652942177, guid: 74f359056e70367449a90bcf5609b6bf,
     type: 3}
+  missileMinimapPrefab: {fileID: 936184120142963243, guid: 47dff1dd84e6be54c997d700e4b02380,
+    type: 3}
   maxMonstersMinimap: 50
   delayUpdateMinimap: 0.05
   worldRadiusDimension: 6.5

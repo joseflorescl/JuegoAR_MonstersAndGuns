@@ -127,6 +127,7 @@ public class GameManager : BaseGameManager
     IEnumerator InitializationRoutine()
     {
         monsters = new List<MonsterController>();
+        missiles = new List<MissileController>();
 
         for (int i = 0; i < gameManagerData.scenesToLoad.Length; i++)
         {
@@ -215,6 +216,7 @@ public class GameManager : BaseGameManager
         else if (deadObject.CompareTag("Missile"))
         {
             var missil = deadObject.GetComponent<MissileController>();
+            missiles?.Remove(missil);
             RaiseMissileDead(missil);
             Destroy(deadObject.gameObject);
         }
@@ -242,6 +244,12 @@ public class GameManager : BaseGameManager
     {
         monsters.Add(monster);
         RaiseMonsterCreated();
+    }
+
+
+    public void MissileCreated(MissileController missile)
+    {
+        missiles.Add(missile);
     }
 
     public void BossMonsterCreated(BossMonsterController bossMonster)
