@@ -5,10 +5,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : BaseGameManager
-{
-    // TODO: revisar materiales mobile unlit
+{    
     // TODO: cambiar el skybox por un gradiente de colores tipo espacio abierto (una plaza)
     // TODO: revisar el tema de la performance de las partículas en mobile
+    // TODO: Setear el spawner data final, quitar el Debug Menu scene, colocar el health final del player (5)
+    // TODO: Crear un ícono para mobile
+    // TODO: Crear el doc de la entrega y el video de gameplay
 
     [SerializeField] private GameManagerData gameManagerData;
     [SerializeField] private GameObject canvasLoading;
