@@ -5,10 +5,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : BaseGameManager
-{        
-        
-    // TODO: Crear un ícono para mobile
+{            
     // TODO: Crear el doc de la entrega y el video de gameplay
+    // TODO: agregar mi nombre en ventana de loading
 
     [SerializeField] private GameManagerData gameManagerData;
     [SerializeField] private GameObject canvasLoading;
