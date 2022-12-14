@@ -16,6 +16,5 @@ MonoBehaviour:
   - NO AR Session World
   - AR Session
   - UI
-  - Debug Game
   waitBeforeInitBattle: 2
-  waitBeforeGameOver: 2
+  waitBeforeShowGameOver: 1
