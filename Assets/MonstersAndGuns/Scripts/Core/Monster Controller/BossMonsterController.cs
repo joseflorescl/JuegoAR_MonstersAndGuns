@@ -88,8 +88,8 @@ public class BossMonsterController : BaseMonsterController
         while (CurrentState == MonsterState.Patrol)
         {
             GetDirectionAndTargetPositionPatrolling(out direction, out targetPosition, 
-                monsterData.randomPositionBehindCenter, useDistanceOnPlaneXZ: true);
-            
+                monsterData.randomPositionBehindCenter, monsterData.maxHeightPatrolling, useDistanceOnPlaneXZ: true);
+
             targetKinematicVelocity = direction.normalized * monsterData.patrolSpeed;
 
             // Ahora se espera: hasta llegar a este punto o haya pasado un tiempo máximo

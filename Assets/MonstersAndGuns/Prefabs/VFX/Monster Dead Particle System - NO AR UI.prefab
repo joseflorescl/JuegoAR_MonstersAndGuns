@@ -4882,7 +4882,7 @@ GameObject:
   - component: {fileID: 4389850068504539480}
   - component: {fileID: 4389850068504539483}
   m_Layer: 0
-  m_Name: Monster Dead Particle System
+  m_Name: Monster Dead Particle System - NO AR UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

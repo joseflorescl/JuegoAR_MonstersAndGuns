@@ -30,7 +30,8 @@ public class MonsterData : ScriptableObject
     public float firstPointMinDot = 0.5f;
     public float spherePatrollingRadius = 2f;
     public float spherePatrollingDistanceToTarget = 1f;
-    public float spherePatrollingHeight = 0.5f; 
+    public float spherePatrollingHeight = 0.5f;
+    public float maxHeightPatrolling = 3f;
     public float minSecondsSameDirection = 2f;
     public float maxSecondsSameDirection = 4f;
     public float minDistanceToTarget = 0.1f;

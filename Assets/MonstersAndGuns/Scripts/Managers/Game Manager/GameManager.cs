@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : BaseGameManager
 {            
-    // TODO: Crear el doc de la entrega y el video de gameplay
-    // TODO: agregar mi nombre en ventana de loading
+    // TODO: setear el spawner data final, salud del player 5, salud del boss monster 75
+    // TODO: Crear el doc de la entrega y el video de gameplay    
 
     [SerializeField] private GameManagerData gameManagerData;
     [SerializeField] private GameObject canvasLoading;

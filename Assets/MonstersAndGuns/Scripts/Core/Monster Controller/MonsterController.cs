@@ -98,7 +98,7 @@ public class MonsterController : BaseMonsterController
                 || Vector3.Distance(transform.position, targetPosition) < monsterData.minDistanceToTarget
                 || DistanceToPlayer < monsterData.minDistanceToPlayer);
 
-            GetDirectionAndTargetPositionPatrolling(out direction, out targetPosition, monsterData.randomPositionBehindCenter);
+            GetDirectionAndTargetPositionPatrolling(out direction, out targetPosition, monsterData.randomPositionBehindCenter, monsterData.maxHeightPatrolling);
             kinematicVelocity = direction.normalized * monsterData.patrolSpeed;
         }
         

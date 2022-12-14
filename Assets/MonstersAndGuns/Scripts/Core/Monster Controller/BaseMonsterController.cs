@@ -196,16 +196,11 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
         return targetPosition;
     }
 
-    protected void OnDrawGizmos()
-    {
-        Gizmos.DrawRay(transform.position, kinematicVelocity);
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(targetPosition, 0.25f);
-
-    }
+   
 
 
     protected void GetDirectionAndTargetPositionPatrolling(out Vector3 direction, out Vector3 targetPosition, bool behind, 
+        float maxHeight,
         bool useDistanceOnPlaneXZ = false)
     {
         var r = monsterData.spherePatrollingRadius;
@@ -228,6 +223,20 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
 
             direction = targetPosition - transform.position;
         }
+
+        targetPosition.y = Mathf.Clamp(targetPosition.y, targetPosition.y, maxHeight);
     }
-    
+
+    protected void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(transform.position, kinematicVelocity);
+
+        if (CurrentState == MonsterState.Patrol)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(targetPosition, 0.2f);
+        }
+
+    }
+
 }

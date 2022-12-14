@@ -31,6 +31,7 @@ MonoBehaviour:
   spherePatrollingRadius: 4
   spherePatrollingDistanceToTarget: 0.5
   spherePatrollingHeight: -1
+  maxHeightPatrolling: 10
   minSecondsSameDirection: 4
   maxSecondsSameDirection: 8
   minDistanceToTarget: 0.1

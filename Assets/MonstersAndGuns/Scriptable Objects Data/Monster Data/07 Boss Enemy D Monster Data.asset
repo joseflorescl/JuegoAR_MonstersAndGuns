@@ -16,7 +16,7 @@ MonoBehaviour:
   scorePoints: 1000
   rotateTowardsMode: 0
   speedAnimation: 1
-  minDistanceToPlayer: 1
+  minDistanceToPlayer: 2
   goUpSpeed: 0.5
   faceInitialDirection: 0
   maxDeviationRandomVectorUp: 0.5
@@ -25,7 +25,7 @@ MonoBehaviour:
   angleToAwayFromPlayer: 30
   patrolMode: 1
   randomPositionBehindCenter: 1
-  patrolSpeed: 2.25
+  patrolSpeed: 2
   firstPointMaxAttempts: 3
   firstPointMinDot: 0.5
   spherePatrollingRadius: 4
@@ -34,7 +34,7 @@ MonoBehaviour:
   minSecondsSameDirection: 5
   maxSecondsSameDirection: 8
   minDistanceToTarget: 0.5
-  attackSpeed: 1
+  attackSpeed: 1.5
   secondsToAdjustDirection: 1
   initialColor: {r: 1, g: 0.29803923, b: 0.20392159, a: 1}
   attackColor: {r: 1, g: 0.29803923, b: 0.20392157, a: 1}
