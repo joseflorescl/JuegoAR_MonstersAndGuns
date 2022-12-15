@@ -26,16 +26,18 @@ public class BattleManager : MonoBehaviour
     }
 
 
-    private void BattleHandler(List<MonsterController> monsters, int currentLevel)
+    private void BattleHandler(int currentLevel)
     {
-        StartCoroutine(BattleRoutine(monsters, currentLevel));
+        StartCoroutine(BattleRoutine(currentLevel));
     }
 
-    IEnumerator BattleRoutine(List<MonsterController> monsters, int currentLevel)
+    IEnumerator BattleRoutine(int currentLevel)
     {
         //Esto se podría controlar por una curva de animación y agregar algo de random
         var secondsToAttack = secondsToAttackLevel1 - (currentLevel - 1) * substractSecondsToAttackNewLevel;
         secondsToAttack = Mathf.Clamp(secondsToAttack, minSecondsToAttack, secondsToAttack);
+
+        var monsters = GameManager.Instance.Monsters;
 
         while (monsters.Count > 0)
         {

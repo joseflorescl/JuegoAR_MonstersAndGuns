@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletFactory : MonoBehaviour
@@ -8,7 +6,7 @@ public class BulletFactory : MonoBehaviour
 
     [SerializeField] private FireMethod fireMethod = FireMethod.OneWeaponInOrder;
 
-    IWeaponController[] weapons; // Tiene un array de weapons que puede usar una shooter (player, monster)
+    IWeaponController[] weapons;
 
     int weaponToFireIndex = 0;
 
@@ -39,8 +37,6 @@ public class BulletFactory : MonoBehaviour
 
         return min;
     }
-
-
 
     void CalculateMinMaxRange(out int min, out int max)
     {

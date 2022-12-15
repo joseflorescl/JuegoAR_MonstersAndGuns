@@ -80,11 +80,7 @@ public class BaseAudioManager : MonoBehaviour
         }
     }
 
-    float GetRandomPitch()
-    {
-        return Random.Range(1f - pitchVariation, 1f + pitchVariation);
-    }
-
+    float GetRandomPitch() => Random.Range(1f - pitchVariation, 1f + pitchVariation);
 
     protected void PlayBGMMusic(AudioClip clip, bool loop)
     {
@@ -105,6 +101,5 @@ public class BaseAudioManager : MonoBehaviour
         StopAudioRoutine();
         BGMAudioSource.Stop();
     }
-
     
 }

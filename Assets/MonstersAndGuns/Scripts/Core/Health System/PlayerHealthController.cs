@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
@@ -13,7 +11,6 @@ public class PlayerHealthController : MonoBehaviour
     {
         coll = GetComponent<Collider>();
         healthController = GetComponent<HealthController>();
-        
     }
 
     private void Start()
@@ -27,9 +24,7 @@ public class PlayerHealthController : MonoBehaviour
         GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
         GameManager.Instance.OnRestart += RestartHandler;
         GameManager.Instance.OnNextLevel += NextLevelHandler;
-
     }
-    
 
     private void OnDisable()
     {
@@ -55,7 +50,7 @@ public class PlayerHealthController : MonoBehaviour
         coll.enabled = false;
     }
 
-    private void BattleHandler(List<MonsterController> arg1, int arg2)
+    private void BattleHandler(int arg2)
     {
         coll.enabled = true;
     }

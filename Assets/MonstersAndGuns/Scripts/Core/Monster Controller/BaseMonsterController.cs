@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum MonsterState { Idle, GoUp, Patrol, Attack }
@@ -180,9 +178,10 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
 
     Vector3 GetRandomPosition(Vector3 randomValue, Transform target, float radius, float height, float distance, bool under = false, bool behind = false)
     {
-        Vector3 targetPosition = randomValue * radius; // Se elige un punto aleatorio en la superficie de la esfera de radio r
+        Vector3 targetPosition = randomValue * radius;
 
-        var offset = new Vector3(0f, height - target.position.y, distance); // Por ahora se está probando con una altura c/r al mundo, NO c/r al target
+        // Por ahora se está probando con una altura c/r al mundo, NO c/r al target: por eso se resta
+        var offset = new Vector3(0f, height - target.position.y, distance); 
 
         if (!under)
             targetPosition.y = Mathf.Abs(targetPosition.y);
@@ -192,7 +191,7 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
         targetPosition += offset;
 
         // Nota importante sobre TransformPoint: si el objeto target tiene valores != 1 en la escala, el valor resultante no será el esperado
-        targetPosition = target.transform.TransformPoint(targetPosition);  // Esta posición ahora se debe orientar c/r al target (portal)
+        targetPosition = target.transform.TransformPoint(targetPosition);
         return targetPosition;
     }
 

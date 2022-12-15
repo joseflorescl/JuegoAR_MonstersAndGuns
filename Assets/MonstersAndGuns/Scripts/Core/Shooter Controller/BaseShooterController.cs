@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-
-public abstract  class ShooterController : MonoBehaviour
+public abstract  class BaseShooterController : MonoBehaviour
 {
     // Esta clase se encarga de disparar balas, por lo que puede ser usada por el player y por los monsters
     [SerializeField] protected float damage = 1f;
@@ -28,7 +25,5 @@ public abstract  class ShooterController : MonoBehaviour
         if (damageable != null)
             damageable.Damage(damage, DamageMode.Shooting);
     }
-
-    
 
 }

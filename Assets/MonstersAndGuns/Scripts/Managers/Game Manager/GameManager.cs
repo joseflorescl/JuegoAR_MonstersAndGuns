@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : BaseGameManager
 {            
@@ -31,7 +29,6 @@ public class GameManager : BaseGameManager
 
         sceneController = FindObjectOfType<SceneController>();
     }
-
     
 
     private void Start()
@@ -42,11 +39,8 @@ public class GameManager : BaseGameManager
         CurrentState = GameState.Initialization;        
     }
 
-    protected override void Initialization()
-    {
-        StartCoroutine(InitializationRoutine());
-    }
-
+    protected override void Initialization() => StartCoroutine(InitializationRoutine());
+    
     protected override void MainMenu()
     {
         if (canvasLoading)
@@ -54,11 +48,8 @@ public class GameManager : BaseGameManager
         RaiseMainMenuActivating();
     }
 
-    protected override void PortalCreation()
-    {
-        RaisePortalCreating();
-    }
-
+    protected override void PortalCreation() => RaisePortalCreating();
+    
     protected override void Spawning()
     {
         isScoreIncrementEnded = false;
@@ -66,26 +57,14 @@ public class GameManager : BaseGameManager
         RaiseSpawning(gameplayData.Level, portal.position, portal.rotation);
     }
 
-    protected override void Battle()
-    {
-        StartCoroutine(BattleRoutine());
-    }
-
-    protected override void BossBattle()
-    {       
-        RaiseBossBattle();
-    }
-
-    protected override void GameOver()
-    {                    
-        RaiseGameOver(gameManagerData.waitBeforeShowGameOver);        
-    }
-
-    protected override void Win()
-    {
-        RaiseWinLevel();
-    }
-
+    protected override void Battle() => StartCoroutine(BattleRoutine());
+    
+    protected override void BossBattle() => RaiseBossBattle();
+    
+    protected override void GameOver() => RaiseGameOver(gameManagerData.waitBeforeShowGameOver);        
+    
+    protected override void Win() => RaiseWinLevel();
+    
     protected override void Exit()
     {
         Application.Quit();
@@ -96,9 +75,10 @@ public class GameManager : BaseGameManager
 
     protected override void Restart()
     {                
-        for (int i = 0; i < monsters.Count; i++)
-            Destroy(monsters[i].gameObject);
-
+        // Notar que los monsters y los misiles se destruyen solos en el evento Restart.
+        //for (int i = 0; i < monsters.Count; i++)
+        //    Destroy(monsters[i].gameObject);
+        
         monsters.Clear();
 
         gameplayData.Level = 1;
@@ -119,7 +99,7 @@ public class GameManager : BaseGameManager
     IEnumerator BattleRoutine()
     {        
         yield return new WaitForSeconds(gameManagerData.waitBeforeInitBattle); // Se les da tiempo a los monsters de moverse un poco antes de dispararles
-        RaiseBattling(monsters, gameplayData.Level);
+        RaiseBattling(gameplayData.Level);
     }    
 
     IEnumerator InitializationRoutine()

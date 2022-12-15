@@ -45,7 +45,6 @@ public class ARPortalCreator : MonoBehaviour
     {
         portal.SetActive(false);
         SetActiveARSession(true);
-        
     }
 
     private void PortalCreationHandler()
@@ -92,7 +91,6 @@ public class ARPortalCreator : MonoBehaviour
                 isPortalCreating = false;
             }
 #endif
-
             yield return null;
         }
         

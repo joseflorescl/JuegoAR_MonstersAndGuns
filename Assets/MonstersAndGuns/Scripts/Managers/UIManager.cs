@@ -268,7 +268,7 @@ public class UIManager : MonoBehaviour
         graphic.CrossFadeAlpha(toAlpha, duration, true);
     }
 
-    private void BattlingHandler(List<MonsterController> monsters, int level)
+    private void BattlingHandler(int level)
     {
         uiRoutine = StartCoroutine(BattlingRoutine(level));
     }

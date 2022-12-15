@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -9,13 +8,8 @@ public class MissileController : MonoBehaviour, IVFXEntity
     [SerializeField] private float maxDistanceToPlayer = 10f;
     [SerializeField] private float delayValidateDistanceToPlayer = 0.25f;
 
-
     [field: SerializeField] public Color CurrentColor { get; private set; }
     public Vector3 ExplosionPosition => transform.position;
-    public Material DamageMaterial => null;
-    public Material AttackMaterial => null;
-    public Material NormalMaterial => null;
-    public Renderer[] Renderers => null;
 
     Rigidbody rb;
     Vector3 kinematicVelocity;
@@ -52,7 +46,7 @@ public class MissileController : MonoBehaviour, IVFXEntity
 
     private void BossMonsterDeadHandler(BaseMonsterController obj)
     {
-        healthController.Damage(healthController.Health, DamageMode.Collision);
+        AutoDestroy();
     }
 
     IEnumerator DestroyFarAwayFromPlayerRoutine()
@@ -61,9 +55,12 @@ public class MissileController : MonoBehaviour, IVFXEntity
         {
             yield return waitValidateDistanceToPlayer;
             if (Vector3.Distance(transform.position, GameManager.Instance.PlayerPosition) > maxDistanceToPlayer)
-            {
-                healthController.Damage(healthController.Health, DamageMode.Collision);
-            }
+                AutoDestroy();
         }
+    }
+
+    void AutoDestroy()
+    {
+        healthController.Damage(healthController.Health, DamageMode.Collision);
     }
 }

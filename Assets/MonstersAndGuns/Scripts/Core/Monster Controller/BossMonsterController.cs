@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BossMonsterController : BaseMonsterController
@@ -31,8 +30,6 @@ public class BossMonsterController : BaseMonsterController
     }
 
 
-
-
     protected override void PlayerDeadHandler()
     {
         CurrentState = MonsterState.Idle;
@@ -48,10 +45,7 @@ public class BossMonsterController : BaseMonsterController
         StartCoroutine(BossGoUpCoroutine());
     }
 
-    protected override void Idle()
-    {
-        //Nada
-    }
+    protected override void Idle() { }
 
     protected override void Patrol()
     {
@@ -132,12 +126,12 @@ public class BossMonsterController : BaseMonsterController
                 direction = GameManager.Instance.PlayerPosition - transform.position;
                 direction *= RandomSign;
                 direction.Normalize();
-                direction += transform.right * RandomSign;//Para que el monster no se mueva en linea recta, sino que un poco hacia un lado:            
+                direction += transform.right * RandomSign;//Para que el monster no se mueva en linea recta, sino que un poco hacia un lado
             }
 
             targetKinematicVelocity = direction.normalized * monsterData.attackSpeed;
 
-            float secondsSameDirection = (monsterData.secondsToAdjustDirection);
+            float secondsSameDirection = monsterData.secondsToAdjustDirection;
             float maxTimeInSameDirection = Time.time + secondsSameDirection;
 
             yield return new WaitUntil(() =>

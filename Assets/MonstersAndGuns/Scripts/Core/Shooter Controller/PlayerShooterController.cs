@@ -1,8 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerShooterController : ShooterController
+public class PlayerShooterController : BaseShooterController
 {
     [SerializeField] private int firesPerSecond = 20;    
     [SerializeField] private float maxBulletDistance = 100f; // Usada para el raycast
@@ -13,9 +12,7 @@ public class PlayerShooterController : ShooterController
         GameManager.Instance.OnBattling += BattleHandler;
         GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
         GameManager.Instance.OnWinLevel += WinLevelHandler;
-
     }
-
    
     private void OnDisable()
     {
@@ -26,22 +23,21 @@ public class PlayerShooterController : ShooterController
 
     private void WinLevelHandler()
     {
-        PutDownGuns();
+        PutGunsDown();
     }
-
 
     private void PlayerDeadHandler()
     {
-        PutDownGuns();
+        PutGunsDown();
     }
 
-    void PutDownGuns()
+    void PutGunsDown()
     {
         StopAllCoroutines();
         bulletFactory.gameObject.SetActive(false);
     }
 
-    private void BattleHandler(List<MonsterController> monsters, int level)
+    private void BattleHandler(int level)
     {
         StartCoroutine(BattleRoutine());
     }

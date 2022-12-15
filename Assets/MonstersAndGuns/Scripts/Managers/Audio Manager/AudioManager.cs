@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : BaseAudioManager
@@ -129,7 +128,7 @@ public class AudioManager : BaseAudioManager
         PlayBattleMusic();
     }
 
-    private void BattleHandler(List<MonsterController> arg1, int arg2)
+    private void BattleHandler(int arg2)
     {
         PlayRandomSound(data.goSound, SFXAudioSource);
     }

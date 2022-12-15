@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthController : MonoBehaviour, IDamageable
@@ -12,11 +10,8 @@ public class HealthController : MonoBehaviour, IDamageable
     public float CurrentHealthPercentage => IsDead ? 0f : health / maxHealth;
 
 
-    private void Awake()
-    {
-        RestoreHealth();
-    }
-
+    private void Awake() => RestoreHealth();
+    
     public void RestoreHealth()
     {
         health = maxHealth;

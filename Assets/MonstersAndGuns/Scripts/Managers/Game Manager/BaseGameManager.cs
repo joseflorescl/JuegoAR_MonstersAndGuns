@@ -11,12 +11,12 @@ public abstract class BaseGameManager : MonoBehaviour
 
     // Nomenclatura de eventos: ejemplo
     //   OnClosing: a close event that is raised before a window is closed
-    //   OnClosed: and one that is raised after the window is closed 
+    //   OnClosed: one that is raised after the window is closed 
     public event Action OnMainMenuActivating;
     public event Action OnPortalCreating; // Al inicio de la creación del portal en la escena
     public event Action OnPortalCreated; // Una vez que el portal ya ha sido creado
     public event Action<int, Vector3, Quaternion> OnSpawning; // Recibe el level actual del juego, y lo posición/rotación desde donde hacer el spawner
-    public event Action<List<MonsterController>, int> OnBattling; // Recibe la lista de monsters creados y el level actual del juego
+    public event Action<int> OnBattling; // Recibe el level actual del juego
     public event Action OnMonsterCreated;
     public event Action<BaseMonsterController> OnMonsterDead;
     public event Action<BaseMonsterController> OnMonsterAttacking;
@@ -44,7 +44,7 @@ public abstract class BaseGameManager : MonoBehaviour
     protected void RaisePortalCreating() => OnPortalCreating?.Invoke();
     protected void RaisePortalCreated() => OnPortalCreated?.Invoke();
     protected void RaiseSpawning(int level, Vector3 position, Quaternion rotation) => OnSpawning?.Invoke(level, position, rotation);
-    protected void RaiseBattling(List<MonsterController> monsters, int level) => OnBattling?.Invoke(monsters, level);
+    protected void RaiseBattling(int level) => OnBattling?.Invoke(level);
     protected void RaiseMonsterCreated() => OnMonsterCreated?.Invoke();
     protected void RaiseMonsterDead(BaseMonsterController monster) => OnMonsterDead?.Invoke(monster);
     protected void RaiseMonsterAttacking(BaseMonsterController monster) => OnMonsterAttacking?.Invoke(monster);
@@ -77,7 +77,6 @@ public abstract class BaseGameManager : MonoBehaviour
     protected GameplayData gameplayData;
     protected SceneController sceneController;
 
-    //NO VA: public List<MonsterController> Monsters => monsters; //TODO: cambiar el tipo de dato por un enumerable de solo lectura
     public ReadOnlyCollection<MonsterController> Monsters => monsters.AsReadOnly();
     public ReadOnlyCollection<MissileController> Missiles => missiles.AsReadOnly();
     public BossMonsterController BossMonster => bossMonster;

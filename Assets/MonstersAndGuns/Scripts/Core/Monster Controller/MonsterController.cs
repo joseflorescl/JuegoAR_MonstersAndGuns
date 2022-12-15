@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterController : BaseMonsterController
@@ -15,10 +14,7 @@ public class MonsterController : BaseMonsterController
             CurrentState = MonsterState.GoUp;
     }
 
-    protected override void Idle()
-    {
-        // NADA
-    }
+    protected override void Idle() { }
 
     protected override void GoUp()
     {
@@ -133,7 +129,6 @@ public class MonsterController : BaseMonsterController
         
         yield break;
     }
-
    
 
     IEnumerator AttackRoutine()
@@ -143,7 +138,7 @@ public class MonsterController : BaseMonsterController
         GameManager.Instance.MonsterAttacking(this);
 
         // Cada x seg se va ajustando la dirección hacia el player
-        while (true)
+        while (CurrentState == MonsterState.Attack)
         {
             var direction = GameManager.Instance.PlayerPosition - transform.position;
             kinematicVelocity = direction.normalized * monsterData.attackSpeed;

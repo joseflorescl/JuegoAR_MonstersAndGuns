@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,21 +45,24 @@ public class MinimapController : MonoBehaviour
     private void OnEnable()
     {
         GameManager.Instance.OnBattling += BattlingHanlder;
-    }
-
-    
+        GameManager.Instance.OnRestart += RestartHandler;
+    }    
 
     private void OnDisable()
     {
         GameManager.Instance.OnBattling -= BattlingHanlder;
+        GameManager.Instance.OnRestart -= RestartHandler;
     }
-
-    private void BattlingHanlder(List<MonsterController> arg1, int arg2)
+    
+    private void BattlingHanlder(int arg2)
     {        
         StartCoroutine(MinimapRoutine());
-        // Notar que el minimap nunca más se desactivará de la UI, por eso no es necesario llamar al StopAllCoroutine.
     }
 
+    private void RestartHandler()
+    {
+        StopAllCoroutines();
+    }
 
     IEnumerator MinimapRoutine()
     {
@@ -86,13 +88,12 @@ public class MinimapController : MonoBehaviour
 
             var bossMonster = GameManager.Instance.BossMonster;
             if (bossMonster)
-            {
                 ShowMinimapIconFromWorldPosition(bossMonster.transform, bossMonsterMinimap, bossMonster.CurrentColor);
-            }
 
             yield return waitUpdateMinimap;
         }
     }
+
 
     void ShowMinimapIconFromWorldPosition(Transform entity, RectTransform icon, Color color, bool rotate = false)
     {
@@ -144,6 +145,7 @@ public class MinimapController : MonoBehaviour
         float scaleRatio = sizeImage / diameterWorld;
 
         var minimapPosition = localPosition * scaleRatio;
+        // Ahora se pasa del plano XZ de mundo, al plano XY del canvas
         minimapPosition.y = minimapPosition.z;
         minimapPosition.z = 0;
 
@@ -152,7 +154,7 @@ public class MinimapController : MonoBehaviour
 
     void ActivateMinimapIcon(RectTransform minimapIcon, Vector2 position, Color color)
     {
-        minimapIcon.anchoredPosition = position;
+        minimapIcon.anchoredPosition = position; // Esto funciona porque el icon tiene el anchor en el centro
         minimapIcon.gameObject.SetActive(true);
         minimapIcon.GetComponent<Image>().color = color;
     }
