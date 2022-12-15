@@ -19,7 +19,7 @@ MonoBehaviour:
     - monsterPrefab: {fileID: 326801172, guid: b8dbe86d41b32f743b142a0f267f0cc2, type: 3}
       count: 1
     - monsterPrefab: {fileID: 326801172, guid: 5c2b148e392674847b80ef0706b6b01c, type: 3}
-      count: 10
+      count: 1
     bossMonsterPrefab: {fileID: 1400900077538849546, guid: 16d495c58307c954e9ef60df986bcdd0,
       type: 3}
   - initialMonsters:

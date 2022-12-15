@@ -1,11 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class UIManager : MonoBehaviour
 {
+    // Notar que la lógica del Minimap se dejó en otro script, el cual se agrega como componente al objeto "UI Manager".
+    //  Esta misma idea se puede aplicar para cada uno de los panels, creando un script separado para cada uno de ellos
+    //   y así, cada panel sabrá cuándo debe activarse o no, y no tener que estarlos coordinando como se hace ahora.
     private const string LEVEL_TEXT = "Level";
 
     [Header("UI Game Panels")]
@@ -63,21 +65,12 @@ public class UIManager : MonoBehaviour
         HideAllMessages();
     }
     
-    public void Close() // Llamada por Botón
-    {
-        GameManager.Instance.Close();
-    }
-
-    public void StartGame()
-    {
-        GameManager.Instance.GameStarted();
-    }
-
-    public void RestartGame()
-    {
-        GameManager.Instance.GameRestarted();
-    }
-
+    public void Close() => GameManager.Instance.Close();// Llamada por Botón
+    
+    public void StartGame() => GameManager.Instance.GameStarted();
+    
+    public void RestartGame() => GameManager.Instance.GameRestarted();
+    
     private void OnEnable()
     {
         GameManager.Instance.OnMainMenuActivating += MainMenuHandler;
@@ -96,7 +89,6 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnWinLevel += WinLevelHandler;
         GameManager.Instance.OnNextLevel += NextLevelHandler;
         GameManager.Instance.OnRestart += RestartHandler;
-
     }    
 
     private void OnDisable()
@@ -119,16 +111,10 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnRestart -= RestartHandler;
     }
 
-    private void RestartHandler()
-    {
-        scorePreviousLevel = 0;
-    }
-
-    private void NextLevelHandler(int nextLevel)
-    {
-        uiRoutine = StartCoroutine(NextLevelHandlerRoutine(nextLevel));
-    }
-
+    private void RestartHandler() => scorePreviousLevel = 0;
+    
+    private void NextLevelHandler(int nextLevel) => uiRoutine = StartCoroutine(NextLevelHandlerRoutine(nextLevel));
+    
     IEnumerator NextLevelHandlerRoutine(int nextLevel)
     {        
         scorePreviousLevel = score;
@@ -140,11 +126,8 @@ public class UIManager : MonoBehaviour
         levelText.text = nextLevel.ToString();
     }
 
-    private void WinLevelHandler()
-    {
-        uiRoutine = StartCoroutine(WinLevelHandlerRoutine());
-    }
-
+    private void WinLevelHandler() => uiRoutine = StartCoroutine(WinLevelHandlerRoutine());
+    
     IEnumerator WinLevelHandlerRoutine()
     {       
         DeactivatePanels(bossMonsterHealth, battlePanel);
@@ -152,49 +135,26 @@ public class UIManager : MonoBehaviour
         
         GameManager.Instance.InitIncrementScore();
 
-        yield return StartCoroutine(TweenRoutine(scorePreviousLevel, score, durationScoreIncrement,
+        yield return StartCoroutine(SimpleTween.TweenRoutine(scorePreviousLevel, score, durationScoreIncrement,
             tween: (value) => scoreTextWinLevel.text = Mathf.CeilToInt(value).ToString(), 
             postTween: () => scoreTextWinLevel.text = score.ToString()));
 
         GameManager.Instance.EndIncrementScore();
     }
-
-    IEnumerator TweenRoutine(float startValue, float targetValue, float duration, System.Action<float> tween, System.Action postTween)
-    {
-        // Notar que esta función es genérica para hacer cualquier tipo de tween.
-        float timeElapsed = 0;        
-        while (timeElapsed < duration)
-        {
-            float value = Mathf.Lerp(startValue, targetValue, timeElapsed / duration);
-            tween(value);
-            timeElapsed += Time.deltaTime;
-            yield return null;
-        }
-        postTween();
-    }   
-
-    private void BossMonsterDeadHandler(BaseMonsterController obj)
-    {
-        bossMonsterHealthBarImage.fillAmount = 0f;
-    }
-
-    private void BossMonsterDamageHandler(BaseMonsterController bossMonster)
-    {
+    
+    private void BossMonsterDeadHandler(BaseMonsterController obj) => bossMonsterHealthBarImage.fillAmount = 0f;
+    
+    private void BossMonsterDamageHandler(BaseMonsterController bossMonster) => 
         bossMonsterHealthBarImage.fillAmount = bossMonster.CurrentHealthPercentage;
-    }
-
+    
     private void BossMonsterSpawnedHandler()
     {
         ActivatePanels(bossMonsterHealth);        
         bossMonsterHealthBarImage.fillAmount = 1f;
     }
 
-
-    private void BossBattleHandler()
-    {
-        uiRoutine = StartCoroutine(BossBattleHandlerRoutine());
-    }
-
+    private void BossBattleHandler() => uiRoutine = StartCoroutine(BossBattleHandlerRoutine());
+    
     IEnumerator BossBattleHandlerRoutine()
     {                
         yield return new WaitForSeconds(blinkingDelayWarningBossBattle); // Se espera un poquito para esperar la explosión del último monstruo
@@ -213,12 +173,8 @@ public class UIManager : MonoBehaviour
         DeactivatePanels(warningBossBattlePanel, backgroundPanel);        
     }
 
-
-    private void ScoreUpdatedHandler(int score)
-    {
-        this.score = score;
-    }
-
+    private void ScoreUpdatedHandler(int score) => this.score = score;
+    
     private void GameOverHandler(float delay)
     {
         StopCoroutine(uiRoutine);
@@ -253,13 +209,12 @@ public class UIManager : MonoBehaviour
     {
         int x = Random.Range(splatImageRandomOffset, Screen.width - splatImageRandomOffset);
         int y = Random.Range(splatImageRandomOffset, Screen.height - splatImageRandomOffset);
-        splatImage.transform.position = new Vector3(x, y, 0); // el ancla está en el centro
+        splatImage.transform.position = new Vector3(x, y, 0);
 
         int idx = Random.Range(0, splatSprites.Length);
         splatImage.sprite = splatSprites[idx];
 
         FadeGraphic(splatImage, 1f, 0f, timeToFadeSplat);       
-
     }
 
     void FadeGraphic(Graphic graphic, float fromAlpha, float toAlpha, float duration)
@@ -268,11 +223,8 @@ public class UIManager : MonoBehaviour
         graphic.CrossFadeAlpha(toAlpha, duration, true);
     }
 
-    private void BattlingHandler(int level)
-    {
-        uiRoutine = StartCoroutine(BattlingRoutine(level));
-    }
-
+    private void BattlingHandler(int level) => uiRoutine = StartCoroutine(BattlingRoutine(level));
+    
     IEnumerator BattlingRoutine(int level)
     {
         HideAllMessages();
@@ -286,11 +238,8 @@ public class UIManager : MonoBehaviour
         DeactivatePanels(goMessage);        
     }
 
-    private void PortalCreatedHandler()
-    {
-        portalCreationPanel.SetActive(false);
-    }
-
+    private void PortalCreatedHandler() => portalCreationPanel.SetActive(false);
+    
     private void StatusPortalHandler(bool status)
     {
         pointAtFloorMessage.SetActive(!status);
@@ -313,27 +262,18 @@ public class UIManager : MonoBehaviour
     void HideAllMessages()
     {
         for (int i = 0; i < messagesPanelCenter.Length; i++)
-        {
             messagesPanelCenter[i].SetActive(false);
-        }
     }
 
     void ActivatePanels(params GameObject[] panels)
     {
         for (int i = 0; i < panels.Length; i++)
-        {
             panels[i].SetActive(true);
-        }
-
     }
 
     void DeactivatePanels(params GameObject[] panels)
     {
         for (int i = 0; i < panels.Length; i++)
-        {
             panels[i].SetActive(false);
-        }
-
     }
-
 }

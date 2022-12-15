@@ -5,14 +5,12 @@ public class SpawnerManager : MonoBehaviour
 {
     [SerializeField] private SpawnerManagerData data;
     [SerializeField] private MonsterController[] monstersPrefabs;
-    [SerializeField] private BossMonsterController[] bossMonstersPrefabs;
+    [SerializeField] private BossMonsterController[] bossMonstersPrefabs; // No usado por ahora, solo tenemos 1 boss monster
     [SerializeField] private int incrementMonstersCountByNewLevel = 5;
 
     int currentLevel;
     MonstersByLevel currentMonstersByLevel;
     int monstersCount;
-
-
 
     private void OnEnable()
     {
@@ -21,7 +19,6 @@ public class SpawnerManager : MonoBehaviour
         GameManager.Instance.OnGameOver += GameOverHandler;
     }
 
-    
     private void OnDisable()
     {
         GameManager.Instance.OnSpawning -= SpawningHandler;
@@ -59,9 +56,7 @@ public class SpawnerManager : MonoBehaviour
 
         if (currentLevel <= data.monstersByLevels.Length)
         {
-            //currentLevel = Mathf.Clamp(currentLevel, 1, data.monstersByLevels.Length);
             currentMonstersByLevel = data.monstersByLevels[currentLevel - 1];
-
             var initialMonsters = currentMonstersByLevel.initialMonsters;
 
             monstersCount = 0;
@@ -84,7 +79,7 @@ public class SpawnerManager : MonoBehaviour
             monstersCount += incrementMonstersCountByNewLevel;
             for (int i = 0; i < monstersCount; i++)
             {
-                int idx = Random.Range(0, monstersPrefabs.Length - 1);
+                int idx = Random.Range(0, monstersPrefabs.Length);
                 var monsterPrefab = monstersPrefabs[idx];
                 Instantiate(monsterPrefab, position, rotation);
                 yield return waitBetweenMonsters;
@@ -93,6 +88,5 @@ public class SpawnerManager : MonoBehaviour
 
         GameManager.Instance.MonstersSpawned();
     }
-
 
 }

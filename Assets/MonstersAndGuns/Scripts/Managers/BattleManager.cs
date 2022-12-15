@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
@@ -24,7 +23,6 @@ public class BattleManager : MonoBehaviour
     {
         StopAllCoroutines();
     }
-
 
     private void BattleHandler(int currentLevel)
     {

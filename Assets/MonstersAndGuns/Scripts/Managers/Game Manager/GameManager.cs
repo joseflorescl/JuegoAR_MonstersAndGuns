@@ -76,9 +76,6 @@ public class GameManager : BaseGameManager
     protected override void Restart()
     {                
         // Notar que los monsters y los misiles se destruyen solos en el evento Restart.
-        //for (int i = 0; i < monsters.Count; i++)
-        //    Destroy(monsters[i].gameObject);
-        
         monsters.Clear();
 
         gameplayData.Level = 1;
@@ -161,6 +158,9 @@ public class GameManager : BaseGameManager
 
     public void DeadNotification(HealthController deadObject, DamageMode damageMode)
     {
+        // Nota: si se quisiera eliminar este if-else por el uso de clases especializadas,
+        //  habría que crear para cada if una clase que herede de HealthController,
+        //  y que llame cada una a un método específico de GM, por ej: GameManager.Instance.PlayerHasDead()
         if (deadObject.CompareTag("Player")) 
         {
             RaisePlayerDead();
@@ -208,13 +208,10 @@ public class GameManager : BaseGameManager
         else if (deadObject.CompareTag("BossMonster"))
             RaiseBossMonsterDamage(deadObject.GetComponent<BossMonsterController>());
         else if (deadObject.CompareTag("Player"))
-        {
             RaisePlayerDamage(deadObject.CurrentHealthPercentage);            
-        }
     }
 
     public void StatusPortal(bool status) => RaiseStatusPortalChanged(status);
-
     public void PlayerFired(int gunIndex) => RaisePlayerFired(gunIndex);
     public void MonsterFired() => RaiseMonsterFired();
 
@@ -224,22 +221,12 @@ public class GameManager : BaseGameManager
         RaiseMonsterCreated();
     }
 
-
-    public void MissileCreated(MissileController missile)
-    {
-        missiles.Add(missile);
-    }
-
-    public void BossMonsterCreated(BossMonsterController bossMonster)
-    {
-        this.bossMonster = bossMonster;
-    }
-
-    public void MonsterAttacking(BaseMonsterController monster)
-    {
-        RaiseMonsterAttacking(monster);
-    }
-
+    public void MissileCreated(MissileController missile) => missiles.Add(missile);
+    
+    public void BossMonsterCreated(BossMonsterController bossMonster) => this.bossMonster = bossMonster;
+    
+    public void MonsterAttacking(BaseMonsterController monster) => RaiseMonsterAttacking(monster);
+    
     public void InitIncrementScore()
     {
         if (CurrentState != GameState.Win) return;
@@ -270,11 +257,5 @@ public class GameManager : BaseGameManager
             CurrentState = GameState.NextLevel;
     }
 
-    public void Close()
-    {
-        CurrentState = GameState.Exit;
-    }
-
-
-
+    public void Close() => CurrentState = GameState.Exit;
 }
