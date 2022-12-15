@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Monster Data", menuName = "Monsters n Guns/Monster Data")]
@@ -19,10 +17,9 @@ public class MonsterData : ScriptableObject
     public float maxDeviationRandomVectorUp = 0.5f;
     public float minSecondsGoUp = 1f;
     public float maxSecondsGoUp = 3f;
-    public float angleToAwayFromPlayer = 30f; // Para tener algo de random en el mov
+    public float angleToAwayFromPlayer = 30f;
 
     [Header("Patrol State")]
-    //[Space(10)]
     public PatrolMode patrolMode = PatrolMode.OnSphere;
     public bool randomPositionBehindCenter = false;
     public float patrolSpeed = 2f;

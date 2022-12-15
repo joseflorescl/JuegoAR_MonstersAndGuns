@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class VibrationManager : MonoBehaviour
@@ -18,16 +17,9 @@ public class VibrationManager : MonoBehaviour
         GameManager.Instance.OnPlayerDead -= PlayerDeadHandler;
     }
 
-    private void PlayerDamageHandler(float obj)
-    {
-        Vibrate();
-    }
-
-    private void PlayerDeadHandler()
-    {
-        Vibrate();
-    }
-
+    private void PlayerDamageHandler(float obj) => Vibrate();
+    
+    private void PlayerDeadHandler() => Vibrate();
 
     void Vibrate()
     {

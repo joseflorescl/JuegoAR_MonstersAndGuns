@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New AudioManager Data", menuName = "Monsters n Guns/Audio Manager Data")]

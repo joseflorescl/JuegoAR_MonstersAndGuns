@@ -281,6 +281,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1138996941}
     m_Modifications:
+    - target: {fileID: 632213460255100914, guid: 13e1595a0664fa04c8b4426d94b33e46,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4389850068504539481, guid: 13e1595a0664fa04c8b4426d94b33e46,
         type: 3}
       propertyPath: m_RootOrder
@@ -340,6 +345,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Monster Dead Particle System - NO AR UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 4389850068504539482, guid: 13e1595a0664fa04c8b4426d94b33e46,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732379010699268039, guid: 13e1595a0664fa04c8b4426d94b33e46,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13e1595a0664fa04c8b4426d94b33e46, type: 3}

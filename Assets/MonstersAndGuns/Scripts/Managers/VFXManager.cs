@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class VFXManager : MonoBehaviour
 {
@@ -31,10 +29,7 @@ public class VFXManager : MonoBehaviour
         GameManager.Instance.OnMonsterAttacking += MonsterAttackingHandler;
         GameManager.Instance.OnPortalCreated += PortalCreatedHandler;
         GameManager.Instance.OnRestart += RestartHandler;
-
     }
-
-    
 
     private void OnDisable()
     {
@@ -76,7 +71,6 @@ public class VFXManager : MonoBehaviour
         
         if (monster.AttackMaterial)
             UseMaterialOnVFXEntity(monster.AttackMaterial, monster);
-        
     }
 
     private void MonsterDamageHandler(IVFXEntity monster)

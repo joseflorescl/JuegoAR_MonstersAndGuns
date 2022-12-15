@@ -3,7 +3,9 @@ using UnityEngine;
 
 public static class SimpleTween
 {
-    public static IEnumerator TweenRoutine(float startValue, float targetValue, float duration, System.Action<float> tween, System.Action postTween)
+    public static IEnumerator TweenRoutine(float startValue, float targetValue, float duration, 
+        System.Action<float> tween, 
+        System.Action postTween)
     {
         float timeElapsed = 0;
         while (timeElapsed < duration)
@@ -13,6 +15,6 @@ public static class SimpleTween
             timeElapsed += Time.deltaTime;
             yield return null;
         }
-        postTween();
+        postTween();        
     }
 }

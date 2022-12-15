@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameplayData
@@ -29,7 +27,6 @@ public class GameplayData
         get { return level; }
         set { level = value; }
     }
-
 
 
     public GameplayData(string gamePlayDataID, int initialHiScore, int level)

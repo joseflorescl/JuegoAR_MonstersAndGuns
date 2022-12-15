@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Game Manager Data", menuName = "Monsters n Guns/Game Manager Data")]

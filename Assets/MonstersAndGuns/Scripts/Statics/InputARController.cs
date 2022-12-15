@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -29,13 +28,11 @@ public static class InputARController
 
     private static bool IsPointerOverUIObject()
     {
-        //PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
-        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y); // el touch también funciona con la posición del mouse
-        //List<RaycastResult> results = new List<RaycastResult>();
+        // Notar que el touch también funciona con la posición del mouse
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y); 
         results.Clear();
         EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
         return results.Count > 0;
     }
-
 
 }
