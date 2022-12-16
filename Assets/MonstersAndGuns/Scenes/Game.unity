@@ -916,7 +916,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b2514ca4c68a040aa4c45eda76c332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsToAttackLevel1: 5
+  secondsToAttackLevel1: 20
   substractSecondsToAttackNewLevel: 0.5
   minSecondsToAttack: 1
 --- !u!1 &982369420
@@ -1482,7 +1482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 305a5309c1245b34c8c8b8f0ee1057fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 725564ec722f8ce428c9e5002d043358, type: 2}
+  data: {fileID: 11400000, guid: 135eef91764207b4d846956a7ef64fb2, type: 2}
   monstersPrefabs:
   - {fileID: 326801172, guid: 00fb1bb10fe79504b8fa75564caac587, type: 3}
   - {fileID: 326801172, guid: 5c2b148e392674847b80ef0706b6b01c, type: 3}

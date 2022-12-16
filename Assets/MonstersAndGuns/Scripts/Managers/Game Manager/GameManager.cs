@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class GameManager : BaseGameManager
 {            
-    // TODO: setear el spawner data final, salud del player 5, salud del boss monster 75
+    // TODO:
+    //    setear el spawner data final,
+    //    salud del player 5,
+    //    salud del boss monster 75,
+    //    Objeto Battle Mgr: seconds to attack 5
+    //    El audio mixer
+    //    Quitar en la data de GameManager la escena de Debug
     // TODO: Crear el doc de la entrega y el video de gameplay    
 
     [SerializeField] private GameManagerData gameManagerData;
@@ -36,7 +42,7 @@ public class GameManager : BaseGameManager
 #if UNITY_EDITOR
         Application.targetFrameRate = 30;
 #endif
-        CurrentState = GameState.Initialization;        
+        CurrentState = GameState.Initialization;
     }
 
     protected override void Initialization() => StartCoroutine(InitializationRoutine());

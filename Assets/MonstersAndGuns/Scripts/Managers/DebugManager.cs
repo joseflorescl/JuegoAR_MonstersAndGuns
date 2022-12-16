@@ -9,8 +9,12 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private TMP_Text gunIndexText;
     [SerializeField] private TMP_Text monsterDistanceText;
     [SerializeField] private TMP_Text fpsText;
+    [SerializeField] private TMP_Text fovText;
+    [SerializeField] private AudioSource audioSource;
+
 
     int monsterCount;
+    Camera arCamera;
 
     private void Awake()
     {
@@ -20,7 +24,7 @@ public class DebugManager : MonoBehaviour
 
 
     private void Start()
-    {
+    {        
         StartCoroutine(FPSRoutine());
     }
 
@@ -30,7 +34,7 @@ public class DebugManager : MonoBehaviour
         GameManager.Instance.OnMonsterDead += MonsterDeadHandler;
         GameManager.Instance.OnPlayerFired += PlayerFiredHandler;
         GameManager.Instance.OnRestart += RestartHandler;
-
+        GameManager.Instance.OnMainMenuActivating += MainMenuActivatingHandler;
     }
 
     
@@ -41,6 +45,28 @@ public class DebugManager : MonoBehaviour
         GameManager.Instance.OnMonsterDead -= MonsterDeadHandler;
         GameManager.Instance.OnPlayerFired -= PlayerFiredHandler;
         GameManager.Instance.OnRestart -= RestartHandler;
+        GameManager.Instance.OnMainMenuActivating -= MainMenuActivatingHandler;
+    }
+
+    private void MainMenuActivatingHandler()
+    {
+        arCamera = GameManager.Instance.ARCamera;
+        fovText.text = "FOV: " + ((int)(arCamera.fieldOfView)).ToString();
+    }
+
+    public void FOVIncrement()
+    {
+        //arCamera.fieldOfView = (int)arCamera.fieldOfView + 1;
+        arCamera.fieldOfView = 90f;
+        //fovText.text = "FOV: " + ((int)(arCamera.fieldOfView)).ToString();
+        audioSource.Play();
+    }
+    public void FOVDecrement()
+    {
+        //arCamera.fieldOfView = (int)arCamera.fieldOfView - 1;
+        arCamera.fieldOfView = 60f;
+        //fovText.text = "FOV: " + ((int)(arCamera.fieldOfView)).ToString();
+        audioSource.Play();
     }
 
     private void RestartHandler()
@@ -76,7 +102,9 @@ public class DebugManager : MonoBehaviour
         var pos = GameManager.Instance.PlayerPosition;
         playerPositionText.text = pos.ToString();
 
-        
+        // Notar que en el mobil, el FOV de la cámara lo setea Unity, por lo que no lo podemos controlar nosotros.
+        if (arCamera)
+            fovText.text = "FOV: " + ((int)(arCamera.fieldOfView)).ToString();
     }
 
     IEnumerator FPSRoutine()
