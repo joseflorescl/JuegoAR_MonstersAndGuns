@@ -225,7 +225,7 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
 
         targetPosition.y = Mathf.Clamp(targetPosition.y, targetPosition.y, maxHeight);
     }
-
+    
     protected void OnDrawGizmos()
     {
         Gizmos.DrawRay(transform.position, kinematicVelocity);

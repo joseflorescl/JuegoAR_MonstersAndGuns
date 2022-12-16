@@ -28,8 +28,7 @@ public class SandboxMoveToTarget : MonoBehaviour
         rb.MovePosition(transform.position + kinematicVelocity * Time.deltaTime);
         DebugSetMonsterDistance();
     }
-
-
+    
     private void OnDrawGizmos()
     {
         Gizmos.DrawRay(transform.position, kinematicVelocity);

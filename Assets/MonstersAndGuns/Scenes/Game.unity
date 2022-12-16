@@ -916,9 +916,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b2514ca4c68a040aa4c45eda76c332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsToAttackLevel1: 20
+  secondsToAttackLevel1: 5
   substractSecondsToAttackNewLevel: 0.5
-  minSecondsToAttack: 1
+  minSecondsToAttack: 1.5
 --- !u!1 &982369420
 GameObject:
   m_ObjectHideFlags: 0

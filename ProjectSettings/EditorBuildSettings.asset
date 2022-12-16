@@ -9,18 +9,18 @@ EditorBuildSettings:
     path: Assets/MonstersAndGuns/Scenes/Game.unity
     guid: c34ae88da5e18054aac496f6fb071898
   - enabled: 1
-    path: Assets/MonstersAndGuns/Scenes/AR Session.unity
-    guid: 8c7de823c2810a1468e61f609f8e3d92
-  - enabled: 1
     path: Assets/MonstersAndGuns/Scenes/NO AR Session World.unity
     guid: 5a9392304e46b484cab3323862f153ba
   - enabled: 1
+    path: Assets/MonstersAndGuns/Scenes/AR Session.unity
+    guid: 8c7de823c2810a1468e61f609f8e3d92
+  - enabled: 1
     path: Assets/MonstersAndGuns/Scenes/UI.unity
     guid: d4d07e854d8eebe43b7a7d508aeb03ea
-  - enabled: 1
+  - enabled: 0
     path: Assets/MonstersAndGuns/Scenes/Debug Game.unity
     guid: 81a52dbffa3ce9b42b80cc0abc52513f
-  - enabled: 1
+  - enabled: 0
     path: Assets/Sandbox/Sandbox Scenes/Sandbox - AR Session - Test Canvas.unity
     guid: ee412cfdf7ddbda449bef7b34ee3a259
   m_configObjects:

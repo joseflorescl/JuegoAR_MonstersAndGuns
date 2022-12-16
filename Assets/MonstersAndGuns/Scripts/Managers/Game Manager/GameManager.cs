@@ -3,16 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : BaseGameManager
-{            
-    // TODO:
-    //    setear el spawner data final,
-    //    salud del player 5,
-    //    salud del boss monster 75,
-    //    Objeto Battle Mgr: seconds to attack 5
-    //    El audio mixer
-    //    Quitar en la data de GameManager la escena de Debug
-    // TODO: Crear el doc de la entrega y el video de gameplay    
-
+{    
     [SerializeField] private GameManagerData gameManagerData;
     [SerializeField] private GameObject canvasLoading;
 
