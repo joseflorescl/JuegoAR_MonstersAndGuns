@@ -74,7 +74,7 @@ public class DebugManager : MonoBehaviour
         UpdateMonsterCount(0);
     }
 
-    private void MonsterCreatedHandler()
+    private void MonsterCreatedHandler(BaseMonsterController monster)
     {
         UpdateMonsterCount(monsterCount + 1);
     }

@@ -21,14 +21,13 @@ public class BossMonsterController : BaseMonsterController
         base.Awake();
         shooterController = GetComponent<MonsterShooterController>();
     }
-
-    protected override void Start()
+    
+    protected override void Init()
     {
-        base.Start();
+        base.Init();
         GameManager.Instance.BossMonsterCreated(this);
         CurrentState = MonsterState.GoUp;
     }
-
 
     protected override void PlayerDeadHandler()
     {

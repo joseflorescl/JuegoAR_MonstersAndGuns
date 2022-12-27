@@ -105,7 +105,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8042172987336447413
 Transform:
   m_ObjectHideFlags: 0
@@ -185,6 +185,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
+  maxDistanceToPlayer: 10
+  delayValidateDistanceToPlayer: 0.25
   <CurrentColor>k__BackingField: {r: 0.9921569, g: 0.7254902, b: 0.078431375, a: 1}
 --- !u!114 &4315705678188747500
 MonoBehaviour:

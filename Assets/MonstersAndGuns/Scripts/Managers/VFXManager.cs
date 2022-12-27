@@ -29,6 +29,8 @@ public class VFXManager : MonoBehaviour
         GameManager.Instance.OnMonsterAttacking += MonsterAttackingHandler;
         GameManager.Instance.OnPortalCreated += PortalCreatedHandler;
         GameManager.Instance.OnRestart += RestartHandler;
+        GameManager.Instance.OnMonsterCreated += MonsterCreatedHandler;
+
     }
 
     private void OnDisable()
@@ -41,6 +43,7 @@ public class VFXManager : MonoBehaviour
         GameManager.Instance.OnMonsterAttacking -= MonsterAttackingHandler;
         GameManager.Instance.OnPortalCreated -= PortalCreatedHandler;
         GameManager.Instance.OnRestart -= RestartHandler;
+        GameManager.Instance.OnMonsterCreated -= MonsterCreatedHandler;
     }
 
     private void Start()
@@ -52,6 +55,14 @@ public class VFXManager : MonoBehaviour
         attackParticleColorsInstance = Instantiate(attackParticleColorsPrefab);
         portalParticleColorsInstance = Instantiate(portalParticleColorsPrefab);
     }
+
+    private void MonsterCreatedHandler(IVFXEntity monster)
+    {
+        // TODO: configurar en el SO de los monsters el material de inicio
+        if (monster.NormalMaterial)
+            UseMaterialOnVFXEntity(monster.NormalMaterial, monster);
+    }
+
 
     private void RestartHandler()
     {

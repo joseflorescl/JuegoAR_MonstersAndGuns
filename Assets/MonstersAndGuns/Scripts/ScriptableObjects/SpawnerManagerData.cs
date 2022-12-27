@@ -24,7 +24,7 @@ public struct MonsterToSpawn
 public struct MonstersByLevel
 {
     public MonsterToSpawn[] initialMonsters;
-    public GameObject bossMonsterPrefab;
+    public BossMonsterController bossMonsterPrefab;    
 }
 
 

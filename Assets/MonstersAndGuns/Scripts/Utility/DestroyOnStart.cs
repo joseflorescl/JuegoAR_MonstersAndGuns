@@ -2,5 +2,5 @@ using UnityEngine;
 
 public class DestroyOnStart : MonoBehaviour
 {
-    void Start() => Destroy(gameObject);
+    void Start() => PoolManager.Instance.Release(gameObject);  // Destroy(gameObject);
 }

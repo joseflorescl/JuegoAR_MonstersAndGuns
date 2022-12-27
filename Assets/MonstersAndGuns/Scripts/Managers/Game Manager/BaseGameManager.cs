@@ -17,7 +17,7 @@ public abstract class BaseGameManager : MonoBehaviour
     public event Action OnPortalCreated; // Una vez que el portal ya ha sido creado
     public event Action<int, Vector3, Quaternion> OnSpawning; // Recibe el level actual del juego, y lo posición/rotación desde donde hacer el spawner
     public event Action<int> OnBattling; // Recibe el level actual del juego
-    public event Action OnMonsterCreated;
+    public event Action<BaseMonsterController> OnMonsterCreated;
     public event Action<BaseMonsterController> OnMonsterDead;
     public event Action<BaseMonsterController> OnMonsterAttacking;
     public event Action<BaseMonsterController> OnBossMonsterDead;
@@ -45,7 +45,7 @@ public abstract class BaseGameManager : MonoBehaviour
     protected void RaisePortalCreated() => OnPortalCreated?.Invoke();
     protected void RaiseSpawning(int level, Vector3 position, Quaternion rotation) => OnSpawning?.Invoke(level, position, rotation);
     protected void RaiseBattling(int level) => OnBattling?.Invoke(level);
-    protected void RaiseMonsterCreated() => OnMonsterCreated?.Invoke();
+    protected void RaiseMonsterCreated(BaseMonsterController monster) => OnMonsterCreated?.Invoke(monster);
     protected void RaiseMonsterDead(BaseMonsterController monster) => OnMonsterDead?.Invoke(monster);
     protected void RaiseMonsterAttacking(BaseMonsterController monster) => OnMonsterAttacking?.Invoke(monster);
     protected void RaiseBossMonsterDead(BaseMonsterController bossMonster) => OnBossMonsterDead?.Invoke(bossMonster);

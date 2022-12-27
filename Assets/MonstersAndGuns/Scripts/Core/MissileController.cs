@@ -34,11 +34,10 @@ public class MissileController : MonoBehaviour, IVFXEntity
         GameManager.Instance.OnBossMonsterDead -= BossMonsterDeadHandler;
     }
 
-    private void Start()
+    public void Init()
     {
         GameManager.Instance.MissileCreated(this);
         kinematicVelocity = transform.forward * speed;
-
         StartCoroutine(DestroyFarAwayFromPlayerRoutine());
     }
 

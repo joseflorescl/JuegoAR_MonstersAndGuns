@@ -172,7 +172,8 @@ public class GameManager : BaseGameManager
 
             monsters?.Remove(monster);
             RaiseMonsterDead(monster);
-            Destroy(deadObject.gameObject);
+            //Destroy(deadObject.gameObject);
+            PoolManager.Instance.Release(deadObject.gameObject);
 
             if (monsters.Count == 0 && CurrentState == GameState.Battle)
                 CurrentState = GameState.BossBattle;
@@ -181,7 +182,8 @@ public class GameManager : BaseGameManager
         {            
             var bossMonster = deadObject.GetComponent<BossMonsterController>();
             RaiseBossMonsterDead(bossMonster);
-            Destroy(deadObject.gameObject);
+            //Destroy(deadObject.gameObject); // TODO: quitar esto comentado
+            PoolManager.Instance.Release(deadObject.gameObject);
 
             if (damageMode == DamageMode.Shooting)
                 Score += bossMonster.Score;
@@ -193,9 +195,10 @@ public class GameManager : BaseGameManager
             var missil = deadObject.GetComponent<MissileController>();
             missiles?.Remove(missil);
             RaiseMissileDead(missil);
-            Destroy(deadObject.gameObject);
+            //Destroy(deadObject.gameObject);
+            PoolManager.Instance.Release(deadObject.gameObject);
         }
-        
+
     }
 
     public void DamageNotification(HealthController deadObject)
@@ -215,7 +218,7 @@ public class GameManager : BaseGameManager
     public void MonsterCreated(MonsterController monster)
     {
         monsters.Add(monster);
-        RaiseMonsterCreated();
+        RaiseMonsterCreated(monster);
     }
 
     public void MissileCreated(MissileController missile) => missiles.Add(missile);

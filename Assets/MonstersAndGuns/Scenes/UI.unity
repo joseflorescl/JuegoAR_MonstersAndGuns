@@ -2218,7 +2218,7 @@ MonoBehaviour:
   missileMinimapPrefab: {fileID: 936184120142963243, guid: 47dff1dd84e6be54c997d700e4b02380,
     type: 3}
   maxMonstersMinimap: 50
-  maxMissilesMinimap: 5
+  maxMissilesMinimap: 10
   delayUpdateMinimap: 0.05
   worldRadiusDimension: 6.5
 --- !u!1 &680016651

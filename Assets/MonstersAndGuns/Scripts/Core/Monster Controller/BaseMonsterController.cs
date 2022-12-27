@@ -82,13 +82,15 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
         healthController = GetComponent<HealthController>();
     }
 
-    protected virtual void Start()
+    //protected virtual void Start() // TODO: eliminar esta línea
+    protected virtual void Init()
     {
-        anim.speed = monsterData.speedAnimation;
+        anim.speed = monsterData.speedAnimation;        
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
+        Init(); // Pool Manager Compatible
         GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
     }
 
@@ -194,9 +196,6 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
         targetPosition = target.transform.TransformPoint(targetPosition);
         return targetPosition;
     }
-
-   
-
 
     protected void GetDirectionAndTargetPositionPatrolling(out Vector3 direction, out Vector3 targetPosition, bool behind, 
         float maxHeight,

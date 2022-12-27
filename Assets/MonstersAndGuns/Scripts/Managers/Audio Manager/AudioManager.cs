@@ -162,7 +162,7 @@ public class AudioManager : BaseAudioManager
         PlayRandomSound(data.monsterExplosions, SFXAudioSource);
     }
 
-    private void MonsterCreatedHandler()
+    private void MonsterCreatedHandler(BaseMonsterController monster)
     {
         PlayRandomSound(data.monsterSpawned, SFXAudioSource, randomPitch: true);
     }

@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class MonsterController : BaseMonsterController
 {
-    protected override void Start()
+    protected override void Init()
     {
-        base.Start();
+        base.Init();
         GameManager.Instance.MonsterCreated(this);
 
         if (monsterData.goUpSpeed == 0)
