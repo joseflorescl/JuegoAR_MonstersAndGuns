@@ -41,4 +41,4 @@ MonoBehaviour:
   attackColor: {r: 0, g: 0, b: 0, a: 1}
   attackMaterial: {fileID: 2100000, guid: 454707bfe72c2e749bd9f0c76154de0d, type: 2}
   damageMaterial: {fileID: 0}
-  normalMaterial: {fileID: 0}
+  normalMaterial: {fileID: 2100000, guid: b8598a0268cf18b4c85dfb0676536dc9, type: 2}

@@ -46,8 +46,9 @@ public class SpawnerManager : MonoBehaviour
     IEnumerator BossBattleRoutine()
     {
         yield return new WaitForSeconds(data.delaySpawningBossMonster);
-        //Instantiate(currentMonstersByLevel.bossMonsterPrefab, GameManager.Instance.Portal.position, GameManager.Instance.Portal.rotation);
-        PoolManager.Instance.Get(currentMonstersByLevel.bossMonsterPrefab, GameManager.Instance.Portal.position, GameManager.Instance.Portal.rotation);
+        var bossMonster = PoolManager.Instance.Get(currentMonstersByLevel.bossMonsterPrefab, 
+            GameManager.Instance.Portal.position, GameManager.Instance.Portal.rotation);
+        bossMonster.Init();
         GameManager.Instance.BossMonsterSpawned();
     }
 
@@ -69,8 +70,8 @@ public class SpawnerManager : MonoBehaviour
                 for (int j = 0; j < count; j++)
                 {
                     monstersCount++;
-                    //Instantiate(monsterPrefab, position, rotation);
-                    PoolManager.Instance.Get(monsterPrefab, position, rotation);
+                    var monster = PoolManager.Instance.Get(monsterPrefab, position, rotation);
+                    monster.Init();
                     yield return waitBetweenMonsters;
                 }
             }
@@ -83,8 +84,8 @@ public class SpawnerManager : MonoBehaviour
             {
                 int idx = Random.Range(0, monstersPrefabs.Length);
                 var monsterPrefab = monstersPrefabs[idx];
-                //Instantiate(monsterPrefab, position, rotation);
-                PoolManager.Instance.Get(monsterPrefab, position, rotation);
+                var monster = PoolManager.Instance.Get(monsterPrefab, position, rotation);
+                monster.Init();
                 yield return waitBetweenMonsters;
             }
         }

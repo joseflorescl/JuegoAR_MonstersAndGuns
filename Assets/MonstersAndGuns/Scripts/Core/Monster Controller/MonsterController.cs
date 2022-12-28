@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MonsterController : BaseMonsterController
 {
-    protected override void Init()
+    public override void Init()
     {
         base.Init();
         GameManager.Instance.MonsterCreated(this);
@@ -45,7 +45,7 @@ public class MonsterController : BaseMonsterController
 
         float secondsGoUp = Random.Range(monsterData.minSecondsGoUp, monsterData.maxSecondsGoUp);
         float maxTime = Time.time + secondsGoUp;
-
+       
         yield return new WaitWhile(() => (Time.time < maxTime) 
                                       && (DistanceToPlayer > monsterData.minDistanceToPlayer));
 
@@ -70,8 +70,6 @@ public class MonsterController : BaseMonsterController
         direction.Normalize();
         return direction;
     }
-
-    
 
     IEnumerator PatrolRoutine()
     {
@@ -100,7 +98,6 @@ public class MonsterController : BaseMonsterController
         
     }
     
-
     IEnumerator FirstPointPatrolling()
     {
         // El primer punto a elegir debe ser especial, para que el monstruo empiece alejándose del player
@@ -129,7 +126,6 @@ public class MonsterController : BaseMonsterController
         
         yield break;
     }
-   
 
     IEnumerator AttackRoutine()
     {

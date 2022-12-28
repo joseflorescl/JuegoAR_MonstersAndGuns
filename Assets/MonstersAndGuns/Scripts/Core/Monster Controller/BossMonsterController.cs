@@ -22,7 +22,7 @@ public class BossMonsterController : BaseMonsterController
         shooterController = GetComponent<MonsterShooterController>();
     }
     
-    protected override void Init()
+    public override void Init()
     {
         base.Init();
         GameManager.Instance.BossMonsterCreated(this);
@@ -147,10 +147,12 @@ public class BossMonsterController : BaseMonsterController
     {
         float fireRate = 1f / firesPerSecond;
 
-        while (CurrentState == MonsterState.Attack)
-        {
-            yield return new WaitForSeconds(fireRate);
+        yield return new WaitForSeconds(fireRate);
+
+        while (CurrentState == MonsterState.Attack && !healthController.IsDead)
+        {            
             shooterController.FireToTarget(GameManager.Instance.PlayerPosition);
+            yield return new WaitForSeconds(fireRate);
         }
     }    
 }

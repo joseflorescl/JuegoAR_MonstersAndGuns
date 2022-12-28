@@ -81,16 +81,14 @@ public abstract class BaseMonsterController : MonoBehaviour, IVFXEntity
         renderers = GetComponentsInChildren<Renderer>();
         healthController = GetComponent<HealthController>();
     }
-
-    //protected virtual void Start() // TODO: eliminar esta línea
-    protected virtual void Init()
+    
+    public virtual void Init()
     {
         anim.speed = monsterData.speedAnimation;        
     }
 
     protected virtual void OnEnable()
-    {
-        Init(); // Pool Manager Compatible
+    {        
         GameManager.Instance.OnPlayerDead += PlayerDeadHandler;
     }
 

@@ -58,7 +58,6 @@ public class VFXManager : MonoBehaviour
 
     private void MonsterCreatedHandler(IVFXEntity monster)
     {
-        // TODO: configurar en el SO de los monsters el material de inicio
         if (monster.NormalMaterial)
             UseMaterialOnVFXEntity(monster.NormalMaterial, monster);
     }

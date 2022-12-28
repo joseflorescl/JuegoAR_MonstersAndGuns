@@ -74,6 +74,8 @@ public class GameManager : BaseGameManager
     {                
         // Notar que los monsters y los misiles se destruyen solos en el evento Restart.
         monsters.Clear();
+        missiles.Clear();
+        bossMonster = null;
 
         gameplayData.Level = 1;
         Score = 0;
@@ -171,8 +173,7 @@ public class GameManager : BaseGameManager
                 Score += monster.Score;
 
             monsters?.Remove(monster);
-            RaiseMonsterDead(monster);
-            //Destroy(deadObject.gameObject);
+            RaiseMonsterDead(monster);            
             PoolManager.Instance.Release(deadObject.gameObject);
 
             if (monsters.Count == 0 && CurrentState == GameState.Battle)
@@ -181,8 +182,8 @@ public class GameManager : BaseGameManager
         else if(deadObject.CompareTag("BossMonster"))
         {            
             var bossMonster = deadObject.GetComponent<BossMonsterController>();
-            RaiseBossMonsterDead(bossMonster);
-            //Destroy(deadObject.gameObject); // TODO: quitar esto comentado
+            RaiseBossMonsterDead(bossMonster);            
+            this.bossMonster = null;
             PoolManager.Instance.Release(deadObject.gameObject);
 
             if (damageMode == DamageMode.Shooting)
@@ -194,8 +195,7 @@ public class GameManager : BaseGameManager
         {
             var missil = deadObject.GetComponent<MissileController>();
             missiles?.Remove(missil);
-            RaiseMissileDead(missil);
-            //Destroy(deadObject.gameObject);
+            RaiseMissileDead(missil);            
             PoolManager.Instance.Release(deadObject.gameObject);
         }
 
