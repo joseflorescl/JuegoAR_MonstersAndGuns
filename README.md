@@ -19,6 +19,5 @@ Arte y sonido: descargado de Internet<br>
   - Hay un enemigo jefe, con su propio script de AI.
   - El juego usa 4 escenas que se cargan de forma aditiva asíncronamente.
   - Managers: Game Manager, Scene Controller, Audio Manager, Spawner Manager, Battle Manager, VFX Manager, Vibration Manager, Pool Manager.
-  - Para la librería de AR se usa AR Foundation - AR Core.
-  - Código fuente: https://github.com/joseflorescl/JuegoAR_MonstersAndGuns
+  - Para la librería de AR se usa AR Foundation - AR Core.  
   - Puedes descargar el apk en: https://joseleonardo.itch.io/monsters-n-guns
