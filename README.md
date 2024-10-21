@@ -1,23 +1,23 @@
 # JuegoAR_MonstersAndGuns
- Proyecto AR - Curso Unity Núcleo Escuela
+ AR Project - Course Unity Núcleo Escuela
 
 Monsters 'n Guns<br>
-Clon de Ghosts 'n Guns AR - Unity
+Clone of Ghosts 'n Guns AR - Unity
 
-Juego en Realidad Aumentada - Trabajo Final - Núcleo Escuela - Unity<br>
-Este trabajo es un clon del juego para dispositivos móviles Ghosts 'n Guns.<br>
-Es un juego de Realidad Aumentada, tipo shooter en primera persona, en donde el jugador tiene que defenderse de un ejército de fantasmas pixelados, que invaden el mundo.<br>
+Augmented Reality Game - Final Project - Núcleo Escuela - Unity<br>
+This project is a clone of the mobile game Ghosts 'n Guns.<br>
+It is an Augmented Reality first-person shooter where the player must defend against an army of pixelated ghosts invading the world.<br>
 
-Programado por: José Leonardo Flores<br>
-Arte y sonido: descargado de Internet<br>
+Programmed by: José Leonardo Flores<br>
+Art and sound: downloaded from the internet<br>
 
-  - El jugador, usando la realidad aumentada, debe ubicar en el espacio real un portal desde donde comenzarán a salir diversos tipos de enemigos que se moverán en el entorno.
-  - El jugador puede disparar con 2 armas hacia el centro de la pantalla, con un solo touch. Si se mantiene presionado el dedo en la pantalla se realizan disparos en ráfaga.
-  - En la UI se muestra un mini mapa o radar indicando la posición de los monsters con respecto al player.
-  - Una vez que el jugador elimine a estos enemigos iniciales aparecerá el jefe final del nivel, el cual es más difícil de eliminar por tener un movimiento más complicado y porque dispara misiles.
-  - Los diversos enemigos comparten el mismo script de AI, pero la data de configuración de su Scriptable Object es diferente.
-  - Hay un enemigo jefe, con su propio script de AI.
-  - El juego usa 4 escenas que se cargan de forma aditiva asíncronamente.
+  - The player, using augmented reality, must locate a portal in the real space from which various types of enemies will emerge and move through the environment.
+  - The player can shoot with two weapons towards the center of the screen with a single touch. If the finger is held down on the screen, burst shots are fired.
+  - The UI displays a mini-map or radar indicating the position of the monsters relative to the player.
+  - Once the player eliminates these initial enemies, the final boss of the level will appear, which is harder to defeat due to its more complex movement and missile attacks.
+  - The various enemies share the same AI script, but the configuration data in their Scriptable Object is different.
+  - There is a boss enemy with its own AI script.
+  - The game uses 4 scenes that are loaded additively and asynchronously.
   - Managers: Game Manager, Scene Controller, Audio Manager, Spawner Manager, Battle Manager, VFX Manager, Vibration Manager, Pool Manager.
-  - Para la librería de AR se usa AR Foundation - AR Core.  
-  - Puedes descargar el apk en: https://joseleonardo.itch.io/monsters-n-guns
+  - AR Foundation - AR Core is used for the AR library.
+  - You can download the apk at: https://joseleonardo.itch.io/monsters-n-guns
